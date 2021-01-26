@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hardworkgroup.bridge_health_system.permission_management.dao.UserDao">
+    <!--查询所有用户-->
+    <select id="getUserByID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.permission_management.User">
+        select * from user where userID = #{userID}
+    </select>
+</mapper>

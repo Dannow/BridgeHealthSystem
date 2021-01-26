@@ -1,0 +1,44 @@
+#端口号配置
+server:
+  port: 9999
+
+spring:
+  mvc:
+    servlet:
+      load-on-startup: 1
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 服务器数据库
+#    url: jdbc:mysql://121.199.75.149:3306/bridge_health_system?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT
+#    username: root
+#    password: Root_root250
+    # 本地数据库
+    url: jdbc:mysql://localhost:3306/bridge_health_system?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT
+    username: root
+    password: 1234
+    type: com.alibaba.druid.pool.DruidDataSource
+    #druid连接池配置
+    druid:
+      initial-size: 5 #初始化连接数
+      max-active: 100 #最大连接
+      max-wait: 60000 #等待
+      time-between-connect-error-millis: 60000 #检查空闲
+      min-evictable-idle-time-millis: 30000 #最小生存事件
+      test-while-idle: true #保证安全，清理空闲资源
+      test-on-borrow: true #申请链接时检测连接有效性，影响性能
+      test-on-return: false #归还连接测试
+      max-pool-prepared-statement-per-connection-size: -1 #搭配下面使用
+      pool-prepared-statements: false #缓存，提升Oracle性能
+      filters: stat,wall #扩展插件，stat监控，slf4j日志，wall防御sql注入
+
+#mybatis配置
+mybatis:
+  #mapper地址
+  mapper-locations: classpath*:/mapper/**/*.xml
+  #批量取别名，别名为类名
+  type-aliases-package: com.hardworkgroup.bridge_health_system.**.domain
+
+  configuration:
+    map-underscore-to-camel-case: true #开启驼峰命名
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #打印SQL语句
