@@ -5,7 +5,6 @@ import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.RoleAndUserRelations;
 import com.hardworkgroup.bridge_health_system.permission_management.dao.RoleAndUserRelationsDao;
 import com.hardworkgroup.bridge_health_system.permission_management.service.RoleAndUserRelationsService;
-import com.hardworkgroup.bridge_health_system.system_common.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -18,7 +17,7 @@ import java.util.List;
  * @date: 2020/05/25
  **/
 @Service
-public class RoleAndUserRelationsServiceImpl extends BaseService implements RoleAndUserRelationsService {
+public class RoleAndUserRelationsServiceImpl implements RoleAndUserRelationsService {
 
     @Autowired
     private RoleAndUserRelationsDao RoleAndUserRelationsDao;
