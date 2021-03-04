@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hardworkgroup.bridge_health_system.permission_management.dao.PermissionApiDao">
+    <!--id查询权限菜单-->
+    <select id="getPermissionApiByID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.PermissionApi">
+        select * from permission_api where apiID = #{apiID}
+    </select>
+    <!--ID删除权限api-->
+    <delete id="deletePermissionApiByKey" parameterType="map">
+    	delete from permission_api where apiID = #{apiID}
+  	</delete>
+    <!--ID添加权限api-->
+    <insert id="insertPermissionApi" >
+        insert into permission_api(
+            apiID,
+        <if test="apiUrl != null">
+            apiUrl,
+        </if>
+        <if test="apiMethod != null">
+            apiMethod,
+        </if>
+        <if test="apiLevel != null">
+            apiLevel,
+        </if>)
+        values(
+        #{apiID},
+        <if test="apiUrl != null">
+            #{apiUrl},
+        </if>
+        <if test="apiMethod != null">
+            #{apiMethod},
+        </if>
+        <if test="apiLevel != null">
+            #{apiLevel},
+        </if>)
+    </insert>
+    <!--更新权限api-->
+    <update id="updatePermissionApiByKey" parameterType="map">
+        update permission_api
+        <set>
+            <if test="apiID != null">
+                apiID = #{apiID},
+            </if>
+            <if test="apiUrl != null">
+                apiUrl = #{apiUrl},
+            </if>
+            <if test="apiMethod != null">
+                apiMethod = #{apiMethod},
+            </if>
+            <if test="apiLevel != null">
+                apiLevel = #{apiLevel}
+            </if>
+        </set>
+        where apiID = #{apiID}
+    </update>
+</mapper>
