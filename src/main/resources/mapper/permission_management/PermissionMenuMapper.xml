@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hardworkgroup.bridge_health_system.permission_management.dao.PermissionMenuDao">
+    <!--id查询权限菜单-->
+    <select id="getPermissionMenuByID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.PermissionMenu">
+        select * from permission_menu where menuID = #{menuID}
+    </select>
+    <!--ID删除权限菜单-->
+    <delete id="deletePermissionMenuByKey" parameterType="map">
+    	delete from permission_menu where menuID = #{menuID}
+  	</delete>
+    <!--ID添加权限menu-->
+    <insert id="insertPermissionMenu" >
+        insert into permission_menu(
+        menuID,
+        <if test="menuIcon != null">
+            menuIcon,
+        </if>
+        <if test="menuOrder != null">
+            menuOrder
+        </if>)
+        values(
+        #{menuID},
+        <if test="menuIcon != null">
+            #{menuIcon},
+        </if>
+        <if test="menuOrder != null">
+            #{menuOrder}
+        </if>)
+    </insert>
+    <!--更新权限menu-->
+    <update id="updatePermissionMenuByKey" parameterType="map">
+        update permission_menu
+        <set>
+            <if test="menuID != null">
+                menuID = #{menuID},
+            </if>
+            <if test="menuIcon != null">
+                menuIcon = #{menuIcon},
+            </if>
+            <if test="menuOrder != null">
+                menuOrder = #{menuOrder}
+            </if>
+        </set>
+        where menuID = #{menuID}
+    </update>
+</mapper>

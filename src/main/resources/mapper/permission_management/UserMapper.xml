@@ -3,8 +3,122 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hardworkgroup.bridge_health_system.permission_management.dao.UserDao">
-    <!--查询所有用户-->
-    <select id="getUserByID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.permission_management.User">
+    <!--根据id查询用户-->
+    <select id="getUserByID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User">
         select * from user where userID = #{userID}
     </select>
+    <!--查询所有用户-->
+    <select id="selectAllUsers" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User">
+        select * from user
+    </select>
+
+    <resultMap id="userRoleAndPermission" type="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User">
+        <id property="userID" column="userID"/>
+        <result property="userPhone" column="userPhone"/>
+        <result property="userName" column="userName"/>
+        <result property="userPassword" column="userPassword"/>
+        <result property="userEmail" column="userEmail"/>
+        <result property="userStatus" column="userStatus"/>
+        <result property="userLevel" column="userLevel"/>
+        <collection property="roles"  resultMap="rolePermission">
+
+        </collection>
+    </resultMap>
+    <resultMap id="rolePermission" type="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Role">
+        <id property="roleID" column="roleID"/>
+        <result property="roleName" column="roleName"/>
+        <result property="roleDescription" column="roleDescription"/>
+        <collection property="permissions" ofType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Permission">
+            <id property="permissionID" column="permissionID"/>
+            <result property="permissionName" column="permissionName"/>
+            <result property="permissionType" column="permissionType"/>
+            <result property="permissionCode" column="permissionCode"/>
+            <result property="permissionDescription" column="permissionDescription"/>
+            <result property="pid" column="pid"/>
+            <result property="enVisible" column="enVisible"/>
+        </collection>
+    </resultMap>
+
+
+    <!--根据电话查询用户-->
+    <select id="findByPhone" resultMap="userRoleAndPermission">
+        select * from user as u LEFT JOIN user_role as ur on u.userID = ur.userID LEFT JOIN role as r on r.roleID = ur.roleID LEFT JOIN role_permission as rp on rp.roleID = r.roleID LEFT JOIN permission as p on rp.permissionID = p.permissionID WHERE userPhone = #{userPhone}
+    </select>
+
+
+    <!--<select id="findByPhone" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User">
+        select * from user where userPhone = #{phone}
+    </select>-->
+    <!--更新用户-->
+    <update id="updateByKey" parameterType="map">
+        update user
+        <set>
+            <if test="userName != null">
+                userName = #{userName},
+            </if>
+            <if test="userPhone != null">
+                userPhone = #{userPhone},
+            </if>
+            <if test="userPassword != null">
+                userPassword = #{userPassword},
+            </if>
+            <if test="userEmail != null">
+                userEmail = #{userEmail},
+            </if>
+            <if test="userStatus != null">
+                userStatus = #{userStatus},
+            </if>
+            <if test="userLevel != null">
+                userLevel = #{userLevel},
+            </if>
+        </set>
+        where userID = #{userID}
+    </update>
+    <!--ID删除用户-->
+    <delete id="deleteByKey" parameterType="map">
+    	delete from user where userID = #{userID}
+  	</delete>
+    <!--ID添加用户-->
+    <insert id="insertByKey" >
+        insert into user(
+        userID,
+        <if test="userName != null">
+            userName,
+        </if>
+        <if test="userPhone != null">
+            userPhone,
+        </if>
+        <if test="userPassword != null">
+            userPassword,
+        </if>
+        <if test="userEmail != null">
+            userEmail,
+        </if>
+        <if test="userStatus != null">
+            userStatus,
+        </if>
+        <if test="userLevel != null">
+            userLevel
+        </if>)
+        values(
+            #{userID}
+        <if test="userName != null">
+            #{userName},
+        </if>
+        <if test="userPhone != null">
+            #{userPhone},
+        </if>
+        <if test="userPassword != null">
+            #{userPassword},
+        </if>
+        <if test="userEmail != null">
+            #{userEmail},
+        </if>
+        <if test="userStatus != null">
+            #{userStatus},
+        </if>
+        <if test="userLevel != null">
+            #{userLevel}
+        </if>)
+    </insert>
 </mapper>

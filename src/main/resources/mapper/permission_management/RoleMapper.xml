@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hardworkgroup.bridge_health_system.permission_management.dao.RoleDao">
+
+    <resultMap id="roleAndPermission" type="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Role">
+        <id property="roleID" column="roleID"/>
+        <result property="roleName" column="roleName"/>
+        <result property="roleDescription" column="roleDescription"/>
+        <collection property="permissions"  ofType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Permission">
+            <id property="permissionID" column="permissionID"/>
+            <result property="permissionName" column="permissionName"/>
+            <result property="permissionType" column="permissionType"/>
+            <result property="permissionCode" column="permissionCode"/>
+            <result property="permissionDescription" column="permissionDescription"/>
+            <result property="pid" column="pid"/>
+            <result property="enVisible" column="enVisible"/>
+        </collection>
+    </resultMap>
+    <!--根据id查询角色以及权限信息-->
+    <select id="getRoleByID" resultMap="roleAndPermission">
+        select * from role as r LEFT JOIN role_permission as rp on rp.roleID = r.roleID LEFT JOIN permission as p on rp.permissionID = p.permissionID WHERE r.roleID = #{roleID}
+    </select>
+    <!--<select id="getRoleByID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Role">
+        select * from role where roleID = #{roleID}
+    </select>-->
+    <!--查询所有角色-->
+    <select id="selectAllRoles" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Role">
+        select * from role
+    </select>
+    <!--更新用户-->
+    <update id="updateByKey" parameterType="map">
+        update role
+        <set>
+            <if test="roleName != null">
+                roleName = #{roleName},
+            </if>
+            <if test="roleDescription != null">
+                roleDescription = #{roleDescription}
+            </if>
+        </set>
+        where roleID = #{roleID}
+    </update>
+    <!--ID删除用户-->
+    <delete id="deleteByKey" parameterType="map">
+    	delete from role where roleID = #{roleID}
+  	</delete>
+    <!--ID添加用户-->
+    <insert id="insertByKey" >
+        insert into role(
+        <if test="roleName != null">
+            roleName,
+        </if>
+        <if test="roleDescription != null">
+            roleDescription
+        </if>)
+        values(
+        <if test="roleName != null">
+            #{roleName},
+        </if>
+        <if test="roleDescription != null">
+            #{roleDescription}
+        </if>
+        )
+    </insert>
+</mapper>

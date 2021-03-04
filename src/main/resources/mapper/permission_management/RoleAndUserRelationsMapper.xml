@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hardworkgroup.bridge_health_system.permission_management.dao.RoleAndUserRelationsDao">
+    <!--查询所有用户-->
+    <select id="findByUserId" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.RoleAndUserRelations">
+        select * from user_role where userID = #{userID}
+    </select>
+    <update id="updateByUserID" parameterType="map">
+        update user_role
+        <set>
+                roleID = #{roleID},
+        </set>
+        where userID = #{userID}
+    </update>
+    <insert id="insertByUserID" parameterType="map">
+        insert into user_role(userID,roleID)values(#{userID},#{roleID})
+    </insert>
+</mapper>

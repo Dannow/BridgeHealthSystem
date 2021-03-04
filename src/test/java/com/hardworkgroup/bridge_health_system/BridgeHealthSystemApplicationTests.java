@@ -13,7 +13,7 @@ class BridgeHealthSystemApplicationTests {
 
     @Test
     void contextLoads() {
-        userService.getUserByID(1);
+        userService.getUserByID("1");
     }
 
 }

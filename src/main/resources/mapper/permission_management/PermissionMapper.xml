@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hardworkgroup.bridge_health_system.permission_management.dao.PermissionDao">
+    <!--id查询权限-->
+    <select id="getPermissionByID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Permission">
+        select * from permission where permissionID = #{permissionID}
+    </select>
+    <!--ID删除权限-->
+    <delete id="deletePermissionByKey" parameterType="map">
+    	delete from permission where permissionID = #{permissionID}
+  	</delete>
+    <!--ID添加权限-->
+    <insert id="insertPermission" >
+        insert into permission(
+        permissionID,
+        <if test="permissionName != null">
+            permissionName,
+        </if>
+        <if test="permissionType != null">
+            permissionType,
+        </if>
+        <if test="permissionCode != null">
+            permissionCode,
+        </if>
+        <if test="permissionDescription != null">
+            permissionDescription,
+        </if>
+        <if test="pid != null">
+            pid,
+        </if>
+        <if test="enVisible != null">
+            enVisible
+        </if>)
+        values(
+        #{permissionID},
+        <if test="permissionName != null">
+            #{permissionName},
+        </if>
+        <if test="permissionType != null">
+            #{permissionType},
+        </if>
+        <if test="permissionCode != null">
+            #{permissionCode},
+        </if>
+        <if test="permissionDescription != null">
+            #{permissionDescription},
+        </if>
+        <if test="pid != null">
+            #{pid},
+        </if>
+        <if test="enVisible != null">
+            #{enVisible}
+        </if>)
+    </insert>
+    <!--更新权限-->
+    <update id="updatePermissionByKey" parameterType="map">
+        update permission
+        <set>
+            <if test="permissionID != null">
+                permissionID = #{permissionID},
+            </if>
+            <if test="permissionName != null">
+                permissionName = #{permissionName},
+            </if>
+            <if test="permissionType != null">
+                permissionType = #{permissionType},
+            </if>
+            <if test="permissionCode != null">
+                permissionCode = #{permissionCode},
+            </if>
+            <if test="permissionDescription != null">
+                permissionDescription = #{permissionDescription},
+            </if>
+            <if test="pid != null">
+                pid = #{pid},
+            </if>
+            <if test="enVisible != null">
+                enVisible = #{enVisible}
+            </if>
+        </set>
+        where permissionID = #{permissionID}
+    </update>
+</mapper>
