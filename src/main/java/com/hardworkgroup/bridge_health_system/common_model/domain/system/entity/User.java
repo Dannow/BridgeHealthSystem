@@ -1,6 +1,7 @@
 package com.hardworkgroup.bridge_health_system.common_model.domain.system.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,8 +16,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "user")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class User implements Serializable {
     private static final long serialVersionUID = 4297464181093070302L;

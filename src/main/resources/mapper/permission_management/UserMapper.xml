@@ -3,9 +3,24 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hardworkgroup.bridge_health_system.permission_management.dao.UserDao">
+
+    <resultMap id="userAndRole" type="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User">
+        <id property="userID" column="userID"/>
+        <result property="userPhone" column="userPhone"/>
+        <result property="userName" column="userName"/>
+        <result property="userPassword" column="userPassword"/>
+        <result property="userEmail" column="userEmail"/>
+        <result property="userStatus" column="userStatus"/>
+        <result property="userLevel" column="userLevel"/>
+        <association property="roles"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Role">
+            <id property="roleID" column="roleID"/>
+            <result property="roleName" column="roleName"/>
+            <result property="roleDescription" column="roleDescription"/>
+        </association>
+    </resultMap>
     <!--根据id查询用户-->
-    <select id="getUserByID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User">
-        select * from user where userID = #{userID}
+    <select id="getUserByID" resultMap="userAndRole">
+        select * from user as u LEFT JOIN user_role as ur on u.userID = ur.userID LEFT JOIN role as r on r.roleID = ur.roleID where u.userID = #{userID}
     </select>
     <!--查询所有用户-->
     <select id="selectAllUsers" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User">
@@ -81,7 +96,6 @@
     <!--ID添加用户-->
     <insert id="insertByKey" >
         insert into user(
-        userID,
         <if test="userName != null">
             userName,
         </if>
@@ -101,7 +115,6 @@
             userLevel
         </if>)
         values(
-            #{userID}
         <if test="userName != null">
             #{userName},
         </if>

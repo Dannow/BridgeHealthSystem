@@ -3,6 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hardworkgroup.bridge_health_system.permission_management.dao.PermissionDao">
+    <!--查询所有权限-->
+    <select id="selectAllPermissions" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Permission">
+        select * from permission
+    </select>
     <!--id查询权限-->
     <select id="getPermissionByID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Permission">
         select * from permission where permissionID = #{permissionID}
@@ -12,9 +16,8 @@
     	delete from permission where permissionID = #{permissionID}
   	</delete>
     <!--ID添加权限-->
-    <insert id="insertPermission" >
+    <insert id="insertPermission" useGeneratedKeys="true" keyProperty="permissionID">
         insert into permission(
-        permissionID,
         <if test="permissionName != null">
             permissionName,
         </if>
@@ -34,7 +37,6 @@
             enVisible
         </if>)
         values(
-        #{permissionID},
         <if test="permissionName != null">
             #{permissionName},
         </if>

@@ -77,7 +77,7 @@ public class RoleServiceImpl  implements RoleService {
      * 添加角色
      */
     public void save(Role role){
-        role.setRoleID(idWorker.nextId() + "");
+        //role.setRoleID(idWorker.nextId() + "");
         roleDao.insertByKey(role);
     }
 

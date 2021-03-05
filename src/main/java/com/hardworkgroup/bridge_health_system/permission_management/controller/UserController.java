@@ -1,5 +1,7 @@
 package com.hardworkgroup.bridge_health_system.permission_management.controller;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.response.ProfileResult;
 import com.hardworkgroup.bridge_health_system.permission_management.service.serviceImpl.UserServiceImpl;
@@ -15,7 +17,6 @@ import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
+//解决跨域
+@CrossOrigin
 @RestController
 @RequestMapping("/permissionManagement")
 public class UserController extends BaseController {
@@ -36,9 +39,13 @@ public class UserController extends BaseController {
      * @return 用户结果
      */
     @RequestMapping(value = "/user" , method = RequestMethod.GET)
-    public Result findAll(){
-        List<User> users =userService.findAll();
-        return new Result(ResultCode.SUCCESS,users);
+    public Result findAll(@RequestBody Map<String,Object> map){
+        //List<User> users =userService.findAll();
+        int pageNum = Integer.parseInt((String) map.get("pageNum"));
+        int pageSize = Integer.parseInt((String) map.get("pageSize"));
+        PageInfo<User> pageUser = userService.findAll(pageNum, pageSize);
+        PageResult<User> pageResult = new PageResult<User>(pageUser.getTotal(),pageUser.getList());
+        return new Result(ResultCode.SUCCESS,pageResult);
     }
 
     /**
@@ -97,7 +104,7 @@ public class UserController extends BaseController {
     }
 
     /**
-     * 根据Id添加用户
+     * 保存用户
      */
     @RequestMapping(value = "/user/import" , method = RequestMethod.POST)
     public Result importUser(@RequestBody User user){

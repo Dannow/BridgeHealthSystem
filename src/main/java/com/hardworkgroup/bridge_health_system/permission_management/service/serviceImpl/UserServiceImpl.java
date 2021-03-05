@@ -1,5 +1,8 @@
 package com.hardworkgroup.bridge_health_system.permission_management.service.serviceImpl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Role;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.RoleAndUserRelations;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User;
@@ -15,9 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -38,8 +39,8 @@ public class UserServiceImpl implements UserService {
      * 根据id查询用户
      */
     public User getUserByID(String userID){
-        return userDao.selectByPrimaryKey(userID);
-        //return userDao.getUserByID(userID);
+        //return userDao.selectByPrimaryKey(userID);
+        return userDao.getUserByID(userID);
     }
 
     /**
@@ -54,14 +55,11 @@ public class UserServiceImpl implements UserService {
      */
     public void save(User user) {
         //设置主键
-        String id = idWorker.nextId() + "";
+        //String id = idWorker.nextId() + "";
         //md5加密密码
-        String password = new Md5Hash("123456", user.getUserPhone(), 3).toString();
-        //String password = new Md5Hash(user.getUserPassword(), user.getUserPhone(), 3).toString();
-        user.setUserLevel("user");
+        //String password = new Md5Hash("123456", user.getUserPhone(), 3).toString();
+        String password = new Md5Hash(user.getUserPassword(), user.getUserPhone(), 3).toString();
         user.setUserPassword(password);//设置初始密码
-        user.setUserStatus(1);
-        user.setUserID(id);
         //调用dao保存用户
         userDao.insertByKey(user);
     }
@@ -73,11 +71,11 @@ public class UserServiceImpl implements UserService {
         User tempUser = userDao.getUserByID(id);
         if (!ObjectUtils.isEmpty(tempUser) && !ObjectUtils.isEmpty(user)){
             tempUser.setUserName(user.getUserName());
-            tempUser.setUserPassword(user.getUserPassword());
-            //String password = new Md5Hash("123456" , "13800000812" , 3).toString();
-            //tempUser.setUserPassword(password);
-            //tempUser.setWorkNumber(user.getWorkNumber());
-            //tempUser.setTimeOfEntry(user.getTimeOfEntry());
+            String password = new Md5Hash(user.getUserPassword() , user.getUserPhone() , 3).toString();
+            tempUser.setUserPassword(password);
+            tempUser.setUserEmail(user.getUserEmail());
+            tempUser.setUserLevel(user.getUserLevel());
+            tempUser.setUserStatus(user.getUserStatus());
         }
         //更新用户
         userDao.updateByKey(tempUser);
@@ -87,8 +85,19 @@ public class UserServiceImpl implements UserService {
     /**
      * 查询全部用户列表
      */
-    public List<User> findAll(){
-        return userDao.selectAllUsers();
+    public PageInfo<User> findAll(int pageNum, int pageSize){
+        Page<User> page = PageHelper.startPage(pageNum,pageSize);
+        List<User> users =  userDao.selectAllUsers();
+        PageInfo<User> pageInfo = new PageInfo<>(users,5);
+        /*System.out.println(pageInfo.getPageNum());
+        System.out.println(pageInfo.getPageSize());
+        System.out.println(pageInfo.getPages());
+        System.out.println(pageInfo.getTotal());
+        System.out.println(pageInfo.isHasPreviousPage());
+        System.out.println(pageInfo.isHasNextPage());
+        System.out.println(Arrays.toString(pageInfo.getNavigatepageNums()) );*/
+
+        return pageInfo;
     }
 
 

@@ -18,7 +18,7 @@ import java.util.Map;
  **/
 
 //解决跨域
-//@CrossOrigin
+@CrossOrigin
 @Slf4j
 @RestController
 @RequestMapping("/permissionManagement")
@@ -49,12 +49,12 @@ public class PermissionController {
     }
 
     /**
-     * 查询列表
+     * 查询列表权限
      * @return
      */
     @RequestMapping(value = "/permission" , method = RequestMethod.GET)
     public Result findAll(@RequestParam() Map<String,Object> map){
-        List<Permission> list = permissionService.findAll(map);
+        List<Permission> list = permissionService.findAll();
         return new Result(ResultCode.SUCCESS , list);
     }
 
@@ -82,7 +82,7 @@ public class PermissionController {
     /**
      * 查询所有企业可以看到的menu
      */
-    @RequestMapping(value = "/perm/getMenus" , method = RequestMethod.GET)
+    @RequestMapping(value = "/permission/getMenus" , method = RequestMethod.GET)
     public Result getMenus() throws CommonException {
         List<Permission> menus = permissionService.getMenus();
         return new Result(ResultCode.SUCCESS , menus);
