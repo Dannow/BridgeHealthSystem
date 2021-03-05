@@ -27,4 +27,6 @@ public interface PermissionDao extends Mapper<Permission> {
     void insertPermission(Permission perm);
 
     void updatePermissionByKey(Permission permission);
+
+    List<Permission> selectAllPermissions();
 }

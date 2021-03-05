@@ -56,31 +56,29 @@ public class PermissionServiceImpl implements PermissionService {
         //通过map构造权限对象
         Permission perm = BeanMapUtils.mapToBean(map , Permission.class);
         //perm.setPermissionID(id);
+        //保存权限
+        permissionDao.insertPermission(perm);
         //根据类型构造不同的资源对象(菜单,按钮,api)
         int type = perm.getPermissionType();
         switch (type){
             case PermissionConstants.PY_MENU:
                 PermissionMenu menu = BeanMapUtils.mapToBean(map, PermissionMenu.class);
-                //menu.setMenuID(id);
+                menu.setMenuID(perm.getPermissionID());
                 permissionMenuDao.insertPermissionMenu(menu);
                 break;
             case PermissionConstants.PY_POINT:
                 PermissionPoint point = BeanMapUtils.mapToBean(map, PermissionPoint.class);
-                //point.setPointID(id);
-                System.out.println("--->sad");
+                point.setPointID(perm.getPermissionID());
                 permissionPointDao.insertPermissionPoint(point);
                 break;
             case PermissionConstants.PY_API:
                 PermissionApi api = BeanMapUtils.mapToBean(map, PermissionApi.class);
-                //api.setApiID(id);
+                api.setApiID(perm.getPermissionID());
                 permissionApiDao.insertPermissionApi(api);
                 break;
             default:
                 throw new CommonException(ResultCode.FAIL);
         }
-        //保存权限
-        permissionDao.insertPermission(perm);
-        //permissionDao.save(perm);
     }
 
     /**
@@ -163,54 +161,8 @@ public class PermissionServiceImpl implements PermissionService {
      * enVisible :
      *          0 ： 查询SaaS平台的最高权限   1 ： 查询企业的权限
      */
-    public List<Permission> findAll(Map<String,Object> map){
-
-        return null;
-
-
-
-
-        /*//查询条件
-        Specification<Permission> spec = new Specification<Permission>() {
-
-            /**
-             * 动态拼接查询条件
-             * @param root
-             * @param query
-             * @param cb
-             * @return
-             *//*
-            @Override
-            public Predicate toPredicate(Root<Permission> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                List<Predicate> list = new ArrayList<>();
-
-                //根据父id查询
-                if (!StringUtils.isEmpty(map.get("pid"))){
-                     list.add(cb.equal(root.get("pid").as(String.class) , (String)map.get("pid")));
-                }
-
-                //根据enVisible查询
-                if (!StringUtils.isEmpty(map.get("enVisible"))){
-                    list.add(cb.equal(root.get("enVisible").as(String.class) , map.get("enVisible")));
-                }
-
-                //根据类型type进行查询
-                if (!StringUtils.isEmpty(map.get("type"))){
-                    String type = (String) map.get("type");
-                    CriteriaBuilder.In<Object> in = cb.in(root.get("type"));
-
-                    if ("0".equals(type)){
-                        in.value(1).value(2);
-                    }else {
-                        in.value(Integer.parseInt(type));
-                    }
-                    list.add(in);
-                }
-                return cb.and(list.toArray(new Predicate[list.size()]));
-            }
-        };
-
-        return permissionDao.findAll(spec);*/
+    public List<Permission> findAll(){
+        return permissionDao.selectAllPermissions();
     }
 
     /**
