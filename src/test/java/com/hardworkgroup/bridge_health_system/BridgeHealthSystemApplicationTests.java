@@ -8,12 +8,4 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class BridgeHealthSystemApplicationTests {
 
-    @Autowired
-    UserService userService;
-
-    @Test
-    void contextLoads() {
-        userService.getUserByID("1");
-    }
-
 }

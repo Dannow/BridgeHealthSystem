@@ -1,5 +1,8 @@
 package com.hardworkgroup.bridge_health_system.permission_management.service.serviceImpl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.*;
 import com.hardworkgroup.bridge_health_system.permission_management.dao.PermissionAndRoleRelationsDao;
 import com.hardworkgroup.bridge_health_system.permission_management.dao.PermissionDao;
@@ -110,8 +113,10 @@ public class RoleServiceImpl  implements RoleService {
      * 查询所有角色:
      *      根据内部维护的公司id进行查询该公司的所有角色
      */
-    public List<Role> findAll(){
-        return roleDao.selectAllRoles();
+    public PageInfo<Role> findAll(int pageNum, int pageSize){
+        Page<Role> page = PageHelper.startPage(pageNum,pageSize);
+        List<Role> users =  roleDao.selectAllRoles();
+        return new PageInfo<Role>(users,5);
     }
     public List<Role> findAll(String companyId){
         return roleDao.selectAll();
