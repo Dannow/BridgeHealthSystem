@@ -1,7 +1,8 @@
 package com.hardworkgroup.bridge_health_system.system_common.config;
 
 
-import com.hardworkgroup.bridge_health_system.system_common.shiro.filter.MyPassThruAuthenticationFilter;
+import com.hardworkgroup.bridge_health_system.system_common.shiro.filter.AuthenticationFilter;
+import com.hardworkgroup.bridge_health_system.system_common.shiro.filter.CORSFilter;
 import com.hardworkgroup.bridge_health_system.system_common.shiro.realm.CommonRealm;
 import com.hardworkgroup.bridge_health_system.system_common.shiro.realm.UserRealm;
 import com.hardworkgroup.bridge_health_system.system_common.shiro.session.CustomSessionManager;
@@ -17,7 +18,9 @@ import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreato
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.expression.spel.ast.FloatLiteral;
 
+import javax.servlet.Filter;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -52,9 +55,9 @@ public class ShiroConfiguration {
         ShiroFilterFactoryBean filterFactory = new ShiroFilterFactoryBean();
         //2.设置安全管理器
         filterFactory.setSecurityManager(securityManager);
-        //设置过滤器
-        Map<String, MyPassThruAuthenticationFilter> filters = new HashMap<>();
-        MyPassThruAuthenticationFilter authFilter = new MyPassThruAuthenticationFilter();
+        //设置Options的过滤器
+        Map<String, Filter> filters = filterFactory.getFilters();
+        AuthenticationFilter authFilter = new AuthenticationFilter();
         filters.put("authc", authFilter);
         //3.通用配置（跳转登录页面，未授权跳转的页面）
         filterFactory.setLoginUrl("/autherror?code=1");//跳转url地址

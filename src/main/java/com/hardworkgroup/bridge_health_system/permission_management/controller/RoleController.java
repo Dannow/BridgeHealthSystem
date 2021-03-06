@@ -1,5 +1,6 @@
 package com.hardworkgroup.bridge_health_system.permission_management.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Role;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.RoleAndUserRelations;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User;
@@ -7,6 +8,7 @@ import com.hardworkgroup.bridge_health_system.common_model.domain.system.respons
 import com.hardworkgroup.bridge_health_system.permission_management.service.serviceImpl.RoleServiceImpl;
 import com.hardworkgroup.bridge_health_system.permission_management.service.serviceImpl.RoleAndUserRelationsServiceImpl;
 import com.hardworkgroup.bridge_health_system.system_common.controller.BaseController;
+import com.hardworkgroup.bridge_health_system.system_common.entity.PageResult;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,23 +95,13 @@ public class RoleController extends BaseController {
      * 分页查询所有角色
      */
     @RequestMapping(value = "/role", method = RequestMethod.GET)
-    public Result findByPage(){
-        List<Role> roles =roleService.findAll();
-        return new Result(ResultCode.SUCCESS,roles);
+    public Result findByPage(@RequestBody Map<String,Object> map){
+        int pageNum = Integer.parseInt((String) map.get("pageNum"));
+        int pageSize = Integer.parseInt((String) map.get("pageSize"));
+        PageInfo<Role> pageInfo = roleService.findAll(pageNum, pageSize);
+        PageResult<Role> pageResult = new PageResult<Role>(pageInfo.getTotal(),pageInfo.getList());
+        return new Result(ResultCode.SUCCESS,pageResult);
     }
-    /*public Result findByPage(int page,int pagesize,Role role) throws Exception {
-        Page<Role> searchPage = roleService.findByPage(companyId, page, pagesize);
-        PageResult<Role> pr = new PageResult(searchPage.getTotalElements(),searchPage.getContent());
-        return new Result(ResultCode.SUCCESS,pr);
-    }*/
-
-    /*@RequestMapping(value="/role/list" ,method=RequestMethod.GET)
-    public Result findAll() throws Exception {
-        //未设置桥梁ID
-        String companyId = "1";
-        List<Role> roleList = roleService.findAll(companyId);
-        return new Result(ResultCode.SUCCESS,roleList);
-    }*/
 
     /**
      * 根据用户id获取全部角色

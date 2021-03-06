@@ -38,13 +38,12 @@ public class UserController extends BaseController {
      * 获取所有用户列表
      * @return 用户结果
      */
-    @RequestMapping(value = "/user" , method = RequestMethod.GET)
-    public Result findAll(@RequestBody Map<String,Object> map){
-        //List<User> users =userService.findAll();
+    @RequestMapping(value = "/user" , method = RequestMethod.POST)
+    public Result findAll(@RequestBody Map<String,String > map){
         int pageNum = Integer.parseInt((String) map.get("pageNum"));
         int pageSize = Integer.parseInt((String) map.get("pageSize"));
-        PageInfo<User> pageUser = userService.findAll(pageNum, pageSize);
-        PageResult<User> pageResult = new PageResult<User>(pageUser.getTotal(),pageUser.getList());
+        PageInfo<User> pageInfo = userService.findAll(pageNum, pageSize);
+        PageResult<User> pageResult = new PageResult<User>(pageInfo.getTotal(),pageInfo.getList());
         return new Result(ResultCode.SUCCESS,pageResult);
     }
 
