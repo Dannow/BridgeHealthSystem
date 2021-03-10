@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author: hyl
@@ -25,13 +27,13 @@ public class RoleAndUserRelationsServiceImpl implements RoleAndUserRelationsServ
     @Autowired
     private RoleServiceImpl roleService;
 
-    public List<RoleAndUserRelations> findRoleByUserId(String userId){
+    public Set<RoleAndUserRelations> findRoleByUserId(String userId){
         return RoleAndUserRelationsDao.findByUserId(userId);
     }
 
 
-    public List<Role> getRoleDetailByRoleId(List<RoleAndUserRelations> roleByUserId) {
-        List<Role> res = new ArrayList<>();
+    public Set<Role> getRoleDetailByRoleId(Set<RoleAndUserRelations> roleByUserId) {
+        Set<Role> res = new HashSet<>();
         for (RoleAndUserRelations userAndRoleRea : roleByUserId) {
             Role role = roleService.findById(userAndRoleRea.getRoleID());
             if (!ObjectUtils.isEmpty(role)){

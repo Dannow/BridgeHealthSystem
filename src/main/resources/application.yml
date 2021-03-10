@@ -53,3 +53,6 @@ pagehelper:
   reasonable: true
   supportMethodsArguments: true
   params: count=countSql
+  #解决分页多次配置问题
+  offsetAsPageNum: true
+  rowBoundsWithCount: true

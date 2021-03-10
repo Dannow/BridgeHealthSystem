@@ -18,17 +18,22 @@
             <result property="enVisible" column="enVisible"/>
         </collection>
     </resultMap>
+
     <!--根据id查询角色以及权限信息-->
     <select id="getRoleByID" resultMap="roleAndPermission">
         select * from role as r LEFT JOIN role_permission as rp on rp.roleID = r.roleID LEFT JOIN permission as p on rp.permissionID = p.permissionID WHERE r.roleID = #{roleID}
     </select>
-    <!--<select id="getRoleByID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Role">
-        select * from role where roleID = #{roleID}
-    </select>-->
+
+    <!--根据userID查询角色-->
+    <select id="getRoleByUserId" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Role">
+        select * from user_role as ur LEFT JOIN role r on ur.roleID = r.roleID where userID= #{userID}
+    </select>
+
     <!--查询所有角色-->
     <select id="selectAllRoles" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Role">
         select * from role
     </select>
+
     <!--更新用户-->
     <update id="updateByKey" parameterType="map">
         update role
@@ -42,10 +47,12 @@
         </set>
         where roleID = #{roleID}
     </update>
+
     <!--ID删除用户-->
     <delete id="deleteByKey" parameterType="map">
     	delete from role where roleID = #{roleID}
   	</delete>
+
     <!--ID添加用户-->
     <insert id="insertByKey" >
         insert into role(

@@ -1,6 +1,5 @@
 package com.hardworkgroup.bridge_health_system.permission_management.controller;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.response.ProfileResult;
@@ -135,8 +134,8 @@ public class UserController extends BaseController {
     /**
      * 根据Id删除
      */
-    @RequiresPermissions(value = "API-USER-DELETE")
-    @RequestMapping(value = "/user/{id}" , method = RequestMethod.DELETE , name = "API-USER-DELETE")
+    @RequiresPermissions(value = "POINT-USER-DELETE")
+    @RequestMapping(value = "/user/{id}" , method = RequestMethod.DELETE , name = "POINT-USER-DELETE")
     public Result delete(@PathVariable(value = "id") String id){
         //调用userService进行删除
         userService.deleteById(id);

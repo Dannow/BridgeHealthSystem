@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hardworkgroup.bridge_health_system.bridge_inspection.dao.InspectionPlanDao">
+
+    <resultMap id="userAndRole" type="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User">
+        <id property="userID" column="userID"/>
+        <result property="userPhone" column="userPhone"/>
+        <result property="userName" column="userName"/>
+        <result property="userPassword" column="userPassword"/>
+        <result property="userEmail" column="userEmail"/>
+        <result property="userStatus" column="userStatus"/>
+        <result property="userLevel" column="userLevel"/>
+        <association property="roles"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Role">
+            <id property="roleID" column="roleID"/>
+            <result property="roleName" column="roleName"/>
+            <result property="roleDescription" column="roleDescription"/>
+        </association>
+    </resultMap>
+
+    <!--根据id查询巡检计划-->
+    <select id="getPlanByID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionPlan">
+        select * from inspection_plan where inspectionPlanID = #{inspectionPlanID}
+    </select>
+
+    <!--查询所有巡检计划-->
+    <select id="selectAllInspectionPlan" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionPlan">
+        select * from inspection_plan
+    </select>
+
+    <!--更新巡检计划-->
+    <update id="updateByKey" parameterType="map">
+        update inspection_plan
+        set inspectionStartTime=#{inspectionStartTime},
+        inspectionEndTime=#{inspectionEndTime},
+        inspectionCompletionStatus=#{inspectionCompletionStatus},
+        inspectionCheckInStatus=#{inspectionCheckInStatus}
+        where inspectionPlanID = #{inspectionPlanID}
+    </update>
+
+    <!--ID删除巡检计划-->
+    <delete id="deleteByKey" parameterType="map">
+    	delete from inspection_plan where inspectionPlanID = #{inspectionPlanID}
+  	</delete>
+
+    <!--ID添加巡检计划-->
+    <insert id="insertByKey" >
+        insert into inspection_plan (
+        inspectionPlanID,userID,bridgeID,
+        inspectionStartTime,inspectionEndTime,
+        inspectionEndTime,inspectionCheckInStatus)
+        value (
+        #{inspectionPlanID},#{userID},#{bridgeID},
+        #{inspectionStartTime},#{inspectionEndTime},
+        #{inspectionEndTime},#{inspectionCheckInStatus})
+    </insert>
+</mapper>

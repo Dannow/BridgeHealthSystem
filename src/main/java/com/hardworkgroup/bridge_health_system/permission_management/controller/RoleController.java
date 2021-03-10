@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author: hyl
@@ -54,7 +55,7 @@ public class RoleController extends BaseController {
     /**
      * 添加角色
      */
-    @RequestMapping(value = "/role", method = RequestMethod.POST)
+    @RequestMapping(value = "/role/import", method = RequestMethod.POST)
     public Result add(@RequestBody Role role) throws Exception {
         //role.setCompanyId(companyId);
         roleService.save(role);
@@ -94,7 +95,7 @@ public class RoleController extends BaseController {
     /**
      * 分页查询所有角色
      */
-    @RequestMapping(value = "/role", method = RequestMethod.GET)
+    @RequestMapping(value = "/role", method = RequestMethod.POST)
     public Result findByPage(@RequestBody Map<String,Object> map){
         int pageNum = Integer.parseInt((String) map.get("pageNum"));
         int pageSize = Integer.parseInt((String) map.get("pageSize"));
@@ -110,9 +111,9 @@ public class RoleController extends BaseController {
      */
     @RequestMapping(value = "/role/userId/{id}", method = RequestMethod.GET)
     public Result findRolesByUserId(@PathVariable(name = "id") String id) {
-        List<RoleAndUserRelations> roleByUserId = roleAndUserRelationsService.findRoleByUserId(id);
+        Set<RoleAndUserRelations> roleByUserId = roleAndUserRelationsService.findRoleByUserId(id);
         if (!ObjectUtils.isEmpty(roleByUserId)){
-            List<Role> roles = roleAndUserRelationsService.getRoleDetailByRoleId(roleByUserId);
+            Set<Role> roles = roleAndUserRelationsService.getRoleDetailByRoleId(roleByUserId);
             if (!ObjectUtils.isEmpty(roles)){
                 return new Result(ResultCode.SUCCESS , roles);
             }

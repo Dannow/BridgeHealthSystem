@@ -89,6 +89,10 @@ public class UserServiceImpl implements UserService {
         Page<User> page = PageHelper.startPage(pageNum,pageSize);
         List<User> users =  userDao.selectAllUsers();
         PageInfo<User> pageInfo = new PageInfo<>(users,5);
+        for (User user : pageInfo.getList()) {
+            Set<Role> roles = roleDao.getRoleByUserId(user.getUserID());
+            user.setRoles(roles);
+        }
         /*System.out.println(pageInfo.getPageNum());
         System.out.println(pageInfo.getPageSize());
         System.out.println(pageInfo.getPages());

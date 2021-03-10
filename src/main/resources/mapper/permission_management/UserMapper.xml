@@ -22,6 +22,7 @@
     <select id="getUserByID" resultMap="userAndRole">
         select * from user as u LEFT JOIN user_role as ur on u.userID = ur.userID LEFT JOIN role as r on r.roleID = ur.roleID where u.userID = #{userID}
     </select>
+
     <!--查询所有用户-->
     <select id="selectAllUsers" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User">
         select * from user
@@ -66,28 +67,7 @@
     </select>-->
     <!--更新用户-->
     <update id="updateByKey" parameterType="map">
-        update user
-        <set>
-            <if test="userName != null">
-                userName = #{userName},
-            </if>
-            <if test="userPhone != null">
-                userPhone = #{userPhone},
-            </if>
-            <if test="userPassword != null">
-                userPassword = #{userPassword},
-            </if>
-            <if test="userEmail != null">
-                userEmail = #{userEmail},
-            </if>
-            <if test="userStatus != null">
-                userStatus = #{userStatus},
-            </if>
-            <if test="userLevel != null">
-                userLevel = #{userLevel},
-            </if>
-        </set>
-        where userID = #{userID}
+        update user set userName=#{userName},userPhone=#{userPhone},userEmail=#{userEmail},userStatus=#{userStatus}, userLevel=#{userLevel} where userID = #{userID}
     </update>
     <!--ID删除用户-->
     <delete id="deleteByKey" parameterType="map">

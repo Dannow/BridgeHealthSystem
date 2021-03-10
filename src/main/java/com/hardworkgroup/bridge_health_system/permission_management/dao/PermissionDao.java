@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
+import java.util.Set;
 
 /**
   * 权限数据访问接口
@@ -29,4 +30,6 @@ public interface PermissionDao extends Mapper<Permission> {
     void updatePermissionByKey(Permission permission);
 
     List<Permission> selectAllPermissions();
+
+    Set<Permission> getPermissionByRoleID(String roleID);
 }
