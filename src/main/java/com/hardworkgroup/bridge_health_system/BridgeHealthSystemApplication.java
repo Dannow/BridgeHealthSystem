@@ -7,7 +7,10 @@ import tk.mybatis.spring.annotation.MapperScan;
 
 //1.配置springboot的包扫描
 @SpringBootApplication
-@MapperScan({"com.hardworkgroup.bridge_health_system.permission_management.dao", "com.hardworkgroup.bridge_health_system.bridge_inspection.dao"})
+@MapperScan({"com.hardworkgroup.bridge_health_system.permission_management.dao",
+        "com.hardworkgroup.bridge_health_system.bridge_inspection.dao",
+        "com.hardworkgroup.bridge_health_system.alarm_management.dao",
+        "com.hardworkgroup.bridge_health_system.bridge_configuration.dao"})
 public class BridgeHealthSystemApplication {
 
     public static void main(String[] args) {

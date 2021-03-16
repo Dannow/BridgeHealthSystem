@@ -3,10 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hardworkgroup.bridge_health_system.permission_management.dao.RoleAndUserRelationsDao">
-    <!--查询所有用户-->
+    <!--查询所有用户角色关系-->
     <select id="findByUserId" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.RoleAndUserRelations">
         select * from user_role where userID = #{userID}
     </select>
+    <!--更新用户角色关系-->
     <update id="updateByUserID" parameterType="map">
         update user_role
         <set>
@@ -14,7 +15,12 @@
         </set>
         where userID = #{userID}
     </update>
+    <!--插入用户角色关系-->
     <insert id="insertByUserID" parameterType="map">
         insert into user_role(userID,roleID)values(#{userID},#{roleID})
     </insert>
+    <!--ID删除用户-->
+    <delete id="deleteRelation" parameterType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.RoleAndUserRelations">
+    	delete from user_role where userID = #{userID} and roleID = #{roleID}
+  	</delete>
 </mapper>

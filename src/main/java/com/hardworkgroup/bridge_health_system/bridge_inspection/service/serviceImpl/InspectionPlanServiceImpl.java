@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.bridge_inspection.dao.InspectionPlanDao;
 import com.hardworkgroup.bridge_health_system.bridge_inspection.service.InspectionPlanService;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionPlan;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import java.util.List;
  * @since 2021-01-16 18:11:58
  */
 @Service
+@Slf4j
 public class InspectionPlanServiceImpl implements InspectionPlanService {
 
     @Autowired
@@ -27,13 +29,17 @@ public class InspectionPlanServiceImpl implements InspectionPlanService {
     @Override
     public PageInfo<InspectionPlan> findAll(int pageNum, int pageSize) {
         Page<InspectionPlan> page = PageHelper.startPage(pageNum,pageSize);
-        List<InspectionPlan> inspectionRecords =  inspectionPlanDao.selectAllInspectionPlan();
-        PageInfo<InspectionPlan> pageInfo = new PageInfo<>(inspectionRecords,5);
+        List<InspectionPlan> inspectionPlans =  inspectionPlanDao.selectAllInspectionPlan();
+        PageInfo<InspectionPlan> pageInfo = new PageInfo<>(inspectionPlans,5);
 
-        /*for (InspectionRecord inspectionRecord : pageInfo.getList()) {
-            Set<Role> roles = roleDao.getRoleByUserId(user.getUserID());
-            user.setRoles(roles);
-        }*/
+        return pageInfo;
+    }
+
+    @Override
+    public PageInfo<InspectionPlan> getPlanByBridgeID(Integer bridgeID, int pageNum, int pageSize) {
+        Page<InspectionPlan> page = PageHelper.startPage(pageNum,pageSize);
+        List<InspectionPlan> inspectionPlans =  inspectionPlanDao.selectAllByBridgeID(bridgeID);
+        PageInfo<InspectionPlan> pageInfo = new PageInfo<>(inspectionPlans,5);
         return pageInfo;
     }
 
@@ -62,4 +68,5 @@ public class InspectionPlanServiceImpl implements InspectionPlanService {
     public void delete(String InspectionPlanID) {
         inspectionPlanDao.deleteByKey(InspectionPlanID);
     }
+
 }

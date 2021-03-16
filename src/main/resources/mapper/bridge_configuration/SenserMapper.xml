@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hardworkgroup.bridge_health_system.bridge_inspection.dao.SensorDao">
+<mapper namespace="com.hardworkgroup.bridge_health_system.bridge_configuration.dao.SensorDao">
 
     <resultMap id="userAndRole" type="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User">
         <id property="userID" column="userID"/>
@@ -20,13 +20,13 @@
     </resultMap>
 
     <!--根据id查询传感器-->
-    <select id="getSensorByID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.Sensor">
+    <select id="getSensorByID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor">
         select * from sensor
         where sensorID = #{sensorID}
     </select>
 
     <!--查询所有传感器-->
-    <select id="selectAllSensor" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.Sensor">
+    <select id="selectAllSensor" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor">
         select * from sensor
     </select>
 
@@ -48,14 +48,14 @@
   	</delete>
 
     <!--ID添加传感器-->
-    <insert id="insertByKey" >
+    <insert id="insertByKey" useGeneratedKeys="true" keyProperty="sensorID">
         insert into sensor (
-        sensorID,bridgeID,sensorName,
-        sensorLocation,sensorType,upperThreshold,
-        lowerThreshold,sensorStatus)
+        bridgeID,sensorName,sensorLocation,
+        sensorType,upperThreshold,lowerThreshold,
+        sensorStatus)
         value (
-        #{sensorID},#{bridgeID},#{sensorName},
-        #{sensorLocation},#{sensorType},#{upperThreshold},
-        #{lowerThreshold},#{sensorStatus})
+        #{bridgeID},#{sensorName},#{sensorLocation},
+        #{sensorType},#{upperThreshold},#{lowerThreshold},
+        #{sensorStatus})
     </insert>
 </mapper>

@@ -1,7 +1,7 @@
-package com.hardworkgroup.bridge_health_system.bridge_inspection.service;
+package com.hardworkgroup.bridge_health_system.bridge_configuration.service;
 
 import com.github.pagehelper.PageInfo;
-import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.Sensor;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor;
 
 import java.util.List;
 
@@ -13,8 +13,6 @@ import java.util.List;
  */
 //@Service
 public interface SensorService {
-   List<Sensor> selectAllTDimSensor();
-   Sensor selectByPrimaryKey(Integer id);
 
     PageInfo<Sensor> findAll(int pageNum, int pageSize);
 

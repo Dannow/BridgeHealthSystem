@@ -3,7 +3,7 @@ package com.hardworkgroup.bridge_health_system.bridge_inspection.service;
 
 import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionRecord;
-import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.ProblemEvent;
 
 /**
  * (TPatrolRecord)表服务接口
@@ -24,4 +24,6 @@ public interface InspectionRecordService {
     InspectionRecord getRecordByID(String id);
 
     void delete(String id);
+
+    PageInfo<InspectionRecord> findAllByPlanID(Integer planID, int pageNum, int pageSize);
 }

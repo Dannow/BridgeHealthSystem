@@ -3,11 +3,13 @@ package com.hardworkgroup.bridge_health_system.permission_management.controller;
 import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.response.ProfileResult;
+import com.hardworkgroup.bridge_health_system.permission_management.service.serviceImpl.RoleAndUserRelationsServiceImpl;
 import com.hardworkgroup.bridge_health_system.permission_management.service.serviceImpl.UserServiceImpl;
 import com.hardworkgroup.bridge_health_system.system_common.controller.BaseController;
 import com.hardworkgroup.bridge_health_system.system_common.entity.PageResult;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
+import com.hardworkgroup.bridge_health_system.system_common.utils.BeanMapUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -19,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +33,8 @@ public class UserController extends BaseController {
 
     @Autowired
     private UserServiceImpl userService;
-
+    @Autowired
+    RoleAndUserRelationsServiceImpl roleAndUserRelationsService;
     /**
      * 获取所有用户列表
      * @return 用户结果
@@ -105,9 +107,11 @@ public class UserController extends BaseController {
      * 保存用户
      */
     @RequestMapping(value = "/user/import" , method = RequestMethod.POST)
-    public Result importUser(@RequestBody User user){
+    public Result importUser(@RequestBody Map<String,Object> map) throws Exception{
+        User user = BeanMapUtils.mapToBean(map,User.class);
+        String roleID = (String) map.get("roleID");
         //添加用户
-        userService.save(user);
+        userService.save(user,roleID);
         return new Result(ResultCode.SUCCESS);
     }
 
@@ -139,6 +143,16 @@ public class UserController extends BaseController {
     public Result delete(@PathVariable(value = "id") String id){
         //调用userService进行删除
         userService.deleteById(id);
+        return new Result(ResultCode.SUCCESS);
+    }
+
+    /**
+     * 根据userID删除roleAndUserRelation.roleID
+     */
+    @RequestMapping(value = "/user/{userID}/role/{roleID}" , method = RequestMethod.DELETE )
+    public Result deleteRole(@PathVariable(value = "userID") String userID,@PathVariable(value = "roleID") String roleID){
+        //调用roleAndUserRelationsService进行删除
+        roleAndUserRelationsService.deleteRoleAndUserByID(userID,roleID);
         return new Result(ResultCode.SUCCESS);
     }
 }

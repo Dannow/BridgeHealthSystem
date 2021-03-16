@@ -1,11 +1,11 @@
-package com.hardworkgroup.bridge_health_system.bridge_inspection.service.serviceImpl;
+package com.hardworkgroup.bridge_health_system.bridge_configuration.service.serviceImpl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.hardworkgroup.bridge_health_system.bridge_inspection.dao.SensorDao;
-import com.hardworkgroup.bridge_health_system.bridge_inspection.service.SensorService;
-import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.Sensor;
+import com.hardworkgroup.bridge_health_system.bridge_configuration.dao.SensorDao;
+import com.hardworkgroup.bridge_health_system.bridge_configuration.service.SensorService;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,23 +17,10 @@ import java.util.List;
  * @author makejava
  * @since 2020-12-27 10:47:29
  */
-@Service("tDimSensorService")
+@Service
 public class SensorServiceImpl implements SensorService {
     @Autowired
     private SensorDao sensorDao;
-
-    @Override
-    public List<Sensor> selectAllTDimSensor() {
-        //List<TDimSensor> tDimSensors =  tDimSensordao.getallTDimSensor();
-        //System.out.println(tDimSensors);
-        return sensorDao.selectAll();
-    }
-
-    @Override
-    public Sensor selectByPrimaryKey(Integer sensors) {
-
-        return sensorDao.selectByPrimaryKey(sensors);
-    }
 
     @Override
     public PageInfo<Sensor> findAll(int pageNum, int pageSize) {
@@ -63,7 +50,7 @@ public class SensorServiceImpl implements SensorService {
         Sensor tempSensor = sensorDao.getSensorByID(sensorID);
         tempSensor.setBridgeID(sensor.getBridgeID());
         tempSensor.setLowerThreshold(sensor.getLowerThreshold());
-        tempSensor.setSensorId(sensor.getSensorId());
+        tempSensor.setSensorID(sensor.getSensorID());
         tempSensor.setSensorLocation(sensor.getSensorLocation());
         tempSensor.setSensorName(sensor.getSensorName());
         tempSensor.setSensorStatus(sensor.getSensorStatus());

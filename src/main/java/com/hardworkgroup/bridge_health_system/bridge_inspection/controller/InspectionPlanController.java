@@ -30,7 +30,7 @@ public class InspectionPlanController {
 
     /**
      * 获取所有巡检计划列表
-     * @return 巡检记录结果
+     * @return 巡检计划结果
      */
     @RequestMapping(value = "/plans" , method = RequestMethod.POST)
     public Result findAll(@RequestBody Map<String,String > map){
@@ -42,16 +42,20 @@ public class InspectionPlanController {
     }
 
     /**
-     * 保存巡检记录
+     * 根据桥梁Id查询巡检计划
      */
-    @RequestMapping(value = "/plan/import",method = RequestMethod.POST)
-    public Result save(@RequestBody InspectionPlan inspectionPlan) {
-        inspectionPlanService.save(inspectionPlan);
-        return new  Result(ResultCode.SUCCESS);
+    @RequestMapping(value = "/plan/bridge/{bridgeID}" , method = RequestMethod.POST)
+    public Result findByBridgeId(@PathVariable(value = "bridgeID") Integer bridgeID, @RequestBody Map<String,String > map){
+        int pageNum = Integer.parseInt((String) map.get("pageNum"));
+        int pageSize = Integer.parseInt((String) map.get("pageSize"));
+        //根据bridgeID查询巡检计划
+        PageInfo<InspectionPlan> pageInfo = inspectionPlanService.getPlanByBridgeID(bridgeID, pageNum, pageSize);
+        PageResult<InspectionPlan> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
+        return new Result(ResultCode.SUCCESS , pageResult);
     }
 
     /**
-     * 根据Id查询巡检记录
+     * 根据计划Id查询巡检计划
      */
     @RequestMapping(value = "/plan/{id}" , method = RequestMethod.GET)
     public Result findById(@PathVariable(value = "id") String id){
@@ -61,7 +65,16 @@ public class InspectionPlanController {
     }
 
     /**
-     * 根据Id修改巡检记录
+     * 保存巡检计划
+     */
+    @RequestMapping(value = "/plan/import",method = RequestMethod.POST)
+    public Result save(@RequestBody InspectionPlan inspectionPlan) {
+        inspectionPlanService.save(inspectionPlan);
+        return new  Result(ResultCode.SUCCESS);
+    }
+
+    /**
+     * 根据Id修改巡检计划
      */
     @RequestMapping(value = "/plan/{id}" , method = RequestMethod.PUT)
     public Result update(@PathVariable(value = "id") String id , @RequestBody InspectionPlan inspectionPlan){
@@ -71,7 +84,7 @@ public class InspectionPlanController {
     }
 
     /**
-     * 根据Id删除巡检记录
+     * 根据Id删除巡检计划
      */
     @RequestMapping(value = "/plan/{id}" , method = RequestMethod.DELETE)
     public Result delete(@PathVariable(value = "id") String id){

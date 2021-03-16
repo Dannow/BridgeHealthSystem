@@ -25,4 +25,6 @@ public interface InspectionPlanDao extends Mapper<InspectionPlan> {
     void updateByKey(InspectionPlan tempPlan);
 
     void deleteByKey(String inspectionPlanID);
+
+    List<InspectionPlan> selectAllByBridgeID(Integer bridgeID);
 }

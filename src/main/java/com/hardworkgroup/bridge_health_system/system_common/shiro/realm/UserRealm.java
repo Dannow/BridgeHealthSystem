@@ -1,10 +1,9 @@
 package com.hardworkgroup.bridge_health_system.system_common.shiro.realm;
 
-
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.response.ProfileResult;
 import com.hardworkgroup.bridge_health_system.permission_management.service.PermissionService;
-import com.hardworkgroup.bridge_health_system.permission_management.service.UserService;
+import com.hardworkgroup.bridge_health_system.permission_management.service.serviceImpl.UserServiceImpl;
 import com.hardworkgroup.bridge_health_system.system_common.Constants.Constant;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -21,7 +20,7 @@ import java.util.*;
 public class UserRealm extends CommonRealm {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Autowired
     private PermissionService permissionService;

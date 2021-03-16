@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hardworkgroup.bridge_health_system.bridge_configuration.dao.BridgeDao">
+
+    <resultMap id="bridgeWith" type="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge">
+        <id property="userID" column="userID"/>
+        <result property="userPhone" column="userPhone"/>
+        <result property="userName" column="userName"/>
+        <result property="userPassword" column="userPassword"/>
+        <result property="userEmail" column="userEmail"/>
+        <result property="userStatus" column="userStatus"/>
+        <result property="userLevel" column="userLevel"/>
+        <association property="roles"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Role">
+            <id property="roleID" column="roleID"/>
+            <result property="roleName" column="roleName"/>
+            <result property="roleDescription" column="roleDescription"/>
+        </association>
+    </resultMap>
+
+    <!--根据id查询桥梁-->
+    <select id="getBridgeByID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge">
+        select * from bridge
+        where bridgeID = #{bridgeID}
+    </select>
+
+    <!--查询所有桥梁-->
+    <select id="selectAllBridge" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge">
+        select * from bridge
+    </select>
+
+    <!--更新桥梁-->
+    <update id="updateByKey" parameterType="map">
+        update bridge
+        set bridgeName=#{bridgeName},
+        bridgeType=#{bridgeType},
+        bridgeLength=#{bridgeLength},
+        bridgeMaxSpeed=#{bridgeMaxSpeed},
+        bridgeAddress=#{bridgeAddress},
+        bridgePicture=#{bridgePicture},
+        longitude=#{longitude},
+        dimension=#{dimension},
+        availableYear=#{availableYear},
+        constructionCompany=#{constructionCompany},
+        constructionDate=#{constructionDate}
+        where bridgeID = #{bridgeID}
+    </update>
+
+    <!--ID删除桥梁-->
+    <delete id="deleteByKey" parameterType="map">
+    	delete from bridge where bridgeID = #{bridgeID}
+  	</delete>
+
+    <!--ID添加桥梁-->
+    <insert id="insertByKey" useGeneratedKeys="true" keyProperty="bridgeID">
+        insert into bridge (
+        bridgeName,bridgeType,bridgeLength,
+        bridgeMaxSpeed,bridgeAddress,bridgePicture,
+        longitude,dimension,availableYear,
+        constructionCompany,constructionDate)
+        value (
+        #{bridgeName},#{bridgeType},#{bridgeLength},
+        #{bridgeMaxSpeed},#{bridgeAddress},#{bridgePicture},
+        #{longitude},#{dimension},#{availableYear},
+        #{constructionCompany},#{constructionDate})
+    </insert>
+</mapper>

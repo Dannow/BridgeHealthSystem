@@ -28,4 +28,6 @@ public interface RoleAndUserRelationsDao extends Mapper<RoleAndUserRelations> {
     void updateByUserID(RoleAndUserRelations target);
 
     void insertByUserID(RoleAndUserRelations target);
+
+    void deleteRelation(RoleAndUserRelations target);
 }

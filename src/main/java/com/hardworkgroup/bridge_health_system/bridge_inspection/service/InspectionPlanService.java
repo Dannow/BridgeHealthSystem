@@ -25,4 +25,6 @@ public interface InspectionPlanService {
     void update(String id, InspectionPlan inspectionPlan);
 
     void delete(String InspectionPlanID);
+
+    PageInfo<InspectionPlan> getPlanByBridgeID(Integer bridgeID, int pageNum, int pageSize);
 }

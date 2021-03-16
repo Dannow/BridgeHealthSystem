@@ -7,8 +7,8 @@ import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -27,7 +27,7 @@ public class RoleResult implements Serializable {
      *//*
     private String companyId;*/
 
-    private List<String> permIds = new ArrayList<>();
+    private Set<String> permIds = new HashSet<>();
 
     public RoleResult(Role role) {
         BeanUtils.copyProperties(role,this);

@@ -4,18 +4,28 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hardworkgroup.bridge_health_system.bridge_inspection.dao.InspectionRecordDao">
 
-    <resultMap id="userAndRole" type="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User">
-        <id property="userID" column="userID"/>
-        <result property="userPhone" column="userPhone"/>
-        <result property="userName" column="userName"/>
-        <result property="userPassword" column="userPassword"/>
-        <result property="userEmail" column="userEmail"/>
-        <result property="userStatus" column="userStatus"/>
-        <result property="userLevel" column="userLevel"/>
-        <association property="roles"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Role">
-            <id property="roleID" column="roleID"/>
-            <result property="roleName" column="roleName"/>
-            <result property="roleDescription" column="roleDescription"/>
+    <resultMap id="recordWithSensorAndData" type="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionRecord">
+        <id property="inspectionRecordID" column="inspectionRecordID"/>
+        <result property="inspectionPlanID" column="inspectionPlanID"/>
+        <result property="inspectionTime" column="inspectionTime"/>
+        <result property="inspectionRecordTitle" column="inspectionRecordTitle"/>
+        <result property="inspectionContentDescription" column="inspectionContentDescription"/>
+        <association property="sensors"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor">
+            <id property="sensorID" column="sensorID"/>
+            <result property="bridgeID" column="bridgeID"/>
+            <result property="sensorName" column="sensorName"/>
+            <result property="sensorLocation" column="sensorLocation"/>
+            <result property="sensorType" column="sensorType"/>
+            <result property="upperThreshold" column="upperThreshold"/>
+            <result property="lowerThreshold" column="lowerThreshold"/>
+            <result property="sensorStatus" column="sensorStatus"/>
+        </association>
+        <association property="inspectionData"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionData">
+            <id property="inspectionDataID" column="inspectionDataID"/>
+            <result property="inspectionRecordID" column="inspectionRecordID"/>
+            <result property="sensorID" column="sensorID"/>
+            <result property="manualSensorData" column="manualSensorData"/>
+            <result property="status" column="status"/>
         </association>
     </resultMap>
 
@@ -25,8 +35,20 @@
     </select>
 
     <!--查询所有巡检记录-->
-    <select id="selectAllInspectionRecord" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionRecord">
-        select * from inspection_record
+    <select id="selectAllInspectionRecord" resultMap="recordWithSensorAndData">
+        select * from inspection_record as r
+        LEFT JOIN inspection_data as d
+        on r.inspectionRecordID =d.inspectionRecordID
+        LEFT JOIN sensor as s on d.sensorID=s.sensorID
+    </select>
+
+    <!--根据planID获取所有巡检记录列表-->
+    <select id="selectAllByPlanID" resultMap="recordWithSensorAndData">
+        select * from inspection_record as r
+        LEFT JOIN inspection_data as d
+        on r.inspectionRecordID =d.inspectionRecordID
+        LEFT JOIN sensor as s on d.sensorID=s.sensorID
+        where r.inspectionPlanID=#{inspectionPlanID}
     </select>
 
     <!--更新巡检记录-->

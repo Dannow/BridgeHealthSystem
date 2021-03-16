@@ -63,7 +63,6 @@ public class ProfileResult implements Serializable,AuthCachePrincipal {
         Set<String> points = new HashSet<>();
         Set<String> apis = new HashSet<>();
         for (Role role : roles) {
-            System.out.println(role.getRoleID());
             Set<Permission> perms = role.getPermissions();
             for (Permission perm : perms) {
                 String code = perm.getPermissionCode();

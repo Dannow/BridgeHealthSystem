@@ -1,6 +1,8 @@
 package com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge;
+import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -9,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * (inspectionPlan)实体类
@@ -40,5 +44,9 @@ public class InspectionPlan {
     private Integer inspectionCompletionStatus;
 
     private Integer inspectionCheckInStatus;
+
+    private Set<Bridge> bridges= new HashSet<>();
+
+    private Set<User> users= new HashSet<>();
 
 }

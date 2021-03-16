@@ -22,16 +22,17 @@ import java.util.Set;
 public class RoleAndUserRelationsServiceImpl implements RoleAndUserRelationsService {
 
     @Autowired
-    private RoleAndUserRelationsDao RoleAndUserRelationsDao;
+    private RoleAndUserRelationsDao roleAndUserRelationsDao;
 
     @Autowired
     private RoleServiceImpl roleService;
 
+    @Override
     public Set<RoleAndUserRelations> findRoleByUserId(String userId){
-        return RoleAndUserRelationsDao.findByUserId(userId);
+        return roleAndUserRelationsDao.findByUserId(userId);
     }
 
-
+    @Override
     public Set<Role> getRoleDetailByRoleId(Set<RoleAndUserRelations> roleByUserId) {
         Set<Role> res = new HashSet<>();
         for (RoleAndUserRelations userAndRoleRea : roleByUserId) {
@@ -41,5 +42,13 @@ public class RoleAndUserRelationsServiceImpl implements RoleAndUserRelationsServ
             }
         }
         return res;
+    }
+
+    @Override
+    public void deleteRoleAndUserByID(String userID, String roleID) {
+        RoleAndUserRelations target = new RoleAndUserRelations();
+        target.setUserID(userID);
+        target.setRoleID(roleID);
+        roleAndUserRelationsDao.deleteRelation(target);
     }
 }

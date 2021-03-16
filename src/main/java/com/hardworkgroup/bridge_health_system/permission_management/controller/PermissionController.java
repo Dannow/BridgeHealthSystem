@@ -2,6 +2,7 @@ package com.hardworkgroup.bridge_health_system.permission_management.controller;
 
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Permission;
 import com.hardworkgroup.bridge_health_system.permission_management.service.serviceImpl.PermissionServiceImpl;
+import com.hardworkgroup.bridge_health_system.system_common.controller.BaseController;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
 import com.hardworkgroup.bridge_health_system.system_common.exception.CommonException;
@@ -22,7 +23,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/permissionManagement")
-public class PermissionController {
+public class PermissionController extends BaseController {
 
     @Autowired
     private PermissionServiceImpl permissionService;

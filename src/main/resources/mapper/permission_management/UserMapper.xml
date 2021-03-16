@@ -74,44 +74,14 @@
     	delete from user where userID = #{userID}
   	</delete>
     <!--ID添加用户-->
-    <insert id="insertByKey" >
-        insert into user(
-        <if test="userName != null">
-            userName,
-        </if>
-        <if test="userPhone != null">
-            userPhone,
-        </if>
-        <if test="userPassword != null">
-            userPassword,
-        </if>
-        <if test="userEmail != null">
-            userEmail,
-        </if>
-        <if test="userStatus != null">
-            userStatus,
-        </if>
-        <if test="userLevel != null">
-            userLevel
-        </if>)
-        values(
-        <if test="userName != null">
-            #{userName},
-        </if>
-        <if test="userPhone != null">
-            #{userPhone},
-        </if>
-        <if test="userPassword != null">
-            #{userPassword},
-        </if>
-        <if test="userEmail != null">
-            #{userEmail},
-        </if>
-        <if test="userStatus != null">
-            #{userStatus},
-        </if>
-        <if test="userLevel != null">
-            #{userLevel}
-        </if>)
+    <insert id="insertByKey" useGeneratedKeys="true" keyProperty="userID">
+       insert into user (
+        userName,userPhone,
+        userPassword,userEmail,
+        userStatus,userLevel)
+        values (
+        #{userName},#{userPhone},
+        #{userPassword},#{userEmail},
+        #{userStatus},#{userLevel})
     </insert>
 </mapper>

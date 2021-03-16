@@ -32,7 +32,6 @@ public class InspectionRecordController {
 
     /**
      * 获取所有巡检记录列表
-     *
      * @return 巡检记录结果
      */
     @RequestMapping(value = "/record", method = RequestMethod.POST)
@@ -40,6 +39,19 @@ public class InspectionRecordController {
         int pageNum = Integer.parseInt((String) map.get("pageNum"));
         int pageSize = Integer.parseInt((String) map.get("pageSize"));
         PageInfo<InspectionRecord> pageInfo = inspectionRecordService.findAll(pageNum, pageSize);
+        PageResult<InspectionRecord> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
+        return new Result(ResultCode.SUCCESS, pageResult);
+    }
+
+    /**
+     * 根据planID获取所有巡检记录列表
+     * @return 巡检记录结果
+     */
+    @RequestMapping(value = "/record/plan/{planID}", method = RequestMethod.POST)
+    public Result findByRecordID(@PathVariable(value = "planID") Integer planID,@RequestBody Map<String, String> map) {
+        int pageNum = Integer.parseInt((String) map.get("pageNum"));
+        int pageSize = Integer.parseInt((String) map.get("pageSize"));
+        PageInfo<InspectionRecord> pageInfo = inspectionRecordService.findAllByPlanID(planID,pageNum, pageSize);
         PageResult<InspectionRecord> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
         return new Result(ResultCode.SUCCESS, pageResult);
     }

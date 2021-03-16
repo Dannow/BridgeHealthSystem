@@ -1,8 +1,8 @@
-package com.hardworkgroup.bridge_health_system.bridge_inspection.controller;
+package com.hardworkgroup.bridge_health_system.bridge_configuration.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.hardworkgroup.bridge_health_system.bridge_inspection.service.serviceImpl.SensorServiceImpl;
-import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.Sensor;
+import com.hardworkgroup.bridge_health_system.bridge_configuration.service.serviceImpl.SensorServiceImpl;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor;
 import com.hardworkgroup.bridge_health_system.system_common.entity.PageResult;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,9 +19,11 @@ import java.util.Map;
  * @author makejava
  * @since 2020-12-27 10:35:05
  */
-@Controller
+//解决跨域
+@CrossOrigin
+@RestController
 @Slf4j
-@RequestMapping("/bridgeInspection")
+@RequestMapping("/bridgeConfiguration")
 public class SensorController {
     /**
      * 服务对象
@@ -30,9 +31,6 @@ public class SensorController {
     @Autowired
     private SensorServiceImpl sensorService;
 
-    //@RequestMapping("/getallsensors")
-    //@RequestMapping("/last-data")
-    //@RequestMapping("/alarm_image")
     /**
      * 获取所有巡检计划列表
      * @return 巡检记录结果
