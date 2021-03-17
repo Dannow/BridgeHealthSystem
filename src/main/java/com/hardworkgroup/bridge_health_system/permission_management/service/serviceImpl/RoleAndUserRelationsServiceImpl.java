@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author: hyl
@@ -20,18 +22,19 @@ import java.util.List;
 public class RoleAndUserRelationsServiceImpl implements RoleAndUserRelationsService {
 
     @Autowired
-    private RoleAndUserRelationsDao RoleAndUserRelationsDao;
+    private RoleAndUserRelationsDao roleAndUserRelationsDao;
 
     @Autowired
     private RoleServiceImpl roleService;
 
-    public List<RoleAndUserRelations> findRoleByUserId(String userId){
-        return RoleAndUserRelationsDao.findByUserId(userId);
+    @Override
+    public Set<RoleAndUserRelations> findRoleByUserId(String userId){
+        return roleAndUserRelationsDao.findByUserId(userId);
     }
 
-
-    public List<Role> getRoleDetailByRoleId(List<RoleAndUserRelations> roleByUserId) {
-        List<Role> res = new ArrayList<>();
+    @Override
+    public Set<Role> getRoleDetailByRoleId(Set<RoleAndUserRelations> roleByUserId) {
+        Set<Role> res = new HashSet<>();
         for (RoleAndUserRelations userAndRoleRea : roleByUserId) {
             Role role = roleService.findById(userAndRoleRea.getRoleID());
             if (!ObjectUtils.isEmpty(role)){
@@ -39,5 +42,13 @@ public class RoleAndUserRelationsServiceImpl implements RoleAndUserRelationsServ
             }
         }
         return res;
+    }
+
+    @Override
+    public void deleteRoleAndUserByID(String userID, String roleID) {
+        RoleAndUserRelations target = new RoleAndUserRelations();
+        target.setUserID(userID);
+        target.setRoleID(roleID);
+        roleAndUserRelationsDao.deleteRelation(target);
     }
 }

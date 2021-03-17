@@ -1,15 +1,14 @@
 package com.hardworkgroup.bridge_health_system.common_model.domain.system.response;
 
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Role;
-import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.RoleAndUserRelations;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -92,7 +91,7 @@ public class UserResult implements Serializable {
 
     private String staffPhoto;  //用户头像*/
 
-    private List<String> roleIds = new ArrayList<>();
+    private Set<String> roleIds = new HashSet<>();
 
     public UserResult(User user) {
         BeanUtils.copyProperties(user,this);

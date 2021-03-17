@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hardworkgroup.bridge_health_system.bridge_inspection.dao.ProblemEventDao">
+
+    <resultMap id="problemEventWithSensorAndUser" type="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.ProblemEvent">
+        <id property="problemEventID" column="problemEventID"/>
+        <result property="inspectionRecordID" column="inspectionRecordID"/>
+        <result property="sensorID" column="sensorID"/>
+        <result property="userID" column="userID"/>
+        <result property="problemCreationTime" column="problemCreationTime"/>
+        <result property="maintenanceStatus" column="maintenanceStatus"/>
+        <result property="confirmStatus" column="confirmStatus"/>
+        <result property="problemPicture" column="problemPicture"/>
+        <result property="problemTitle" column="problemTitle"/>
+        <result property="problemDescription" column="problemDescription"/>
+        <association property="sensors"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor">
+            <id property="sensorID" column="sensorID"/>
+            <result property="bridgeID" column="bridgeID"/>
+            <result property="sensorName" column="sensorName"/>
+            <result property="sensorLocation" column="sensorLocation"/>
+            <result property="sensorType" column="sensorType"/>
+            <result property="upperThreshold" column="upperThreshold"/>
+            <result property="lowerThreshold" column="lowerThreshold"/>
+            <result property="sensorStatus" column="sensorStatus"/>
+        </association>
+        <association property="users"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User">
+            <id property="userID" column="userID"/>
+            <result property="userName" column="userName"/>
+            <result property="userPhone" column="userPhone"/>
+            <result property="userPassword" column="userPassword"/>
+            <result property="userEmail" column="userEmail"/>
+            <result property="userStatus" column="userStatus"/>
+            <result property="userLevel" column="userLevel"/>
+        </association>
+    </resultMap>
+
+    <!--根据id查询巡检记录-->
+    <select id="getProblemEventByID" resultMap="problemEventWithSensorAndUser">
+        select * from problem_event as e
+        LEFT JOIN sensor as s
+        on e.sensorID =s.sensorID
+        LEFT JOIN user as u on e.userID=u.userID
+        where problemEventID = #{problemEventID}
+    </select>
+
+    <!--查询所有巡检记录-->
+    <select id="selectAllProblemEvent" resultMap="problemEventWithSensorAndUser">
+        select * from problem_event as e
+        LEFT JOIN sensor as s
+        on e.sensorID =s.sensorID
+        LEFT JOIN user as u on e.userID=u.userID
+    </select>
+
+    <!--根据planID获取所有巡检记录列表-->
+    <select id="selectAllByRecordID" resultMap="problemEventWithSensorAndUser">
+        select * from problem_event as e
+        LEFT JOIN sensor as s
+        on e.sensorID =s.sensorID
+        LEFT JOIN user as u on e.userID=u.userID
+        where e.inspectionRecordID=#{inspectionRecordID}
+    </select>
+
+    <!--更新巡检记录-->
+    <update id="updateByKey" parameterType="map">
+        update problem_event
+        set inspectionRecordID=#{inspectionRecordID},sensorID=#{sensorID},
+        userID=#{userID},problemCreationTime=#{problemCreationTime},
+        maintenanceStatus=#{maintenanceStatus},confirmStatus=#{confirmStatus},
+        problemPicture=#{problemPicture},problemTitle=#{problemTitle},
+        problemDescription=#{problemDescription}
+        where problemEventID = #{problemEventID}
+    </update>
+
+    <!--ID删除巡检记录-->
+    <delete id="deleteByKey" parameterType="map">
+    	delete from problem_event where problemEventID = #{problemEventID}
+  	</delete>
+
+    <!--ID添加巡检记录-->
+    <insert id="insertByKey" useGeneratedKeys="true" keyProperty="problemEventID">
+        insert into problem_event (
+        inspectionRecordID,sensorID,userID,
+        problemCreationTime,maintenanceStatus,
+        confirmStatus,problemPicture,
+        problemTitle,problemDescription)
+        value (#{inspectionRecordID},#{sensorID},#{userID},
+        #{problemCreationTime},#{maintenanceStatus},
+        #{confirmStatus},#{problemPicture},
+        #{problemTitle},#{problemDescription})
+    </insert>
+</mapper>

@@ -11,15 +11,17 @@ import com.hardworkgroup.bridge_health_system.permission_management.dao.RoleDao;
 import com.hardworkgroup.bridge_health_system.permission_management.dao.UserDao;
 import com.hardworkgroup.bridge_health_system.permission_management.service.UserService;
 import com.hardworkgroup.bridge_health_system.system_common.utils.IdWorker;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.util.*;
-
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -53,15 +55,21 @@ public class UserServiceImpl implements UserService {
     /**
      * 保存用户
      */
-    public void save(User user) {
+    @Transactional
+    public void save(User user,String roleID) {
         //设置主键
-        //String id = idWorker.nextId() + "";
-        //md5加密密码
-        //String password = new Md5Hash("123456", user.getUserPhone(), 3).toString();
+        //        //String id = idWorker.nextId() + "";
+        //        //md5加密密码
+        //        //String password = new Md5Hash("123456", user.getUserPhone(), 3).toString();
         String password = new Md5Hash(user.getUserPassword(), user.getUserPhone(), 3).toString();
         user.setUserPassword(password);//设置初始密码
-        //调用dao保存用户
+        RoleAndUserRelations rAus = new RoleAndUserRelations();
+        rAus.setRoleID(roleID);
         userDao.insertByKey(user);
+        //调用dao保存用户
+        String tempID = String.valueOf(user.getUserID());
+        rAus.setUserID(tempID);
+        roleAndUserRelationsDao.insertByUserID(rAus);
     }
 
     /**
@@ -89,6 +97,10 @@ public class UserServiceImpl implements UserService {
         Page<User> page = PageHelper.startPage(pageNum,pageSize);
         List<User> users =  userDao.selectAllUsers();
         PageInfo<User> pageInfo = new PageInfo<>(users,5);
+        for (User user : pageInfo.getList()) {
+            Set<Role> roles = roleDao.getRoleByUserId(user.getUserID());
+            user.setRoles(roles);
+        }
         /*System.out.println(pageInfo.getPageNum());
         System.out.println(pageInfo.getPageSize());
         System.out.println(pageInfo.getPages());
@@ -116,11 +128,16 @@ public class UserServiceImpl implements UserService {
     public void assignRoles(String userId, List<String> roleIds) {
         //根据id查询用户
         RoleAndUserRelations target = new RoleAndUserRelations();
+        Set<RoleAndUserRelations> rAndUs = roleAndUserRelationsDao.findByUserId(userId);
         target.setUserID(userId);
         for (String roleId : roleIds) {
             target.setRoleID(roleId);
-            roleAndUserRelationsDao.insertByUserID(target);
+            if(!rAndUs.contains(target)){
+                roleAndUserRelationsDao.insertByUserID(target);
+            }
+
         }
+
         /*//根据id查询用户
         User user = userDao.getUserByID(userId);
         //设置用户的角色集合

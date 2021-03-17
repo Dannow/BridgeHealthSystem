@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author: hyl
@@ -27,4 +28,6 @@ public interface RoleDao extends Mapper<Role> {
     void deleteByKey(String id);
 
     List<Role> selectAllRoles();
+
+    Set<Role> getRoleByUserId(String userID);
 }

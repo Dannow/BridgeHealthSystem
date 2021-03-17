@@ -10,7 +10,7 @@ public interface UserService {
 
     User findByPhone(String mobile);
 
-    void save(User user);
+    void save(User user,String roleID);
 
     void update(String id , User user);
 

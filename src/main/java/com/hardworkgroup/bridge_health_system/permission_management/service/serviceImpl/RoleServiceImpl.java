@@ -116,7 +116,12 @@ public class RoleServiceImpl  implements RoleService {
     public PageInfo<Role> findAll(int pageNum, int pageSize){
         Page<Role> page = PageHelper.startPage(pageNum,pageSize);
         List<Role> users =  roleDao.selectAllRoles();
-        return new PageInfo<Role>(users,5);
+        PageInfo<Role> pageInfo = new PageInfo<>(users,5);
+        for (Role role : pageInfo.getList()) {
+            Set<Permission> permissions = permissionDao.getPermissionByRoleID(role.getRoleID());
+            role.setPermissions(permissions);
+        }
+        return pageInfo;
     }
     public List<Role> findAll(String companyId){
         return roleDao.selectAll();

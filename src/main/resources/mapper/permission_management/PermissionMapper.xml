@@ -3,6 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hardworkgroup.bridge_health_system.permission_management.dao.PermissionDao">
+
+    <!--根据roleID查询所有权限-->
+    <select id="getPermissionByRoleID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Permission">
+        select * from role_permission as rp LEFT JOIN permission as p on rp.permissionID = p.permissionID WHERE rp.roleID = #{roleID}
+    </select>
+
     <!--查询所有权限-->
     <select id="selectAllPermissions" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Permission">
         select * from permission

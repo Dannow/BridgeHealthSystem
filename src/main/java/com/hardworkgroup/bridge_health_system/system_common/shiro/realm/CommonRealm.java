@@ -30,10 +30,12 @@ public class CommonRealm extends AuthorizingRealm {
         //获取安全数据
         ProfileResult result = (ProfileResult) principalCollection.getPrimaryPrincipal();
         //获取权限信息
-        Set<String> apisPerms = (Set<String>) result.getRoles().get("apis");
+        Set<String> apisPerms = (Set<String>) result.getRoles().get("points");
+        Set<String> menusPerms = (Set<String>) result.getRoles().get("menus");
         //构造权限信息,返回值
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         info.setStringPermissions(apisPerms);
+        info.setStringPermissions(menusPerms);
         return info;
     }
 

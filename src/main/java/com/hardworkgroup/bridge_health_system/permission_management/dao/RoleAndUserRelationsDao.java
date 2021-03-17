@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * @author: hyl
@@ -23,9 +23,11 @@ public interface RoleAndUserRelationsDao extends Mapper<RoleAndUserRelations> {
      * @param userID
      * @return
      */
-    List<RoleAndUserRelations> findByUserId(String userID);
+    Set<RoleAndUserRelations> findByUserId(String userID);
 
     void updateByUserID(RoleAndUserRelations target);
 
     void insertByUserID(RoleAndUserRelations target);
+
+    void deleteRelation(RoleAndUserRelations target);
 }

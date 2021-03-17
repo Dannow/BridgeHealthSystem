@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hardworkgroup.bridge_health_system.bridge_inspection.dao.InspectionPlanDao">
+
+    <resultMap id="planWithBridgeID" type="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionPlan">
+        <id property="inspectionPlanID" column="inspectionPlanID"/>
+        <result property="userID" column="userID"/>
+        <result property="bridgeID" column="bridgeID"/>
+        <result property="inspectionStartTime" column="inspectionStartTime"/>
+        <result property="inspectionEndTime" column="inspectionEndTime"/>
+        <result property="inspectionCompletionStatus" column="inspectionCompletionStatus"/>
+        <result property="inspectionCheckInStatus" column="inspectionCheckInStatus"/>
+        <association property="bridges"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge">
+            <id property="bridgeID" column="bridgeID"/>
+            <result property="bridgeName" column="bridgeName"/>
+            <result property="bridgeType" column="bridgeType"/>
+            <result property="bridgeLength" column="bridgeLength"/>
+            <result property="bridgeMaxSpeed" column="bridgeMaxSpeed"/>
+            <result property="bridgeAddress" column="bridgeAddress"/>
+            <result property="bridgePicture" column="bridgePicture"/>
+            <result property="longitude" column="longitude"/>
+            <result property="dimension" column="dimension"/>
+            <result property="availableYear" column="availableYear"/>
+            <result property="constructionCompany" column="constructionCompany"/>
+            <result property="constructionDate" column="constructionDate"/>
+        </association>
+        <association property="users"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User">
+            <id property="userID" column="userID"/>
+            <result property="userName" column="userName"/>
+            <result property="userPhone" column="userPhone"/>
+            <result property="userEmail" column="userEmail"/>
+            <result property="userStatus" column="userStatus"/>
+            <result property="userLevel" column="userLevel"/>
+        </association>
+    </resultMap>
+
+    <!--根据id查询巡检计划-->
+    <select id="getPlanByID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionPlan">
+        select * from inspection_plan where inspectionPlanID = #{inspectionPlanID}
+    </select>
+
+    <!--根据bridgeID查询所有巡检计划-->
+    <select id="selectAllByBridgeID" resultMap="planWithBridgeID">
+        select * from inspection_plan as p LEFT JOIN bridge as b on b.bridgeID = p.bridgeID LEFT JOIN user as u on p.userID = u.userID where b.bridgeID=#{bridgeID}
+    </select>
+
+    <!--查询所有巡检计划-->
+    <select id="selectAllInspectionPlan" resultMap="planWithBridgeID">
+        select * from inspection_plan as p LEFT JOIN bridge as b on b.bridgeID = p.bridgeID LEFT JOIN user as u on p.userID = u.userID
+    </select>
+
+    <!--更新巡检计划-->
+    <update id="updateByKey" parameterType="map">
+        update inspection_plan
+        set inspectionStartTime=#{inspectionStartTime},
+        inspectionEndTime=#{inspectionEndTime},
+        inspectionCompletionStatus=#{inspectionCompletionStatus},
+        inspectionCheckInStatus=#{inspectionCheckInStatus},
+        inspectionPlanTitle=#{inspectionPlanTitle}
+        where inspectionPlanID = #{inspectionPlanID}
+    </update>
+
+    <!--ID删除巡检计划-->
+    <delete id="deleteByKey" parameterType="map">
+    	delete from inspection_plan where inspectionPlanID = #{inspectionPlanID}
+  	</delete>
+
+    <!--ID添加巡检计划-->
+    <insert id="insertByKey" >
+        insert into inspection_plan (
+        inspectionPlanID,userID,bridgeID,
+        inspectionStartTime,inspectionEndTime,
+        inspectionEndTime,inspectionCheckInStatus,inspectionPlanTitle)
+        value (
+        #{inspectionPlanID},#{userID},#{bridgeID},
+        #{inspectionStartTime},#{inspectionEndTime},
+        #{inspectionEndTime},#{inspectionCheckInStatus},#{inspectionPlanTitle})
+    </insert>
+</mapper>

@@ -1,7 +1,7 @@
 package com.hardworkgroup.bridge_health_system.permission_management.dao;
 
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User;
-import org.springframework.data.domain.Page;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 

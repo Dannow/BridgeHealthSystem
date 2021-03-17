@@ -2,11 +2,20 @@
 server:
   port: 9999
 
+#设置图片存储位置
+prop:
+  upload-folder: /home/dong/doucments/BridgeHealthSystem/bridge_health_system_picture/img/
+  #upload-folder: D:/fwwb/xxzl/test/
 spring:
+  servlet:
+    multipart:
+      #设置单个文件上传大小
+      max-file-size: 50MB
+      #设置总上传的数据大小
+      max-request-size: 50MB
   mvc:
     servlet:
       load-on-startup: 1
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     # 服务器数据库
@@ -53,3 +62,6 @@ pagehelper:
   reasonable: true
   supportMethodsArguments: true
   params: count=countSql
+  #解决分页多次配置问题
+  offsetAsPageNum: true
+  rowBoundsWithCount: true
