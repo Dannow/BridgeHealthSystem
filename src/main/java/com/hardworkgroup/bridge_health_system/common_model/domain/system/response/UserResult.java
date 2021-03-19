@@ -38,58 +38,6 @@ public class UserResult implements Serializable {
      * 启用状态 0为禁用 1为启用
      */
     private Integer userStatus;
-    /**
-     * 创建时间
-     *//*
-    private Date createTime;
-
-    private String companyId;
-
-    private String companyName;
-
-    *//**
-     * 部门ID
-     *//*
-    private String departmentId;
-
-    *//**
-     * 入职时间
-     *//*
-    private Date timeOfEntry;
-
-    *//**
-     * 聘用形式
-     *//*
-    private Integer formOfEmployment;
-
-    *//**
-     * 工号
-     *//*
-    private String workNumber;
-
-    *//**
-     * 管理形式
-     *//*
-    private String formOfManagement;
-
-    *//**
-     * 工作城市
-     *//*
-    private String workingCity;
-
-    *//**
-     * 转正时间
-     *//*
-    private Date correctionTime;
-
-    *//**
-     * 在职状态 1.在职  2.离职
-     *//*
-    private Integer inServiceStatus;
-
-    private String departmentName;
-
-    private String staffPhoto;  //用户头像*/
 
     private Set<String> roleIds = new HashSet<>();
 

@@ -56,11 +56,15 @@ public class SensorServiceImpl implements SensorService {
         tempSensor.setSensorStatus(sensor.getSensorStatus());
         tempSensor.setUpperThreshold(sensor.getUpperThreshold());
         sensorDao.updateByKey(tempSensor);
-    }
+}
 
     @Override
     public void delete(String sensorID) {
         sensorDao.deleteByKey(sensorID);
     }
 
+    // 获得传感器对应的数据
+    public Sensor getSensorOriginalData(String sensorID){
+        return sensorDao.getSensorOriginalData(sensorID);
+    }
 }

@@ -4,21 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hardworkgroup.bridge_health_system.bridge_configuration.dao.SensorDao">
 
-    <resultMap id="userAndRole" type="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User">
-        <id property="userID" column="userID"/>
-        <result property="userPhone" column="userPhone"/>
-        <result property="userName" column="userName"/>
-        <result property="userPassword" column="userPassword"/>
-        <result property="userEmail" column="userEmail"/>
-        <result property="userStatus" column="userStatus"/>
-        <result property="userLevel" column="userLevel"/>
-        <association property="roles"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Role">
-            <id property="roleID" column="roleID"/>
-            <result property="roleName" column="roleName"/>
-            <result property="roleDescription" column="roleDescription"/>
-        </association>
-    </resultMap>
-
     <!--根据id查询传感器-->
     <select id="getSensorByID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor">
         select * from sensor
@@ -58,4 +43,18 @@
         #{sensorType},#{upperThreshold},#{lowerThreshold},
         #{sensorStatus})
     </insert>
+
+    <resultMap id="SensorOriginalData" type="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor">
+        <id property="sensorID" column="sensorID"/>
+        <result property="sensorName" column="sensorName"/>
+        <collection property="originalDatas" ofType="com.hardworkgroup.bridge_health_system.common_model.domain.data_analysis.entity.OriginalData">
+            <id property="originalDataID" column="originalDataID"/>
+            <result property="originalDataCollectionTime" column="originalDataCollectionTime"/>
+            <result property="originalDataPath" column="originalDataPath"/>
+        </collection>
+    </resultMap>
+    <!--查询传感器对应的原始数据-->
+    <select id="getSensorOriginalData" resultMap="SensorOriginalData">
+        select * from sensor as s left join original_data as o on s.sensorID = o.sensorID where s.sensorID = #{sensorID}
+    </select>
 </mapper>

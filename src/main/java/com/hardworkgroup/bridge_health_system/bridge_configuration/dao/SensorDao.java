@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * (TDimSensor)表数据库访问层
@@ -28,4 +29,8 @@ public interface SensorDao extends Mapper<Sensor> {
     void updateByKey(Sensor tempSensor);
 
     void deleteByKey(String sensorID);
+
+    // 获得传感器对应的数据
+    public Sensor getSensorOriginalData(String sensorID);
+
 }
