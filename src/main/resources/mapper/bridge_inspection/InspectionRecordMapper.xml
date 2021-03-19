@@ -54,7 +54,8 @@
     <!--更新巡检记录-->
     <update id="updateByKey" parameterType="map">
         update inspection_record
-        set inspectionTime=#{inspectionTime},
+        set inspectionPlanID=#{inspectionPlanID},
+        inspectionTime=#{inspectionTime},
         inspectionRecordTitle=#{inspectionRecordTitle},
         inspectionContentDescription=#{inspectionContentDescription}
         where inspectionRecordID = #{inspectionRecordID}

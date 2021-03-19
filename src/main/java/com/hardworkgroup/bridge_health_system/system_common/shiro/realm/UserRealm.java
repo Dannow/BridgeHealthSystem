@@ -22,10 +22,7 @@ public class UserRealm extends CommonRealm {
     @Autowired
     private UserServiceImpl userService;
 
-    @Autowired
-    private PermissionService permissionService;
-
-    //认证方法  
+    //认证方法
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) {
 
