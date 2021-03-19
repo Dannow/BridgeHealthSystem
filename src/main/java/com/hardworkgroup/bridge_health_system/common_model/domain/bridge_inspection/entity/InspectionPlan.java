@@ -45,6 +45,8 @@ public class InspectionPlan {
 
     private Integer inspectionCheckInStatus;
 
+    private String inspectionPlanTitle;
+
     private Set<Bridge> bridges= new HashSet<>();
 
     private Set<User> users= new HashSet<>();

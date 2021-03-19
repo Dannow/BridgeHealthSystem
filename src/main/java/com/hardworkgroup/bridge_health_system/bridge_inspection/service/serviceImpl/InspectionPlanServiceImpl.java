@@ -57,10 +57,13 @@ public class InspectionPlanServiceImpl implements InspectionPlanService {
     @Override
     public void update(String InspectionPlanID, InspectionPlan inspectionPlan) {
         InspectionPlan tempPlan = inspectionPlanDao.getPlanByID(InspectionPlanID);
+        tempPlan.setUserID(inspectionPlan.getUserID());
+        tempPlan.setBridgeID(inspectionPlan.getBridgeID());
         tempPlan.setInspectionStartTime(inspectionPlan.getInspectionStartTime());
         tempPlan.setInspectionEndTime(inspectionPlan.getInspectionEndTime());
         tempPlan.setInspectionCompletionStatus(inspectionPlan.getInspectionCompletionStatus());
         tempPlan.setInspectionCheckInStatus(inspectionPlan.getInspectionCheckInStatus());
+        tempPlan.setInspectionPlanTitle(inspectionPlan.getInspectionPlanTitle());
         inspectionPlanDao.updateByKey(tempPlan);
     }
 

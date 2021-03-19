@@ -1,7 +1,6 @@
 package com.hardworkgroup.bridge_health_system.bridge_configuration.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.hardworkgroup.bridge_health_system.bridge_configuration.service.SensorService;
 import com.hardworkgroup.bridge_health_system.bridge_configuration.service.serviceImpl.SensorServiceImpl;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor;
 import com.hardworkgroup.bridge_health_system.system_common.entity.PageResult;
@@ -30,11 +29,11 @@ public class SensorController {
      * 服务对象
      */
     @Autowired
-    private SensorService sensorService;
+    private SensorServiceImpl sensorService;
 
     /**
      * 获取所有传感器列表
-     * @return 巡检记录结果
+     * @return 传感器结果
      */
     @RequestMapping(value = "/sensors" , method = RequestMethod.POST)
     public Result findAll(@RequestBody Map<String,String > map){
@@ -46,7 +45,7 @@ public class SensorController {
     }
 
     /**
-     * 保存传感器记录
+     * 保存传感器
      */
     @RequestMapping(value = "/sensor/import",method = RequestMethod.POST)
     public Result save(@RequestBody Sensor sensor) {
@@ -70,7 +69,7 @@ public class SensorController {
     @RequestMapping(value = "/sensor/{id}" , method = RequestMethod.PUT)
     public Result update(@PathVariable(value = "id") String id , @RequestBody Sensor sensor){
         //调用Service更新
-        sensorService.update(id , sensor);
+        sensorService.update(sensor);
         return new Result(ResultCode.SUCCESS);
     }
 

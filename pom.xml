@@ -139,6 +139,13 @@
             <version>3.10-FINAL</version>
         </dependency>
 
+
+        <!--activiti 与Spring Boot 整合-->
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-spring-boot-starter</artifactId>
+            <version>7.0.0.Beta2</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -54,7 +54,10 @@
     <!--更新巡检计划-->
     <update id="updateByKey" parameterType="map">
         update inspection_plan
-        set inspectionStartTime=#{inspectionStartTime},
+        set
+        userID=#{userID},
+        bridgeID=#{bridgeID},
+        inspectionStartTime=#{inspectionStartTime},
         inspectionEndTime=#{inspectionEndTime},
         inspectionCompletionStatus=#{inspectionCompletionStatus},
         inspectionCheckInStatus=#{inspectionCheckInStatus},
@@ -70,12 +73,12 @@
     <!--ID添加巡检计划-->
     <insert id="insertByKey" >
         insert into inspection_plan (
-        inspectionPlanID,userID,bridgeID,
-        inspectionStartTime,inspectionEndTime,
-        inspectionEndTime,inspectionCheckInStatus,inspectionPlanTitle)
+        userID,bridgeID,inspectionStartTime,
+        inspectionEndTime,inspectionCompletionStatus,
+        inspectionCheckInStatus,inspectionPlanTitle)
         value (
-        #{inspectionPlanID},#{userID},#{bridgeID},
-        #{inspectionStartTime},#{inspectionEndTime},
-        #{inspectionEndTime},#{inspectionCheckInStatus},#{inspectionPlanTitle})
+        #{userID},#{bridgeID},#{inspectionStartTime},
+        #{inspectionEndTime},#{inspectionCompletionStatus},
+        #{inspectionCheckInStatus},#{inspectionPlanTitle})
     </insert>
 </mapper>

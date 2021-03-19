@@ -46,17 +46,9 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
-    public void update(String sensorID, Sensor sensor) {
-        Sensor tempSensor = sensorDao.getSensorByID(sensorID);
-        tempSensor.setBridgeID(sensor.getBridgeID());
-        tempSensor.setLowerThreshold(sensor.getLowerThreshold());
-        tempSensor.setSensorID(sensor.getSensorID());
-        tempSensor.setSensorLocation(sensor.getSensorLocation());
-        tempSensor.setSensorName(sensor.getSensorName());
-        tempSensor.setSensorStatus(sensor.getSensorStatus());
-        tempSensor.setUpperThreshold(sensor.getUpperThreshold());
-        sensorDao.updateByKey(tempSensor);
-}
+    public void update(Sensor sensor) {
+        sensorDao.updateByKey(sensor);
+    }
 
     @Override
     public void delete(String sensorID) {

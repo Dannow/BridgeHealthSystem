@@ -30,8 +30,12 @@
     </resultMap>
 
     <!--根据id查询巡检记录-->
-    <select id="getRecordByID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionRecord">
-        select * from inspection_record where inspectionRecordID = #{inspectionRecordID}
+    <select id="getRecordByID" resultMap="recordWithSensorAndData">
+        select * from inspection_record as r
+        LEFT JOIN inspection_data as d
+        on r.inspectionRecordID =d.inspectionRecordID
+        LEFT JOIN sensor as s on d.sensorID=s.sensorID
+        where r.inspectionRecordID = #{inspectionRecordID}
     </select>
 
     <!--查询所有巡检记录-->
@@ -54,7 +58,10 @@
     <!--更新巡检记录-->
     <update id="updateByKey" parameterType="map">
         update inspection_record
-        set inspectionTime=#{inspectionTime},inspectionRecordTitle=#{inspectionRecordTitle},inspectionContentDescription=#{inspectionContentDescription}
+        set inspectionPlanID=#{inspectionPlanID},
+        inspectionTime=#{inspectionTime},
+        inspectionRecordTitle=#{inspectionRecordTitle},
+        inspectionContentDescription=#{inspectionContentDescription}
         where inspectionRecordID = #{inspectionRecordID}
     </update>
 
@@ -64,7 +71,7 @@
   	</delete>
 
     <!--ID添加巡检记录-->
-    <insert id="insertByKey" >
+    <insert id="insertByKey" useGeneratedKeys="true" keyProperty="inspectionRecordID">
         insert into inspection_record (inspectionPlanID,inspectionTime,inspectionRecordTitle,inspectionContentDescription)
         value (#{inspectionPlanID},#{inspectionTime},#{inspectionRecordTitle},#{inspectionContentDescription})
     </insert>

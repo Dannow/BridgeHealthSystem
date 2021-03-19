@@ -1,7 +1,11 @@
 package com.hardworkgroup.bridge_health_system.system_common.utils;
 
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.beanutils.ConvertUtilsBean;
+import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.springframework.cglib.beans.BeanMap;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,8 +30,16 @@ public class BeanMapUtils {
      */
     public static <T> T mapToBean(Map<String, Object> map,Class<T> clazz) throws Exception {
         T bean = clazz.newInstance();
+        DateTimeConverter dtConverter = new DateTimeConverter();
+        ConvertUtilsBean convertUtilsBean = new ConvertUtilsBean();
+        convertUtilsBean.deregister(Date.class);
+        convertUtilsBean.register(dtConverter, Date.class);
+        BeanUtilsBean beanUtilsBean = new BeanUtilsBean(convertUtilsBean,
+                new PropertyUtilsBean());
+        beanUtilsBean.populate(bean, map);
+        /*
         BeanMap beanMap = BeanMap.create(bean);
-        beanMap.putAll(map);
+        beanMap.putAll(map);*/
         return bean;
     }
 }
