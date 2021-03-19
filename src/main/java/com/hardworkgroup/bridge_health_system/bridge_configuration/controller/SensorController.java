@@ -32,8 +32,8 @@ public class SensorController {
     private SensorServiceImpl sensorService;
 
     /**
-     * 获取所有巡检计划列表
-     * @return 巡检记录结果
+     * 获取所有传感器列表
+     * @return 传感器结果
      */
     @RequestMapping(value = "/sensors" , method = RequestMethod.POST)
     public Result findAll(@RequestBody Map<String,String > map){
@@ -45,7 +45,7 @@ public class SensorController {
     }
 
     /**
-     * 保存巡检记录
+     * 保存传感器
      */
     @RequestMapping(value = "/sensor/import",method = RequestMethod.POST)
     public Result save(@RequestBody Sensor sensor) {
@@ -54,7 +54,7 @@ public class SensorController {
     }
 
     /**
-     * 根据Id查询巡检记录
+     * 根据Id查询传感器
      */
     @RequestMapping(value = "/sensor/{id}" , method = RequestMethod.GET)
     public Result findById(@PathVariable(value = "id") String id){
@@ -64,17 +64,17 @@ public class SensorController {
     }
 
     /**
-     * 根据Id修改巡检记录
+     * 根据Id修改传感器
      */
     @RequestMapping(value = "/sensor/{id}" , method = RequestMethod.PUT)
     public Result update(@PathVariable(value = "id") String id , @RequestBody Sensor sensor){
         //调用Service更新
-        sensorService.update(id , sensor);
+        sensorService.update(sensor);
         return new Result(ResultCode.SUCCESS);
     }
 
     /**
-     * 根据Id删除巡检记录
+     * 根据Id删除传感器
      */
     @RequestMapping(value = "/sensor/{id}" , method = RequestMethod.DELETE)
     public Result delete(@PathVariable(value = "id") String id){

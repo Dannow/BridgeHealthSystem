@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hardworkgroup.bridge_health_system.bridge_inspection.dao.InspectionDataDao">
+
+    <!--根据id查询巡检记录-->
+    <!--<select id="getProblemEventByID" resultMap="problemEventWithSensorAndUser">
+        select * from problem_event as e
+        LEFT JOIN sensor as s
+        on e.sensorID =s.sensorID
+        LEFT JOIN user as u on e.userID=u.userID
+        where problemEventID = #{problemEventID}
+    </select>
+
+    &lt;!&ndash;查询所有巡检记录&ndash;&gt;
+    <select id="selectAllProblemEvent" resultMap="problemEventWithSensorAndUser">
+        select * from problem_event as e
+        LEFT JOIN sensor as s
+        on e.sensorID =s.sensorID
+        LEFT JOIN user as u on e.userID=u.userID
+    </select>
+
+    &lt;!&ndash;根据planID获取所有巡检记录列表&ndash;&gt;
+    <select id="selectAllByRecordID" resultMap="problemEventWithSensorAndUser">
+        select * from inspectionDataID as d
+        LEFT JOIN sensor as s
+        on d.sensorID =s.sensorID
+        LEFT JOIN inspection_record as r
+        on d.inspectionRecordID=r.inspectionRecordID
+        where d.inspectionDataID=#{inspectionDataID}
+    </select>-->
+
+    <!--更新巡检记录-->
+    <update id="updateByKey" parameterType="map">
+        update inspection_data
+        set inspectionRecordID=#{inspectionRecordID},sensorID=#{sensorID},
+        manualSensorData=#{manualSensorData},status=#{status}
+        where inspectionDataID =#{inspectionDataID}
+    </update>
+
+    <!--ID删除巡检记录-->
+    <delete id="deleteByKey" parameterType="map">
+    	delete from inspection_data where inspectionDataID = #{inspectionDataID}
+  	</delete>
+
+    <!--ID添加巡检记录-->
+    <insert id="insertByKey" useGeneratedKeys="true" keyProperty="inspectionDataID">
+        insert into inspection_data (
+        inspectionRecordID,sensorID,
+        manualSensorData,status)
+        value (
+        #{inspectionRecordID},#{sensorID},
+        #{manualSensorData},#{status})
+    </insert>
+</mapper>

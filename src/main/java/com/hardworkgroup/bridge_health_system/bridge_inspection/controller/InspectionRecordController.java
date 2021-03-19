@@ -1,15 +1,21 @@
 package com.hardworkgroup.bridge_health_system.bridge_inspection.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.hardworkgroup.bridge_health_system.bridge_configuration.service.serviceImpl.SensorServiceImpl;
+import com.hardworkgroup.bridge_health_system.bridge_inspection.service.serviceImpl.InspectionDataServiceImpl;
 import com.hardworkgroup.bridge_health_system.bridge_inspection.service.serviceImpl.InspectionRecordServiceImpl;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionData;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionRecord;
 import com.hardworkgroup.bridge_health_system.system_common.entity.PageResult;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
+import com.hardworkgroup.bridge_health_system.system_common.utils.BeanMapUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -30,6 +36,12 @@ public class InspectionRecordController {
     @Autowired
     private InspectionRecordServiceImpl inspectionRecordService;
 
+    @Autowired
+    private InspectionDataServiceImpl InspectionDataService;
+
+    @Autowired
+    private SensorServiceImpl sensorService;
+
     /**
      * 获取所有巡检记录列表
      * @return 巡检记录结果
@@ -47,7 +59,7 @@ public class InspectionRecordController {
      * 根据planID获取所有巡检记录列表
      * @return 巡检记录结果
      */
-    @RequestMapping(value = "/record/plan/{planID}", method = RequestMethod.POST)
+    @RequestMapping(value = "/record/planID/{planID}", method = RequestMethod.POST)
     public Result findByRecordID(@PathVariable(value = "planID") Integer planID,@RequestBody Map<String, String> map) {
         int pageNum = Integer.parseInt((String) map.get("pageNum"));
         int pageSize = Integer.parseInt((String) map.get("pageSize"));
@@ -60,7 +72,12 @@ public class InspectionRecordController {
      * 保存巡检记录
      */
     @RequestMapping(value = "/record/import", method = RequestMethod.POST)
-    public Result addInspectionRecord(@RequestBody InspectionRecord inspectionRecord) {
+    public Result addInspectionRecord(@RequestBody Map<String,Object> map) throws Exception {
+        InspectionRecord inspectionRecord = BeanMapUtils.mapToBean(map, InspectionRecord.class);
+        InspectionData inspectionData = BeanMapUtils.mapToBean(map, InspectionData.class);
+        Sensor sensor = BeanMapUtils.mapToBean(map, Sensor.class);
+        sensorService.save(sensor);
+        InspectionDataService.save(inspectionData);
         inspectionRecordService.save(inspectionRecord);
         return new Result(ResultCode.SUCCESS);
     }
@@ -79,9 +96,14 @@ public class InspectionRecordController {
      * 根据Id修改巡检记录
      */
     @RequestMapping(value = "/record/{id}", method = RequestMethod.PUT)
-    public Result update(@PathVariable(value = "id") String id, @RequestBody InspectionRecord inspectionRecord) {
+    public Result update(@PathVariable(value = "id") String id, @RequestBody Map<String,Object> map) throws Exception {
+        InspectionRecord inspectionRecord = BeanMapUtils.mapToBean(map, InspectionRecord.class);
+        InspectionData inspectionData = BeanMapUtils.mapToBean(map, InspectionData.class);
+        Sensor sensor = BeanMapUtils.mapToBean(map, Sensor.class);
         //调用Service更新
-        inspectionRecordService.update(id, inspectionRecord);
+        sensorService.update(sensor);
+        InspectionDataService.update(inspectionData);
+        inspectionRecordService.update(inspectionRecord);
         return new Result(ResultCode.SUCCESS);
     }
 

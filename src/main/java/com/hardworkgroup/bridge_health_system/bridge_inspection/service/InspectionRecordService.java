@@ -19,7 +19,7 @@ public interface InspectionRecordService {
 
     PageInfo<InspectionRecord> findAll(int pageNum, int pageSize);
 
-    void update(String id, InspectionRecord inspectionRecord);
+    void update(InspectionRecord inspectionRecord);
 
     InspectionRecord getRecordByID(String id);
 

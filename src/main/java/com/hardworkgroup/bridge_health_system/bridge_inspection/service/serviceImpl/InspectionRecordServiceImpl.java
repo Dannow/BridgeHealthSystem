@@ -76,11 +76,11 @@ public class InspectionRecordServiceImpl implements InspectionRecordService {
     }
 
     @Override
-    public void update(String id, InspectionRecord inspectionRecord) {
-        InspectionRecord tempRecord = inspectionRecordDao.getRecordByID(id);
+    public void update(InspectionRecord inspectionRecord) {
+        /*InspectionRecord tempRecord = inspectionRecordDao.getRecordByID(id);
         tempRecord.setInspectionRecordTitle(inspectionRecord.getInspectionRecordTitle());
         tempRecord.setInspectionContentDescription(inspectionRecord.getInspectionContentDescription());
-        tempRecord.setInspectionTime(inspectionRecord.getInspectionTime());
-        inspectionRecordDao.updateByKey(tempRecord);
+        tempRecord.setInspectionTime(inspectionRecord.getInspectionTime());*/
+        inspectionRecordDao.updateByKey(inspectionRecord);
     }
 }

@@ -116,6 +116,7 @@
             <version>2.1.5</version>
         </dependency>
 
+        <!--文件上传FileUpLoad-->
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
@@ -125,6 +126,13 @@
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>
             <version>1.3</version>
+        </dependency>
+
+        <!--activiti 与Spring Boot 整合-->
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-spring-boot-starter</artifactId>
+            <version>7.0.0.Beta2</version>
         </dependency>
     </dependencies>
 

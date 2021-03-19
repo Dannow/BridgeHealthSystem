@@ -20,7 +20,7 @@ public interface SensorService {
 
     Sensor getSensorByID(String sensorID);
 
-    void update(String sensorID, Sensor sensor);
+    void update(Sensor sensor);
 
     void delete(String sensorID);
 }
