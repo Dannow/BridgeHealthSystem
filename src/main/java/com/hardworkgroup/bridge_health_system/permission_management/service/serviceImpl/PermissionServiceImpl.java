@@ -29,7 +29,6 @@ import java.util.Map;
  * @date: 2020/01/09
  **/
 @Service
-@Transactional
 public class PermissionServiceImpl implements PermissionService {
 
     @Autowired

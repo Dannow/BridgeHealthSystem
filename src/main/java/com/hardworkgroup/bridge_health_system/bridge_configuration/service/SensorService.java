@@ -23,4 +23,7 @@ public interface SensorService {
     void update(Sensor sensor);
 
     void delete(String sensorID);
+
+    // 获得传感器对应的数据
+    public Sensor getSensorOriginalData(String sensorID);
 }

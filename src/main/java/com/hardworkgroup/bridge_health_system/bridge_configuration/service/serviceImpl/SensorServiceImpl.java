@@ -55,4 +55,8 @@ public class SensorServiceImpl implements SensorService {
         sensorDao.deleteByKey(sensorID);
     }
 
+    // 获得传感器对应的数据
+    public Sensor getSensorOriginalData(String sensorID){
+        return sensorDao.getSensorOriginalData(sensorID);
+    }
 }
