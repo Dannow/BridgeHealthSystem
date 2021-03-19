@@ -1,6 +1,7 @@
 package com.hardworkgroup.bridge_health_system.bridge_configuration.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.hardworkgroup.bridge_health_system.bridge_configuration.service.SensorService;
 import com.hardworkgroup.bridge_health_system.bridge_configuration.service.serviceImpl.SensorServiceImpl;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor;
 import com.hardworkgroup.bridge_health_system.system_common.entity.PageResult;
@@ -29,10 +30,10 @@ public class SensorController {
      * 服务对象
      */
     @Autowired
-    private SensorServiceImpl sensorService;
+    private SensorService sensorService;
 
     /**
-     * 获取所有巡检计划列表
+     * 获取所有传感器列表
      * @return 巡检记录结果
      */
     @RequestMapping(value = "/sensors" , method = RequestMethod.POST)
@@ -45,7 +46,7 @@ public class SensorController {
     }
 
     /**
-     * 保存巡检记录
+     * 保存传感器记录
      */
     @RequestMapping(value = "/sensor/import",method = RequestMethod.POST)
     public Result save(@RequestBody Sensor sensor) {
@@ -54,7 +55,7 @@ public class SensorController {
     }
 
     /**
-     * 根据Id查询巡检记录
+     * 根据Id查询传感器
      */
     @RequestMapping(value = "/sensor/{id}" , method = RequestMethod.GET)
     public Result findById(@PathVariable(value = "id") String id){
@@ -64,7 +65,7 @@ public class SensorController {
     }
 
     /**
-     * 根据Id修改巡检记录
+     * 根据Id修改传感器
      */
     @RequestMapping(value = "/sensor/{id}" , method = RequestMethod.PUT)
     public Result update(@PathVariable(value = "id") String id , @RequestBody Sensor sensor){
@@ -74,7 +75,7 @@ public class SensorController {
     }
 
     /**
-     * 根据Id删除巡检记录
+     * 根据Id删除传感器
      */
     @RequestMapping(value = "/sensor/{id}" , method = RequestMethod.DELETE)
     public Result delete(@PathVariable(value = "id") String id){
