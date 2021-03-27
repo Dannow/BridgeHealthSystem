@@ -44,8 +44,8 @@ public class ReadExcelUtil {
      */
     public static Sheet getExcelSheet(String fileName) throws Exception {
         // 获得输入流
-        InputStream is = new FileInputStream(new File("E://学习//服务外包大赛//桥梁管理系统//拆分Excel表//"+fileName));
-//        InputStream is = new FileInputStream(new File("/home/dong/doucments/BridgeHealthSystem/bridge_health_system_ExcelData/splitOriginalExcelData/"+fileName));
+//        InputStream is = new FileInputStream(new File("E://学习//服务外包大赛//桥梁管理系统//拆分Excel表//"+fileName));
+        InputStream is = new FileInputStream(new File("/home/dong/doucments/BridgeHealthSystem/bridge_health_system_ExcelData/splitOriginalExcelData/"+fileName));
         // 不同的后缀名获得不同的Workbook对象
         Workbook xssfWorkbook = null;
         if (fileName.endsWith("xlsx")){
