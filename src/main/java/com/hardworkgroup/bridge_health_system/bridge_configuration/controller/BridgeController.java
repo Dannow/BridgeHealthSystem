@@ -3,6 +3,8 @@ package com.hardworkgroup.bridge_health_system.bridge_configuration.controller;
 import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.bridge_configuration.service.serviceImpl.BridgeServiceImpl;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.response.SensorInBridgeResult;
 import com.hardworkgroup.bridge_health_system.system_common.entity.PageResult;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
@@ -11,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * (BridgeController)表控制层
@@ -82,5 +87,21 @@ public class BridgeController {
     public Result delete(@PathVariable(value = "id") String id){
         bridgeService.delete(id);
         return new Result(ResultCode.SUCCESS);
+    }
+
+    /*
+    *根据桥梁获取传感器列表
+    * */
+    @RequestMapping(value = "/SensorByBridgeID/{bridgeId}" , method = RequestMethod.GET)
+    public Result findSensorByBridgeID(@PathVariable(value = "bridgeId") String bridgeId){
+        List<SensorInBridgeResult> sensorInBridgeResultList = new ArrayList<>();
+        // 获得桥梁下传感器
+        Bridge bridge = bridgeService.getSensorByBridgeID(bridgeId);
+        Set<Sensor> sensors = bridge.getSensors();
+        // 将传感器信息封装在类中
+        for (Sensor sensor : sensors){
+            sensorInBridgeResultList.add(new SensorInBridgeResult(sensor));
+        }
+        return new Result(ResultCode.SUCCESS, sensorInBridgeResultList);
     }
 }

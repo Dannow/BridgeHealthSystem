@@ -1,7 +1,7 @@
 package com.hardworkgroup.bridge_health_system.data_analysis.controller;
 
 import com.hardworkgroup.bridge_health_system.common_model.domain.data_analysis.entity.OriginalData;
-import com.hardworkgroup.bridge_health_system.common_model.domain.data_analysis.response.SensorDataResult;
+import com.hardworkgroup.bridge_health_system.common_model.domain.data_analysis.response.SensorCorrelationDataResult;
 import com.hardworkgroup.bridge_health_system.data_analysis.service.SensorDataService;
 import com.hardworkgroup.bridge_health_system.bridge_configuration.service.SensorService;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor;
@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -25,8 +24,8 @@ import java.util.*;
 @CrossOrigin
 @RestController
 @Slf4j
-@RequestMapping("/bridgeConfiguration")
-public class SensorDataController {
+@RequestMapping("/dataAnalysis")
+public class SensorCorrelationAnalysisController {
     @Autowired
     private SensorService sensorService;
     @Autowired
@@ -48,7 +47,7 @@ public class SensorDataController {
            originalData = iterator.next();
         }
         // 或得传感器的数据
-        List<SensorDataResult> sensorOriginalData = sensorDataService.getSensorDataBySensorID(originalData.getOriginalDataPath(), sensor.getSensorName(), 18);
+        List<SensorCorrelationDataResult> sensorOriginalData = sensorDataService.getSensorDataBySensorID(originalData.getOriginalDataPath(), sensor.getSensorName(), 18);
 
         return new  Result(ResultCode.SUCCESS,sensorOriginalData);
     }
@@ -56,7 +55,7 @@ public class SensorDataController {
     /*
      * 通过日期获得传感器的数据
      * */
-    @RequestMapping(value = "/sensorDataByTime/{sensorId}" , method = RequestMethod.GET)
+    @RequestMapping(value = "/sensorDataByTime/{sensorId}" , method = RequestMethod.POST)
     public Result findSensorDataByTime(@PathVariable String sensorId, @RequestBody Map<String,String > map) throws Exception {
         // 获得时间
         String time = map.get("targetTime");
@@ -73,7 +72,8 @@ public class SensorDataController {
             originalData = iterator.next();
         }
         // 或得传感器的数据
-        List<SensorDataResult> sensorOriginalData = sensorDataService.getSensorDataBySensorTime(originalData.getOriginalDataPath(), sensor.getSensorName(),targetTime);
+        List<SensorCorrelationDataResult> sensorOriginalData = sensorDataService.getSensorDataBySensorTime(originalData.getOriginalDataPath(), sensor.getSensorName(),targetTime);
         return new  Result(ResultCode.SUCCESS,sensorOriginalData);
     }
+
 }
