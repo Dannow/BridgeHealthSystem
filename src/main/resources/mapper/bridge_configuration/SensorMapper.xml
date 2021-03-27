@@ -47,6 +47,11 @@
     <resultMap id="SensorOriginalData" type="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor">
         <id property="sensorID" column="sensorID"/>
         <result property="sensorName" column="sensorName"/>
+        <result property="sensorType" column="sensorType"/>
+        <result property="upperThreshold" column="upperThreshold"/>
+        <result property="lowerThreshold" column="lowerThreshold"/>
+        <result property="sensorLocation" column="sensorLocation"/>
+        <result property="isShort" column="isShort"/>
         <collection property="originalDatas" ofType="com.hardworkgroup.bridge_health_system.common_model.domain.data_analysis.entity.OriginalData">
             <id property="originalDataID" column="originalDataID"/>
             <result property="originalDataCollectionTime" column="originalDataCollectionTime"/>
@@ -55,6 +60,12 @@
     </resultMap>
     <!--查询传感器对应的原始数据-->
     <select id="getSensorOriginalData" resultMap="SensorOriginalData">
-        select * from sensor as s left join original_data as o on s.sensorID = o.sensorID where s.sensorID = #{sensorID}
+        select * from sensor as s left join original_data as o on s.sensorID = o.sensorID where s.sensorID = #{sensorID} and s.isShort = 0
+    </select>
+
+
+    <!--通过传感器类型查询传感器原始数据-->
+    <select id="getSensorOriginalDataBySensorType" resultMap="SensorOriginalData">
+        select * from sensor as s left join original_data as o on s.sensorID = o.sensorID where s.sensorType = #{sensorType}
     </select>
 </mapper>

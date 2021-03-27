@@ -75,4 +75,10 @@ public class Bridge implements Serializable {
     private Date constructionDate;
 
     private Double healthState;
+
+    /**
+     * 桥梁传感器
+     */
+    private Set<Sensor> sensors = new HashSet<>();
+
 }

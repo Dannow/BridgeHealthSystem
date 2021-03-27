@@ -39,6 +39,7 @@ public class Sensor implements Serializable {
 
     private Integer sensorStatus;
 
+    // 判断传感器是否为短期传感器
     private Integer isShort;
 
     // 传感器对应的原始数据

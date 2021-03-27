@@ -66,4 +66,23 @@
         #{longitude},#{dimension},#{availableYear},
         #{constructionCompany},#{constructionDate},#{healthState})
     </insert>
+
+    <resultMap id="sensorInBridge" type="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge">
+        <id column="bridgeID" property="bridgeID"/>
+        <result column="bridgeName" property="bridgeName"/>
+        <collection property="sensors" ofType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor">
+            <id column="sensorID" property="sensorID"/>
+            <result column="sensorName" property="sensorName"/>
+            <result column="sensorLocation" property="sensorLocation"/>
+            <result column="sensorType" property="sensorType"/>
+            <result column="upperThreshold" property="upperThreshold"/>
+            <result column="lowerThreshold" property="lowerThreshold"/>
+            <result column="sensorStatus" property="sensorStatus"/>
+        </collection>
+    </resultMap>
+
+    <!--获得桥梁下的所有传感器-->
+    <select id="getSensorByBridgeID" resultMap="sensorInBridge">
+        select * from bridge as b left join sensor as s on b.bridgeID = s.bridgeID where b.bridgeID = #{bridgeID}
+    </select>
 </mapper>

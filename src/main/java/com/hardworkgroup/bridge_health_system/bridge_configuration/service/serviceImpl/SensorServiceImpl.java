@@ -59,4 +59,9 @@ public class SensorServiceImpl implements SensorService {
     public Sensor getSensorOriginalData(String sensorID){
         return sensorDao.getSensorOriginalData(sensorID);
     }
+
+    // 根据传感器类型获得传感器
+    public List<Sensor> getSensorOriginalDataBySensorType(String sensorType){
+        return sensorDao.getSensorOriginalDataBySensorType(sensorType);
+    }
 }

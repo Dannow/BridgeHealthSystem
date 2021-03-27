@@ -1,43 +1,42 @@
 package com.hardworkgroup.bridge_health_system;
 
-import com.hardworkgroup.bridge_health_system.bridge_configuration.dao.SensorDao;
+import com.hardworkgroup.bridge_health_system.bridge_configuration.service.BridgeService;
 import com.hardworkgroup.bridge_health_system.bridge_configuration.service.SensorService;
-import com.hardworkgroup.bridge_health_system.bridge_inspection.dao.InspectionPlanDao;
-import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionPlan;
-import com.hardworkgroup.bridge_health_system.common_model.domain.data_analysis.response.SensorDataResult;
 import com.hardworkgroup.bridge_health_system.data_analysis.service.SensorDataService;
 import com.hardworkgroup.bridge_health_system.permission_management.service.UserService;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @SpringBootTest
 class BridgeHealthSystemApplicationTests {
-    /*@Autowired
+    @Autowired
     public SensorService sensorService;
     @Autowired
     public UserService userService;
     @Autowired
     public SensorDataService sensorDataService;
+    @Autowired
+    public BridgeService bridgeService;
+
     @Test
     public void test() throws Exception {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date sensorDataTime = formatter.parse("2020-04-28");
-        System.out.println(sensorDataService.getSensorDataBySensorTime("长期温度监测表.xlsx","温度传感器A1", sensorDataTime));
-
+        System.out.println(bridgeService.getSensorByBridgeID("1"));
+//        System.out.println(sensorDataService.getSensorDataBySensorID("长期温度监测表.xlsx","温度传感器A1",18));
+//        String sensorName = "温度传感器A1";
+//        String str = sensorName.substring(0,2);
+//        System.out.println(str);
+//        OriginalData data = new OriginalData();
+//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//        Date sensorDataTime = formatter.parse("2020-04-28");
+//////        data.setOriginalDataCollectionTime(sensorDataTime);
+////////        Date date = new Date(System.currentTimeMillis());
+//////        System.out.println(formatter.format(data.getOriginalDataCollectionTime()));
+////        System.out.println(sensorDataService.getSensorDataBySensorTime("长期温度监测表.xlsx","温度传感器A1", sensorDataTime));
+//        System.out.println(sensorDataService.getSensorDataBySensorID("长期温度监测表.xlsx","温度传感器A1",18));
 //        String fileName = "长期温度监测表.xlsx";
 //        // 获得输入流
 //        InputStream is = new FileInputStream(new File("E://学习//服务外包大赛//桥梁管理系统//拆分Excel表//"+fileName));
@@ -68,7 +67,7 @@ class BridgeHealthSystemApplicationTests {
 //            }
 //        }
 //
-//        List<SensorDataResult> sensorDataResultList = new ArrayList<>();
+//        List<SensorCorrelationDataResult> sensorDataResultList = new ArrayList<>();
 //        // 遍历每行读取数据
 //        for(int rowNum = 1; rowNum <= xssfSheet.getLastRowNum(); rowNum++){
 //            Row row = xssfSheet.getRow(rowNum);
@@ -79,10 +78,10 @@ class BridgeHealthSystemApplicationTests {
 //            // 读取传感器数据
 //            float sensorData = (float) row.getCell(sensorColumnIndex).getNumericCellValue();
 //            // 封装到Result添加到列表中
-//            sensorDataResultList.add(new SensorDataResult(sensorDataTime,sensorData));
+//            sensorDataResultList.add(new SensorCorrelationDataResult(sensorDataTime,sensorData));
 //        }
 //        System.out.println(sensorDataResultList);
 
 
-    }*/
+    }
 }

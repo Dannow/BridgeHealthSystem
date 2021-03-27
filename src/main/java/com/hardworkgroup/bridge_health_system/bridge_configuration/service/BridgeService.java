@@ -2,9 +2,10 @@ package com.hardworkgroup.bridge_health_system.bridge_configuration.service;
 
 import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge;
-import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.response.BridgeSimpleResult;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor;
 
 import java.util.List;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.response.BridgeSimpleResult;
 
 /**
  * (BridgeService)表服务接口
@@ -27,4 +28,7 @@ public interface BridgeService {
     void update(String id, Bridge bridge);
 
     void delete(String id);
+
+    // 获得桥梁下的所有传感器
+    public Bridge getSensorByBridgeID(String bridgeID);
 }

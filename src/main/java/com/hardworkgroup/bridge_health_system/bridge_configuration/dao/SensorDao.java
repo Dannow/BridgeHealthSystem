@@ -32,4 +32,6 @@ public interface SensorDao extends Mapper<Sensor> {
     // 获得传感器对应的数据
     public Sensor getSensorOriginalData(String sensorID);
 
+    // 根据传感器类型获得传感器
+    public List<Sensor> getSensorOriginalDataBySensorType(String sensorType);
 }

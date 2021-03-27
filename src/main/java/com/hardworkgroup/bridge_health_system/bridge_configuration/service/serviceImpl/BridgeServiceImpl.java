@@ -7,6 +7,7 @@ import com.hardworkgroup.bridge_health_system.bridge_configuration.dao.BridgeDao
 import com.hardworkgroup.bridge_health_system.bridge_configuration.service.BridgeService;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.response.BridgeSimpleResult;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,22 +56,17 @@ public class BridgeServiceImpl implements BridgeService {
 
     @Override
     public void update(String bridgeID, Bridge bridge) {
-        //Bridge tempBridge = bridge;
-        /*Bridge tempBridge = bridgeDao.getBridgeByID(bridgeID);
-        tempBridge.setBridgeID(bridge.getBridgeID());
-        tempBridge.setLowerThreshold(bridge.getLowerThreshold());
-        tempBridge.setSensorID(bridge.getSensorID());
-        tempBridge.setSensorLocation(bridge.getSensorLocation());
-        tempBridge.setSensorName(bridge.getSensorName());
-        tempBridge.setSensorStatus(bridge.getSensorStatus());
-        tempBridge.setUpperThreshold(bridge.getUpperThreshold());
-        bridgeDao.updateByKey(tempBridge);*/
         bridgeDao.updateByKey(bridge);
     }
 
     @Override
     public void delete(String bridgeID) {
         bridgeDao.deleteByKey(bridgeID);
+    }
+
+    // 获得桥梁下的所有传感器
+    public Bridge getSensorByBridgeID(String bridgeID){
+        return bridgeDao.getSensorByBridgeID(bridgeID);
     }
 
 }
