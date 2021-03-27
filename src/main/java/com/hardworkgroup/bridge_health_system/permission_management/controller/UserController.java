@@ -71,6 +71,14 @@ public class UserController extends BaseController {
             return new Result(ResultCode.MOBILEORPASSWORDERROR);
         }
     }
+
+    @RequestMapping(value = "/userPicture" , method = RequestMethod.POST)
+    public Result userPicture(){
+        User user = userService.getUserByID(this.userId.toString());
+        String userPicture = "http://121.199.75.149:9999/img/"+user.getUserPicture();
+        return new Result(ResultCode.SUCCESS,userPicture);
+
+    }
     /**
      * 用户登录成功之后,获取用户信息
      */

@@ -75,5 +75,4 @@ public class SensorCorrelationAnalysisController {
         List<SensorCorrelationDataResult> sensorOriginalData = sensorDataService.getSensorDataBySensorTime(originalData.getOriginalDataPath(), sensor.getSensorName(),targetTime);
         return new  Result(ResultCode.SUCCESS,sensorOriginalData);
     }
-
 }

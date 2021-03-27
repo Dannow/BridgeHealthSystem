@@ -28,6 +28,15 @@ spring:
     history-level: full
     #校验流程文件，默认校验resources下的processes文件夹里的流程文件
     check-process-definitions: false
+    #开启异步执行器，异步才会自动异步执行，比如异步工作、定时器工作等
+    #async-executor-activate: true
+    # 邮件
+    mail-server-host: smtp.qq.com
+    mail-server-port: 465
+    mail-server-default-from: 1393700297@qq.com
+    mail-server-user-name: 1393700297@qq.com
+    mail-server-password: wvtbbdmamrqrfhie
+    mail-server-use-ssl: true
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

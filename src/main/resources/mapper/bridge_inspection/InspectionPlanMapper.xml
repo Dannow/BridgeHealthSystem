@@ -71,7 +71,7 @@
   	</delete>
 
     <!--ID添加巡检计划-->
-    <insert id="insertByKey" >
+    <insert id="insertByKey" useGeneratedKeys="true" keyProperty="inspectionPlanID">
         insert into inspection_plan (
         userID,bridgeID,inspectionStartTime,
         inspectionEndTime,inspectionCompletionStatus,

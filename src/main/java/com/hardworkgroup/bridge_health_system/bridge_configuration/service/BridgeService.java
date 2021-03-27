@@ -5,6 +5,7 @@ import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configu
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor;
 
 import java.util.List;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.response.BridgeSimpleResult;
 
 /**
  * (BridgeService)表服务接口
@@ -17,6 +18,8 @@ public interface BridgeService {
 
 
     PageInfo<Bridge> findAll(int pageNum, int pageSize);
+
+    List<BridgeSimpleResult> findAll();
 
     void save(Bridge bridge);
 

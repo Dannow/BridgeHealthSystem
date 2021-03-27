@@ -14,7 +14,7 @@ import java.util.*;
 @Setter
 @Getter
 public class ProfileResult implements Serializable,AuthCachePrincipal {
-    private String userId;
+    private Integer userId;
     private String phone;
     private String username;
     //private String company;

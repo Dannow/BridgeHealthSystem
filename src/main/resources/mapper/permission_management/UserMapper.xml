@@ -12,6 +12,7 @@
         <result property="userEmail" column="userEmail"/>
         <result property="userStatus" column="userStatus"/>
         <result property="userLevel" column="userLevel"/>
+        <result property="userPicture" column="userPicture"/>
         <association property="roles"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Role">
             <id property="roleID" column="roleID"/>
             <result property="roleName" column="roleName"/>
@@ -36,6 +37,7 @@
         <result property="userEmail" column="userEmail"/>
         <result property="userStatus" column="userStatus"/>
         <result property="userLevel" column="userLevel"/>
+        <result property="userPicture" column="userPicture"/>
         <collection property="roles"  resultMap="rolePermission">
 
         </collection>
@@ -67,7 +69,7 @@
     </select>-->
     <!--更新用户-->
     <update id="updateByKey" parameterType="map">
-        update user set userName=#{userName},userPhone=#{userPhone},userEmail=#{userEmail},userStatus=#{userStatus}, userLevel=#{userLevel} where userID = #{userID}
+        update user set userName=#{userName},userPhone=#{userPhone},userEmail=#{userEmail},userStatus=#{userStatus}, userLevel=#{userLevel},userPicture=#{userPicture} where userID = #{userID}
     </update>
     <!--ID删除用户-->
     <delete id="deleteByKey" parameterType="map">
@@ -78,10 +80,10 @@
        insert into user (
         userName,userPhone,
         userPassword,userEmail,
-        userStatus,userLevel)
+        userStatus,userLevel,userPicture)
         values (
         #{userName},#{userPhone},
         #{userPassword},#{userEmail},
-        #{userStatus},#{userLevel})
+        #{userStatus},#{userLevel},#{userPicture})
     </insert>
 </mapper>

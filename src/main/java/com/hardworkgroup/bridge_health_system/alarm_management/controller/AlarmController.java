@@ -1,0 +1,190 @@
+package com.hardworkgroup.bridge_health_system.alarm_management.controller;
+
+import com.github.pagehelper.PageInfo;
+import com.hardworkgroup.bridge_health_system.activiti.service.serviceImpl.ActFlowCommServiceImpl;
+import com.hardworkgroup.bridge_health_system.activiti.service.serviceImpl.SiteMessageServiceImpl;
+import com.hardworkgroup.bridge_health_system.alarm_management.service.serviceImpl.AlarmDataServiceImpl;
+import com.hardworkgroup.bridge_health_system.bridge_configuration.service.serviceImpl.SensorServiceImpl;
+import com.hardworkgroup.bridge_health_system.common_model.domain.activiti.entity.SiteMessage;
+import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_management.entity.AlarmInformation;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor;
+import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User;
+import com.hardworkgroup.bridge_health_system.system_common.controller.BaseController;
+import com.hardworkgroup.bridge_health_system.system_common.entity.PageResult;
+import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
+import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
+import com.hardworkgroup.bridge_health_system.system_common.utils.BeanMapUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import java.util.*;
+
+@RestController
+@Slf4j
+@CrossOrigin
+@RequestMapping(value = "/alarm_management")
+public class AlarmController extends BaseController {
+    @Resource
+    private RuntimeService runtimeService;
+
+    @Resource
+    private SensorServiceImpl sensorServiceImpl;
+
+    @Resource
+    private ActFlowCommServiceImpl actFlowCommService;
+
+    @Resource
+    private AlarmDataServiceImpl alarmDataService;
+
+    @Resource
+    private SiteMessageServiceImpl siteMessageService;
+    /**
+     * 启动报警流程
+     * @param workFlowName
+     * @return
+     */
+    @Transactional
+    @RequestMapping(value = "/startWorkflow/{workFlowName}",method = RequestMethod.GET)
+    public Result startWorkflow(@PathVariable(value = "workFlowName")String workFlowName) {
+        // 通过流程定义的key启动，选取最高的version启动
+        Sensor sensor = sensorServiceImpl.getSensorByID("1");
+        Map<String,Object> variables = new HashMap<>();
+        variables.put("assignee0",this.userId);
+        variables.put("Sensor",sensor);
+        variables.put("alarmData",50);
+        log.info("【启动流程】，workFlowName ：{}", workFlowName);
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(workFlowName,variables);
+//		流程实例ID
+        String processDefinitionId = processInstance.getProcessDefinitionId();
+        log.info("【启动流程】- 成功，processDefinitionId：{}", processDefinitionId);
+        List<Map<String, Object>> taskList = actFlowCommService.myTaskList(this.userId);
+        if(!CollectionUtils.isEmpty(taskList)){
+            for (Map<String, Object> map : taskList) {
+                if(map.get("assignee").toString().equals(this.userId.toString()) &&
+                        map.get("processDefinitionId").toString().equals(processDefinitionId)){
+                    log.info("processDefinitionId is {}",map.get("processDefinitionId").toString());
+                    log.info("taskid is {}",map.get("taskid").toString());
+                    actFlowCommService.completeProcess("确认",map.get("taskid").toString(),this.userId);
+
+                    AlarmInformation alarmInformation =new AlarmInformation();
+                    alarmInformation.setSensorID(1);
+                    alarmInformation.setAlarmType("数据超过阈值");
+                    //alarmInformation.setAlarmTime((Date) map.get("createTime"));
+                    alarmInformation.setAlarmDealStatus(1);
+                    alarmInformation.setAlarmConfirmStatus(1);
+                    alarmDataService.save(alarmInformation);
+                }
+
+            }
+        }
+        if (processInstance.getProcessInstanceId().length() > 0) {
+            return new Result(ResultCode.SUCCESS);
+        }
+        return new Result(ResultCode.SERVER_ERROR);
+    }
+
+    /**
+     * 管理员确认报警信息并通知巡检员
+     */
+    @Transactional
+    @RequestMapping(value = "/deliver",method = RequestMethod.POST)
+    public Result deliverAlarmInformation(@RequestBody Map<String,Object> map) throws Exception {
+        User user = BeanMapUtils.mapToBean(map, User.class);
+        Sensor sensor = BeanMapUtils.mapToBean(map, Sensor.class);
+        Bridge bridge = BeanMapUtils.mapToBean(map, Bridge.class);
+        AlarmInformation alarmInformation = BeanMapUtils.mapToBean(map, AlarmInformation.class);
+        String title = bridge.getBridgeName()+"的"+sensor.getSensorName()+"发生报警";
+        String bussinessKey = "deliver"+":" + user.getUserID();
+        //设置流程变量
+        Map<String,Object> variables = new HashMap<>();
+        variables.put("User",user);
+        variables.put("Title",title);
+        variables.put("AlarmInformation",alarmInformation);
+        log.info("【启动流程】，workFlowName ：deliver");
+        ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("deliver",bussinessKey,variables);
+//		流程实例ID
+        String processDefinitionId = processInstance.getProcessDefinitionId();
+        log.info("【启动流程】- 成功，processDefinitionId：{}", processDefinitionId);
+        return new Result(ResultCode.SUCCESS);
+    }
+    /**
+     * 巡检员确认报警信息
+     */
+    @Transactional
+    @RequestMapping(value = "/complete",method = RequestMethod.POST)
+    public Result completeAlarmInformation(){
+        SiteMessage message = siteMessageService.findOne(this.userId);
+        actFlowCommService.completeProcess("确认",message.getTaskID(),this.userId);
+        return new Result(ResultCode.SUCCESS);
+    }
+
+    /**
+     * 获取所有报警信息
+     * @return 报警信息结果
+     */
+    @RequestMapping(value = "/alarmInformation" , method = RequestMethod.POST)
+    public Result findAll(@RequestBody Map<String,String > map){
+        int pageNum = Integer.parseInt((String) map.get("pageNum"));
+        int pageSize = Integer.parseInt((String) map.get("pageSize"));
+        PageInfo<AlarmInformation> pageInfo = alarmDataService.findAll(pageNum, pageSize);
+        PageResult<AlarmInformation> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
+        System.out.println(pageInfo.getList());
+        return new Result(ResultCode.SUCCESS,pageResult);
+    }
+
+    /**
+     * 根据管理员确认状态查询所有报警信息
+     * @return 报警信息结果
+     */
+    @RequestMapping(value = "/alarmInformation/alarmConfirmStatus/{alarmConfirmStatus}" , method = RequestMethod.POST)
+    public Result findAllByConfirmStatus(@PathVariable(value = "alarmConfirmStatus") Integer alarmConfirmStatus,@RequestBody Map<String,String > map){
+        int pageNum = Integer.parseInt((String)map.get("pageNum"));
+        int pageSize = Integer.parseInt((String) map.get("pageSize"));
+        PageInfo<AlarmInformation> pageInfo = alarmDataService.findAllByAlarmConfirmStatus(alarmConfirmStatus,pageNum, pageSize);
+        PageResult<AlarmInformation> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
+        return new Result(ResultCode.SUCCESS,pageResult);
+    }
+    /**
+     * 保存报警信息
+     */
+    @RequestMapping(value = "/alarmInformation/import",method = RequestMethod.POST)
+    public Result save(@RequestBody AlarmInformation alarmInformation) {
+        alarmDataService.save(alarmInformation);
+        return new  Result(ResultCode.SUCCESS);
+    }
+
+    /**
+     * 根据Id查询报警信息
+     */
+    @RequestMapping(value = "/alarmInformation/{id}" , method = RequestMethod.GET)
+    public Result findById(@PathVariable(value = "id") String id){
+        //添加planID
+        AlarmInformation alarmInformation = alarmDataService.getAlarmInformationByID(id);
+        return new Result(ResultCode.SUCCESS , alarmInformation);
+    }
+
+    /**
+     * 根据Id修改报警信息
+     */
+    @RequestMapping(value = "/alarmInformation/{id}" , method = RequestMethod.PUT)
+    public Result update(@PathVariable(value = "id") String id , @RequestBody AlarmInformation alarmInformation){
+        //调用Service更新
+        alarmDataService.update(id , alarmInformation);
+        return new Result(ResultCode.SUCCESS);
+    }
+
+    /**
+     * 根据Id删除报警信息
+     */
+    @RequestMapping(value = "/alarmInformation/{id}" , method = RequestMethod.DELETE)
+    public Result delete(@PathVariable(value = "id") String id){
+        alarmDataService.delete(id);
+        return new Result(ResultCode.SUCCESS);
+    }
+}

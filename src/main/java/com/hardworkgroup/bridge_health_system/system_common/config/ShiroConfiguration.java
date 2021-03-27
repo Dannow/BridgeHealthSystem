@@ -42,7 +42,11 @@ public class ShiroConfiguration {
      */
     @Bean
     public static DefaultAdvisorAutoProxyCreator getDefaultAdvisorAutoProxyCreator(){
-        return new DefaultAdvisorAutoProxyCreator();
+        //解决集成shiro之后无法使用@Transaction注解
+        DefaultAdvisorAutoProxyCreator daap = new DefaultAdvisorAutoProxyCreator();
+        daap.setProxyTargetClass(true);
+        return daap;
+        //return new DefaultAdvisorAutoProxyCreator();
     }
 
     /**

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hardworkgroup.bridge_health_system.alarm_management.dao.AlarmInformationDao">
+
+    <resultMap id="AlarmInformationWithSensor" type="com.hardworkgroup.bridge_health_system.common_model.domain.alarm_management.entity.AlarmInformation">
+        <id property="alarmInformationID" column="alarmInformationID"/>
+        <result property="userID" column="userID"/>
+        <result property="sensorID" column="sensorID"/>
+        <result property="alarmTime" column="alarmTime"/>
+        <result property="alarmType" column="alarmType"/>
+        <result property="alarmConfirmStatus" column="alarmConfirmStatus"/>
+        <result property="alarmDealStatus" column="alarmDealStatus"/>
+        <result property="alarmDetail" column="alarmDetail"/>
+        <collection property="sensor"  resultMap="SensorWithBridge">
+        </collection>
+    </resultMap>
+
+    <resultMap id="SensorWithBridge" type="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor">
+        <id property="sensorID" column="sensorID"/>
+        <result property="bridgeID" column="bridgeID"/>
+        <result property="sensorName" column="sensorName"/>
+        <result property="sensorLocation" column="sensorLocation"/>
+        <result property="sensorType" column="sensorType"/>
+        <result property="upperThreshold" column="upperThreshold"/>
+        <result property="lowerThreshold" column="lowerThreshold"/>
+        <result property="sensorStatus" column="sensorStatus"/>
+        <result property="isShort" column="isShort"/>
+        <association property="bridge"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge">
+            <id property="bridgeID" column="bridgeID"/>
+            <result property="bridgeName" column="bridgeName"/>
+            <result property="bridgeType" column="bridgeType"/>
+            <result property="bridgeLength" column="bridgeLength"/>
+            <result property="bridgeMaxSpeed" column="bridgeMaxSpeed"/>
+            <result property="bridgeAddress" column="bridgeAddress"/>
+            <result property="bridgePicture" column="bridgePicture"/>
+            <result property="longitude" column="longitude"/>
+            <result property="dimension" column="dimension"/>
+            <result property="availableYear" column="availableYear"/>
+            <result property="constructionCompany" column="constructionCompany"/>
+            <result property="constructionDate" column="constructionDate"/>
+            <result property="healthState" column="healthState"/>
+        </association>
+    </resultMap>
+
+    <!--根据id查询报警信息-->
+    <select id="getAlarmInformationByID" resultMap="AlarmInformationWithSensor">
+        select * from alarm_information as a LEFT JOIN sensor as s on a.sensorID = s.sensorID LEFT JOIN bridge as b on b.bridgeID = s.bridgeID WHERE a.alarmInformationID = #{alarmInformationID}
+    </select>
+
+    <!--查询所有报警信息-->
+    <select id="selectAllAlarmInformation" resultMap="AlarmInformationWithSensor">
+        select * from alarm_information as a LEFT JOIN sensor as s on a.sensorID = s.sensorID LEFT JOIN bridge as b on b.bridgeID = s.bridgeID
+    </select>
+
+    <!--根据管理员确认状态查询所有报警信息-->
+    <select id="selectAllByAlarmConfirmStatus" resultMap="AlarmInformationWithSensor">
+        select * from alarm_information as a LEFT JOIN sensor as s on a.sensorID = s.sensorID LEFT JOIN bridge as b on b.bridgeID = s.bridgeID WHERE a.alarmConfirmStatus = #{alarmConfirmStatus}
+    </select>
+
+    <!--更新报警信息-->
+    <update id="updateByKey" parameterType="map">
+        update alarm_information
+        set sensorID=#{sensorID},
+        userID=#{userID},
+        alarmTime=#{alarmTime},
+        alarmType=#{alarmType},
+        alarmConfirmStatus=#{alarmConfirmStatus},
+        alarmDealStatus=#{alarmDealStatus},
+        alarmDetail=#{alarmDetail}
+        where alarmInformationID = #{alarmInformationID}
+    </update>
+
+    <!--ID删除报警信息-->
+    <delete id="deleteByKey" parameterType="map">
+    	delete from alarm_information where alarmInformationID = #{alarmInformationID}
+  	</delete>
+
+    <!--ID添加报警信息-->
+    <insert id="insertByKey" useGeneratedKeys="true" keyProperty="alarmInformationID">
+        insert into alarm_information (
+        sensorID,alarmTime,alarmType,
+        alarmConfirmStatus,alarmDealStatus,alarmDetail)
+        value (
+        #{sensorID},#{alarmTime},#{alarmType},
+        #{alarmConfirmStatus},#{alarmDealStatus},#{alarmDetail})
+    </insert>
+</mapper>

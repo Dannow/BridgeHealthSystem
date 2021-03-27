@@ -3,6 +3,7 @@ package com.hardworkgroup.bridge_health_system.bridge_configuration.controller;
 import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.bridge_configuration.service.serviceImpl.BridgeServiceImpl;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.response.BridgeSimpleResult;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.response.SensorInBridgeResult;
 import com.hardworkgroup.bridge_health_system.system_common.entity.PageResult;
@@ -46,9 +47,16 @@ public class BridgeController {
         int pageSize = Integer.parseInt((String) map.get("pageSize"));
         PageInfo<Bridge> pageInfo = bridgeService.findAll(pageNum, pageSize);
         PageResult<Bridge> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
-//        log.(pageInfo.getList());
-        System.out.println(pageInfo.getList());
         return new Result(ResultCode.SUCCESS,pageResult);
+    }
+
+    /**
+     * 获取所有桥梁列表
+     * @return 桥梁结果
+     */
+    @RequestMapping(value = "/bridges" , method = RequestMethod.GET)
+    public Result findAll(){
+        return new Result(ResultCode.SUCCESS,bridgeService.findAll());
     }
 
     /**

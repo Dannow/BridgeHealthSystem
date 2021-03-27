@@ -15,7 +15,6 @@ import java.util.Set;
  * @author makejava
  * @since 2020-12-27 14:13:52
  */
-@org.apache.ibatis.annotations.Mapper
 @Repository
 public interface SensorDao extends Mapper<Sensor> {
     List<Sensor> getallTDimSensor();

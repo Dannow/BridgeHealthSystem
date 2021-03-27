@@ -139,6 +139,18 @@
             <version>3.10-FINAL</version>
         </dependency>
 
+        <!--JSON格式快速传输-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+
+        <!-- 邮件-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
 
         <!--activiti 与Spring Boot 整合-->
         <dependency>

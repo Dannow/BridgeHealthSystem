@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,7 +25,7 @@ import java.util.Set;
 @Table(name = "inspection_plan")
 @Data
 @NoArgsConstructor
-public class InspectionPlan {
+public class InspectionPlan implements Serializable {
 
     @Id
     private Integer inspectionPlanID;

@@ -43,7 +43,8 @@
         dimension=#{dimension},
         availableYear=#{availableYear},
         constructionCompany=#{constructionCompany},
-        constructionDate=#{constructionDate}
+        constructionDate=#{constructionDate},
+        healthState=#{healthState}
         where bridgeID = #{bridgeID}
     </update>
 
@@ -58,12 +59,12 @@
         bridgeName,bridgeType,bridgeLength,
         bridgeMaxSpeed,bridgeAddress,bridgePicture,
         longitude,dimension,availableYear,
-        constructionCompany,constructionDate)
+        constructionCompany,constructionDate,healthState)
         value (
         #{bridgeName},#{bridgeType},#{bridgeLength},
         #{bridgeMaxSpeed},#{bridgeAddress},#{bridgePicture},
         #{longitude},#{dimension},#{availableYear},
-        #{constructionCompany},#{constructionDate})
+        #{constructionCompany},#{constructionDate},#{healthState})
     </insert>
 
     <resultMap id="sensorInBridge" type="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge">
