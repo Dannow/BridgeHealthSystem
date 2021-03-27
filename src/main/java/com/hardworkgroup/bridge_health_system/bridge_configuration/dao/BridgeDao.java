@@ -2,6 +2,7 @@ package com.hardworkgroup.bridge_health_system.bridge_configuration.dao;
 
 
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -26,4 +27,7 @@ public interface BridgeDao extends Mapper<Bridge> {
     void updateByKey(Bridge tempBridge);
 
     void deleteByKey(String bridgeID);
+
+    // 获得桥梁下的所有传感器
+    public Bridge getSensorByBridgeID(String bridgeID);
 }
