@@ -24,7 +24,7 @@ public class User implements Serializable {
      * ID
      */
     @Id
-    private String userID;
+    private Integer userID;
     /**
      * 用户名称
      */
@@ -110,6 +110,8 @@ public class User implements Serializable {
      *          user：普通用户（需要分配角色）
      */
     private String userLevel;
+
+    private String userPicture;
 
     private Set<Role> roles =new HashSet<Role>();
 

@@ -73,4 +73,6 @@ public class Bridge implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date constructionDate;
+
+    private Double healthState;
 }

@@ -43,7 +43,8 @@
         dimension=#{dimension},
         availableYear=#{availableYear},
         constructionCompany=#{constructionCompany},
-        constructionDate=#{constructionDate}
+        constructionDate=#{constructionDate},
+        healthState=#{healthState}
         where bridgeID = #{bridgeID}
     </update>
 
@@ -58,11 +59,11 @@
         bridgeName,bridgeType,bridgeLength,
         bridgeMaxSpeed,bridgeAddress,bridgePicture,
         longitude,dimension,availableYear,
-        constructionCompany,constructionDate)
+        constructionCompany,constructionDate,healthState)
         value (
         #{bridgeName},#{bridgeType},#{bridgeLength},
         #{bridgeMaxSpeed},#{bridgeAddress},#{bridgePicture},
         #{longitude},#{dimension},#{availableYear},
-        #{constructionCompany},#{constructionDate})
+        #{constructionCompany},#{constructionDate},#{healthState})
     </insert>
 </mapper>

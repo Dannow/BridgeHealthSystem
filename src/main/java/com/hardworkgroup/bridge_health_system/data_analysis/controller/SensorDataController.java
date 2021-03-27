@@ -25,7 +25,7 @@ import java.util.*;
 @CrossOrigin
 @RestController
 @Slf4j
-@RequestMapping("/bridgeConfiguration")
+@RequestMapping("/dataAnalysis")
 public class SensorDataController {
     @Autowired
     private SensorService sensorService;
@@ -56,7 +56,7 @@ public class SensorDataController {
     /*
      * 通过日期获得传感器的数据
      * */
-    @RequestMapping(value = "/sensorDataByTime/{sensorId}" , method = RequestMethod.GET)
+    @RequestMapping(value = "/sensorDataByTime/{sensorId}" , method = RequestMethod.POST)
     public Result findSensorDataByTime(@PathVariable String sensorId, @RequestBody Map<String,String > map) throws Exception {
         // 获得时间
         String time = map.get("targetTime");

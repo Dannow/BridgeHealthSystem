@@ -3,6 +3,7 @@ package com.hardworkgroup.bridge_health_system.bridge_inspection.service.service
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.hardworkgroup.bridge_health_system.activiti.service.IActFlowCustomService;
 import com.hardworkgroup.bridge_health_system.bridge_inspection.dao.InspectionPlanDao;
 import com.hardworkgroup.bridge_health_system.bridge_inspection.service.InspectionPlanService;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionPlan;
@@ -10,7 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -21,7 +24,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class InspectionPlanServiceImpl implements InspectionPlanService {
+public class InspectionPlanServiceImpl implements InspectionPlanService, IActFlowCustomService {
 
     @Autowired
     InspectionPlanDao inspectionPlanDao;
@@ -44,9 +47,9 @@ public class InspectionPlanServiceImpl implements InspectionPlanService {
     }
 
     @Override
-    public void save(InspectionPlan inspectionPlan) {
+    public Integer save(InspectionPlan inspectionPlan) {
         //调用dao保存用户
-        inspectionPlanDao.insertByKey(inspectionPlan);
+        return inspectionPlanDao.insertByKey(inspectionPlan);
     }
 
     @Override
@@ -72,4 +75,26 @@ public class InspectionPlanServiceImpl implements InspectionPlanService {
         inspectionPlanDao.deleteByKey(InspectionPlanID);
     }
 
+    @Override
+    public Map<String, Object> setvariables(Integer id,Integer userID) {
+        InspectionPlan inspectionPlan = this.getPlanByID(id.toString());
+        //设置流程变量
+        Map<String,Object> variables = new HashMap<>();
+        variables.put("assignee0",userID.toString());
+        variables.put("assignee1",inspectionPlan.getUserID().toString());
+        /*variables.put("assignee2",3);
+        variables.put("assignee3",4);*/
+        variables.put("inspectionPlan",inspectionPlan);
+        return variables;
+    }
+
+    @Override
+    public void startRunTask(Integer id) {
+        inspectionPlanDao.startTask(id);
+    }
+
+    @Override
+    public void endRunTask(Integer id) {
+        inspectionPlanDao.endTask(id);
+    }
 }

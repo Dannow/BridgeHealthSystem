@@ -6,9 +6,11 @@ import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.bridge_configuration.dao.BridgeDao;
 import com.hardworkgroup.bridge_health_system.bridge_configuration.service.BridgeService;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.response.BridgeSimpleResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +31,16 @@ public class BridgeServiceImpl implements BridgeService {
         List<Bridge> bridges =  bridgeDao.selectAllBridge();
         PageInfo<Bridge> pageInfo = new PageInfo<>(bridges,5);
         return pageInfo;
+    }
+    @Override
+    public List<BridgeSimpleResult> findAll() {
+        List<Bridge> bridges = bridgeDao.selectAllBridge();
+        List<BridgeSimpleResult> bridgeSimpleResults = new ArrayList<>();
+        for (Bridge bridge : bridges) {
+            bridge.setBridgePicture("http://121.199.75.149:9999/img/"+bridge.getBridgePicture());
+            bridgeSimpleResults.add(new BridgeSimpleResult(bridge));
+        }
+        return bridgeSimpleResults;
     }
 
     @Override

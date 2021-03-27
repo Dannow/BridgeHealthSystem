@@ -2,6 +2,9 @@ package com.hardworkgroup.bridge_health_system.bridge_configuration.service;
 
 import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.response.BridgeSimpleResult;
+
+import java.util.List;
 
 /**
  * (BridgeService)表服务接口
@@ -14,6 +17,8 @@ public interface BridgeService {
 
 
     PageInfo<Bridge> findAll(int pageNum, int pageSize);
+
+    List<BridgeSimpleResult> findAll();
 
     void save(Bridge bridge);
 

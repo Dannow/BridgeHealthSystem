@@ -1,32 +1,44 @@
 package com.hardworkgroup.bridge_health_system.bridge_inspection.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.hardworkgroup.bridge_health_system.activiti.service.serviceImpl.ActFlowCommServiceImpl;
 import com.hardworkgroup.bridge_health_system.bridge_inspection.service.serviceImpl.InspectionPlanServiceImpl;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionPlan;
+import com.hardworkgroup.bridge_health_system.system_common.controller.BaseController;
 import com.hardworkgroup.bridge_health_system.system_common.entity.PageResult;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
+import lombok.extern.slf4j.Slf4j;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
- * (TPatrolPlan)表控制层
+ * (InspectionPlanController)表控制层
  *
  * @author makejava
  * @since 2021-01-16 18:11:59
  */
 //解决跨域
 @CrossOrigin
+@Slf4j
 @RestController
 @RequestMapping("/bridgeInspection/inspection")
-public class InspectionPlanController {
+public class InspectionPlanController extends BaseController {
     /**
      * 服务对象
      */
-    @Autowired
+    @Resource
     private InspectionPlanServiceImpl inspectionPlanService;
+
+    @Resource
+    private ActFlowCommServiceImpl actFlowCommService;
 
     /**
      * 获取所有巡检计划列表
@@ -68,8 +80,33 @@ public class InspectionPlanController {
      * 保存巡检计划
      */
     @RequestMapping(value = "/plan/import",method = RequestMethod.POST)
+    @Transactional
     public Result save(@RequestBody InspectionPlan inspectionPlan) {
-        inspectionPlanService.save(inspectionPlan);
+        Integer code = inspectionPlanService.save(inspectionPlan);
+        if(code ==1){
+            Integer inspectionPlanID = inspectionPlan.getInspectionPlanID();
+            String formKey = "inspectionPlan";
+            String beanName = formKey + "ServiceImpl";
+            //使用流程变量设置字符串（格式 ： InspectionPlan:Id 的形式）
+            //使用正在执行对象表中的一个字段BUSINESS_KEY(Activiti提供的一个字段)，让启动的流程（流程实例）关联业务
+            String bussinessKey = formKey+":" + inspectionPlanID;
+            ProcessInstance processInstance = actFlowCommService.startProcess(formKey, beanName, bussinessKey, inspectionPlanID,this.userId);
+            //		流程实例ID
+            String processDefinitionId = processInstance.getProcessDefinitionId();
+            log.info("processDefinitionId is {}",processDefinitionId);
+            List<Map<String, Object>> taskList = actFlowCommService.myTaskList(this.userId);
+            if(!CollectionUtils.isEmpty(taskList)){
+                for (Map<String, Object> map : taskList) {
+                    if(map.get("assignee").toString().equals(this.userId.toString()) &&
+                            map.get("processDefinitionId").toString().equals(processDefinitionId)){
+                        log.info("processDefinitionId is {}",map.get("processDefinitionId").toString());
+                        log.info("taskid is {}",map.get("taskid").toString());
+                        actFlowCommService.completeProcess("确认",map.get("taskid").toString(),this.userId);
+                    }
+
+                }
+            }
+        }
         return new  Result(ResultCode.SUCCESS);
     }
 

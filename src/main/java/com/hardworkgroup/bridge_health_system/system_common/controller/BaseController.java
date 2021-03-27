@@ -5,6 +5,7 @@ import com.hardworkgroup.bridge_health_system.common_model.domain.system.respons
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +21,7 @@ public class BaseController {
     public HttpServletResponse response;
     //protected String companyId;
     //protected String companyName;
-    protected String userId;
+    protected Integer userId;
 
     //使用shiro获取
     //进入控制器之前执行的方法

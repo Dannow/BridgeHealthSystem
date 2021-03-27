@@ -18,7 +18,7 @@ public interface InspectionPlanService {
 
     PageInfo<InspectionPlan> findAll(int pageNum, int pageSize);
 
-    void save(InspectionPlan inspectionPlan);
+    Integer save(InspectionPlan inspectionPlan);
 
     InspectionPlan getPlanByID(String id);
 

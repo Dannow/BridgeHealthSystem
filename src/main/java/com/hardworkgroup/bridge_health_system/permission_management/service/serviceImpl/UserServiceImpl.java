@@ -55,7 +55,6 @@ public class UserServiceImpl implements UserService {
     /**
      * 保存用户
      */
-    @Transactional
     public void save(User user,String roleID) {
         //设置主键
         //        //String id = idWorker.nextId() + "";
@@ -98,7 +97,7 @@ public class UserServiceImpl implements UserService {
         List<User> users =  userDao.selectAllUsers();
         PageInfo<User> pageInfo = new PageInfo<>(users,5);
         for (User user : pageInfo.getList()) {
-            Set<Role> roles = roleDao.getRoleByUserId(user.getUserID());
+            Set<Role> roles = roleDao.getRoleByUserId(user.getUserID().toString());
             user.setRoles(roles);
         }
         /*System.out.println(pageInfo.getPageNum());
@@ -159,13 +158,12 @@ public class UserServiceImpl implements UserService {
      * @param companyId 用户所属公司id
      * @param companyName   用户所属公司名称
      */
-    @Transactional
     public void saveAll(List<User> list, String companyId, String companyName) {
         for (User user : list) {
             //默认密码
             user.setUserPassword(new Md5Hash("123456" , user.getUserPhone() , 3).toString());
             //id
-            user.setUserID(idWorker.nextId() + "");
+            //user.setUserID(idWorker.nextId() + "");
             //基本属性
             //user.setCompanyId(companyId);
             //user.setCompanyName(companyName);

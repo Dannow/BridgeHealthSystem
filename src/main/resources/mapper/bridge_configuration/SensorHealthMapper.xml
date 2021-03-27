@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hardworkgroup.bridge_health_system.bridge_configuration.dao.SensorHealthDao">
+
+    <!--根据桥梁id查询传感器健康状况-->
+    <select id="selectAllByBridgeID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.SensorHealth">
+        select * from sensor_health
+        where bridgeID = #{bridgeID}
+    </select>
+
+    <!--根据id查询传感器健康状况-->
+    <select id="getSensorHealthByID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.SensorHealth">
+        select * from sensor_health
+        where sensorHealthID = #{sensorHealthID}
+    </select>
+
+    <!--查询所有传感器健康状况-->
+    <select id="selectAllSensorHealth" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.SensorHealth">
+        select * from sensor_health
+    </select>
+
+    <!--更新传感器健康状况-->
+    <update id="updateByKey" parameterType="map">
+        update sensor
+        set sensorName=#{sensorName},
+        sensorLocation=#{sensorLocation},
+        sensorType=#{sensorType},
+        upperThreshold=#{upperThreshold},
+        lowerThreshold=#{lowerThreshold},
+        sensorStatus=#{sensorStatus}
+        where sensorID = #{sensorID}
+    </update>
+
+    <!--ID删除传感器健康状况-->
+    <delete id="deleteByKey" parameterType="map">
+    	delete from sensor where sensorID = #{sensorID}
+  	</delete>
+
+    <!--ID添加传感器健康状况-->
+    <insert id="insertByKey" useGeneratedKeys="true" keyProperty="sensorID">
+        insert into sensor (
+        bridgeID,sensorName,sensorLocation,
+        sensorType,upperThreshold,lowerThreshold,
+        sensorStatus)
+        value (
+        #{bridgeID},#{sensorName},#{sensorLocation},
+        #{sensorType},#{upperThreshold},#{lowerThreshold},
+        #{sensorStatus})
+    </insert>
+
+</mapper>

@@ -2,6 +2,8 @@ package com.hardworkgroup.bridge_health_system;
 
 import com.hardworkgroup.bridge_health_system.bridge_configuration.dao.SensorDao;
 import com.hardworkgroup.bridge_health_system.bridge_configuration.service.SensorService;
+import com.hardworkgroup.bridge_health_system.bridge_inspection.dao.InspectionPlanDao;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionPlan;
 import com.hardworkgroup.bridge_health_system.common_model.domain.data_analysis.response.SensorDataResult;
 import com.hardworkgroup.bridge_health_system.data_analysis.service.SensorDataService;
 import com.hardworkgroup.bridge_health_system.permission_management.service.UserService;
@@ -24,7 +26,7 @@ import java.util.List;
 
 @SpringBootTest
 class BridgeHealthSystemApplicationTests {
-    @Autowired
+    /*@Autowired
     public SensorService sensorService;
     @Autowired
     public UserService userService;
@@ -82,5 +84,5 @@ class BridgeHealthSystemApplicationTests {
 //        System.out.println(sensorDataResultList);
 
 
-    }
+    }*/
 }
