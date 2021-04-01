@@ -1,5 +1,6 @@
 package com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity;
 
+import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_management.entity.AlarmInformation;
 import com.hardworkgroup.bridge_health_system.common_model.domain.data_analysis.entity.OriginalData;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -48,5 +49,8 @@ public class Sensor implements Serializable {
 
     @ManyToOne
     private Bridge bridge;
+
+    // 传感器对应的报警信息
+    private Set<AlarmInformation> alarmInformations = new HashSet<>();
 
 }

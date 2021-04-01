@@ -3,6 +3,7 @@ package com.hardworkgroup.bridge_health_system.bridge_configuration.dao;
 
 
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -33,5 +34,8 @@ public interface SensorDao extends Mapper<Sensor> {
     public Sensor getSensorOriginalData(String sensorID);
 
     // 根据传感器类型获得传感器
-    public List<Sensor> getSensorOriginalDataBySensorType(String sensorType);
+    public List<Sensor> getSensorOriginalDataBySensorType(@Param("sensorType") String sensorType, @Param("bridgeID") String bridgeID);
+
+    // 根据传感器ID获取报警信息
+    public Sensor getAlarmInformationBySensorID(int sensorID);
 }

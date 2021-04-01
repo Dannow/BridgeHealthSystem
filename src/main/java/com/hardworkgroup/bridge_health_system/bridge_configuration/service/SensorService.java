@@ -28,5 +28,8 @@ public interface SensorService {
     public Sensor getSensorOriginalData(String sensorID);
 
     // 根据传感器类型获得传感器
-    public List<Sensor> getSensorOriginalDataBySensorType(String sensorType);
+    public List<Sensor> getSensorOriginalDataBySensorType(String sensorType, String bridgeID);
+
+    // 根据传感器ID获取报警信息
+    public Sensor getAlarmInformationBySensorID(int sensorID);
 }
