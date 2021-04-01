@@ -11,7 +11,8 @@ public class ConnectionPython {
 
     public static String connectionPython(String method) throws IOException {
         //第一步：创建服务地址
-        URL url = new URL("http://127.0.0.1:8000/" + method);
+        URL url = new URL("http://121.199.75.149:8002/" + method);
+//        URL url = new URL("http://127.0.0.1:8000/" + method);
         //第二步：打开一个通向服务地址的连接
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         //第五步：接收服务端响应，打印

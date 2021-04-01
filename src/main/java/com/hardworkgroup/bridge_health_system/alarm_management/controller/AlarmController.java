@@ -4,9 +4,11 @@ import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.activiti.service.serviceImpl.ActFlowCommServiceImpl;
 import com.hardworkgroup.bridge_health_system.activiti.service.serviceImpl.SiteMessageServiceImpl;
 import com.hardworkgroup.bridge_health_system.alarm_management.service.serviceImpl.AlarmDataServiceImpl;
+import com.hardworkgroup.bridge_health_system.bridge_configuration.service.BridgeService;
 import com.hardworkgroup.bridge_health_system.bridge_configuration.service.serviceImpl.SensorServiceImpl;
 import com.hardworkgroup.bridge_health_system.common_model.domain.activiti.entity.SiteMessage;
 import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_management.entity.AlarmInformation;
+import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_management.response.AlarmCountResult;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User;
@@ -18,6 +20,7 @@ import com.hardworkgroup.bridge_health_system.system_common.utils.BeanMapUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +47,10 @@ public class AlarmController extends BaseController {
 
     @Resource
     private SiteMessageServiceImpl siteMessageService;
+
+    @Autowired
+    private BridgeService bridgeService;
+
     /**
      * 启动报警流程
      * @param workFlowName
@@ -186,5 +193,47 @@ public class AlarmController extends BaseController {
     public Result delete(@PathVariable(value = "id") String id){
         alarmDataService.delete(id);
         return new Result(ResultCode.SUCCESS);
+    }
+
+    /**
+     * 根据桥梁ID获得告警次数
+     */
+    @RequestMapping(value = "/alarmNumberByBridgeID/{bridgeID}",method = RequestMethod.POST)
+    public Result findAlarmNumberByBridgeID(@PathVariable(value = "bridgeID") String bridgeID, @RequestBody Map<String,String > map){
+        // 获取天数
+        int day = Integer.parseInt(map.get("day"));
+
+        // 统计报警次数
+        int count = 0;
+        // 获得桥梁下所有传感器
+        Bridge bridge = bridgeService.getSensorByBridgeID(bridgeID);
+        Set<Sensor> sensors = bridge.getSensors();
+
+        // 获得当前时间
+        Date nowTime = new Date();
+
+        // 得到指定的日期
+        Calendar c = Calendar.getInstance();
+        c.setTime(nowTime);
+        c.add(Calendar.DAY_OF_MONTH, -day);
+        Date targetTime = c.getTime();
+
+        List<AlarmCountResult> alarmCountList = new ArrayList<>();
+
+        // 遍历桥梁下传感器
+        for (Sensor sensor : sensors){
+            Sensor sensor2 = sensorServiceImpl.getAlarmInformationBySensorID(sensor.getSensorID());
+            Set<AlarmInformation> alarmInformations = sensor2.getAlarmInformations();
+            // 遍历传感器下报警信息
+            for (AlarmInformation alarmInformation : alarmInformations){
+                if (targetTime.before(alarmInformation.getAlarmTime()) || targetTime.equals(alarmInformation.getAlarmTime())){
+                    count++;
+                }
+            }
+            alarmCountList.add(new AlarmCountResult(sensor.getSensorName(),count));
+            count = 0;
+        }
+
+        return new Result(ResultCode.SUCCESS, alarmCountList);
     }
 }

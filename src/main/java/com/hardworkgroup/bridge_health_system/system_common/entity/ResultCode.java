@@ -17,6 +17,9 @@ public enum ResultCode {
     UNAUTHORISE(false,10003,"权限不足"),
     SERVER_ERROR(false,10004,"抱歉，系统繁忙，请稍后重试！"),
 
+    //传感器长期与否错误
+    SensorIsShort_ERROR(false,20000,"你需要预测的传感器与数据不符"),
+
     //用户操作返回码
     MOBILEORPASSWORDERROR(false,20001,"手机号码或密码错误");
 

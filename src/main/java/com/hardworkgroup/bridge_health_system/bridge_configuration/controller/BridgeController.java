@@ -14,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * (BridgeController)表控制层
@@ -112,4 +109,20 @@ public class BridgeController {
         }
         return new Result(ResultCode.SUCCESS, sensorInBridgeResultList);
     }
+
+    /**
+     * 根据桥梁ID获取传感器类型
+     */
+    @RequestMapping(value = "/SensorTypeByBridgeID/{bridgeId}" , method = RequestMethod.GET)
+    public Result findSensorTypeByBridgeID(@PathVariable(value = "bridgeId") String bridgeId){
+        Set<String> sensorTypeInBridge = new HashSet<>();
+        // 获得桥梁下传感器
+        Bridge bridge = bridgeService.getSensorByBridgeID(bridgeId);
+        Set<Sensor> sensors = bridge.getSensors();
+        for (Sensor sensor : sensors){
+            sensorTypeInBridge.add(sensor.getSensorType());
+        }
+        return new Result(ResultCode.SUCCESS, sensorTypeInBridge);
+    }
+
 }

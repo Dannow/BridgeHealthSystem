@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 @SpringBootTest
@@ -24,11 +25,21 @@ class BridgeHealthSystemApplicationTests {
 
     @Test
     public void test() throws Exception {
-        System.out.println(bridgeService.getSensorByBridgeID("1"));
+        // 获得当前时间
+        Date nowTime = new Date();
+
+        // 得到指定的日期
+        Calendar c = Calendar.getInstance();
+        c.setTime(nowTime);
+        c.add(Calendar.DAY_OF_MONTH, -2);
+        Date targetTime = c.getTime();
+        System.out.println(targetTime);
+//        System.out.println(bridgeService.getSensorByBridgeID("1"));
 //        System.out.println(sensorDataService.getSensorDataBySensorID("长期温度监测表.xlsx","温度传感器A1",18));
-//        String sensorName = "温度传感器A1";
-//        String str = sensorName.substring(0,2);
+//        String sensorName = "温度a传感器A1";
+//        String str = sensorName.substring(sensorName.length()-2,sensorName.length());
 //        System.out.println(str);
+//        System.out.println(sensorService.getAlarmInformationBySensorID(1));
 //        OriginalData data = new OriginalData();
 //        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 //        Date sensorDataTime = formatter.parse("2020-04-28");
