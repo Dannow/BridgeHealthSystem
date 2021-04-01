@@ -34,8 +34,10 @@ public class SensorDataMonitorController {
     public Result findSensorDataBySensorType(@RequestBody Map<String,String > map) throws Exception {
         // 获得类型
         String sensorType = map.get("sensorType");
+        // 获取桥梁ID
+        String bridgeID = map.get("bridgeID");
         // 根据类型获得传感器
-        List<Sensor> sensorList = sensorService.getSensorOriginalDataBySensorType(sensorType);
+        List<Sensor> sensorList = sensorService.getSensorOriginalDataBySensorType(sensorType, bridgeID);
         // 获得最新的一份原始数据
         OriginalData originalData = null;
         List<String> sensorNameList = new ArrayList<>();
@@ -67,13 +69,15 @@ public class SensorDataMonitorController {
     public Result findSensorDataBySensorTypeInTime(@RequestBody Map<String,String > map) throws Exception {
         // 获得类型
         String sensorType = map.get("sensorType");
+        // 获取桥梁ID
+        String bridgeID = map.get("bridgeID");
         // 获得时间
         String time = map.get("targetTime");
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date targetTime = formatter.parse(time);
 
         // 根据类型获得传感器
-        List<Sensor> sensorList = sensorService.getSensorOriginalDataBySensorType(sensorType);
+        List<Sensor> sensorList = sensorService.getSensorOriginalDataBySensorType(sensorType, bridgeID);
         // 获得最新的一份原始数据
         OriginalData originalData = null;
         List<String> sensorNameList = new ArrayList<>();
