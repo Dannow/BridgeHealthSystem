@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
@@ -48,8 +49,10 @@ public class InspectionPlan implements Serializable {
 
     private String inspectionPlanTitle;
 
-    private Set<Bridge> bridges= new HashSet<>();
+    @ManyToOne
+    private Bridge bridge;
 
-    private Set<User> users= new HashSet<>();
+    @ManyToOne
+    private User user;
 
 }

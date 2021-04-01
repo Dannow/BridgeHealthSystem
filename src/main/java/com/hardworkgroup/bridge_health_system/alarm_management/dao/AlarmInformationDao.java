@@ -20,4 +20,6 @@ public interface AlarmInformationDao extends Mapper<AlarmInformation> {
     void deleteByKey(String alarmInformationID);
 
     List<AlarmInformation> selectAllByAlarmConfirmStatus(Integer alarmConfirmStatus);
+
+    List<AlarmInformation> selectAllByBridgeID(Integer bridgeID);
 }

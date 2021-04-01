@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hardworkgroup.bridge_health_system.bridge_inspection.dao.CheckInDao">
+
+    <resultMap id="checkInWithInspectionRecordAndUser" type="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.CheckIn">
+        <id property="checkID" column="checkID"/>
+        <result property="userID" column="userID"/>
+        <result property="inspectionRecordID" column="inspectionRecordID"/>
+        <result property="checkTime" column="checkTime"/>
+        <result property="checkLocation" column="checkLocation"/>
+        <result property="checkPicture" column="checkPicture"/>
+        <result property="checkStatus" column="checkStatus"/>
+        <association property="user"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User">
+            <id property="userID" column="userID"/>
+            <result property="userName" column="userName"/>
+            <result property="userPhone" column="userPhone"/>
+            <result property="userPassword" column="userPassword"/>
+            <result property="userEmail" column="userEmail"/>
+            <result property="userStatus" column="userStatus"/>
+            <result property="userLevel" column="userLevel"/>
+            <result property="userPicture" column="userPicture"/>
+        </association>
+        <association property="inspectionRecord"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionRecord">
+            <id property="inspectionRecordID" column="inspectionRecordID"/>
+            <result property="inspectionPlanID" column="inspectionPlanID"/>
+            <result property="inspectionTime" column="inspectionTime"/>
+            <result property="inspectionRecordTitle" column="inspectionRecordTitle"/>
+            <result property="inspectionContentDescription" column="inspectionContentDescription"/>
+        </association>
+    </resultMap>
+
+    <!--根据id查询巡检打卡-->
+    <select id="getCheckInByID" resultMap="checkInWithInspectionRecordAndUser">
+        select * from checkIn as c
+        LEFT JOIN user as u
+        on c.userID =u.userID
+        LEFT JOIN inspection_record as r
+        on r.inspectionRecordID=c.inspectionRecordID
+        where c.checkID = #{checkID}
+    </select>
+
+    <!--查询所有巡检打卡-->
+    <select id="selectAllCheckIn" resultMap="checkInWithInspectionRecordAndUser">
+        select * from checkIn as c
+        LEFT JOIN user as u
+        on c.userID =u.userID
+        LEFT JOIN inspection_record as r
+        on r.inspectionRecordID=c.inspectionRecordID
+    </select>
+
+    <!--根据userID获取所有巡检打卡列表-->
+    <select id="selectAllByUserID" resultMap="checkInWithInspectionRecordAndUser">
+        select * from checkIn as c
+        LEFT JOIN user as u
+        on c.userID =u.userID
+        LEFT JOIN inspection_record as r
+        on r.inspectionRecordID=c.inspectionRecordID
+        where c.userID=#{userID}
+    </select>
+
+    <!--更新巡检打卡-->
+    <update id="updateByKey" parameterType="map">
+        update checkIn
+        set userID=#{userID},
+        inspectionRecordID=#{inspectionRecordID},
+        checkTime=#{checkTime},
+        checkLocation=#{checkLocation},
+        checkPicture=#{checkPicture},
+        checkStatus=#{checkStatus}
+        where checkID = #{checkID}
+    </update>
+
+    <!--ID删除巡检打卡-->
+    <delete id="deleteByKey" parameterType="map">
+    	delete from checkIn where checkID = #{checkID}
+  	</delete>
+
+    <!--ID添加巡检打卡-->
+    <insert id="insertByKey" useGeneratedKeys="true" keyProperty="inspectionRecordID">
+        insert into checkIn (userID,inspectionRecordID,checkTime,checkLocation,checkPicture,checkStatus)
+        value (#{userID},#{inspectionRecordID},#{checkTime},#{checkLocation},#{checkPicture},#{checkStatus})
+    </insert>
+</mapper>

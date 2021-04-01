@@ -3,9 +3,7 @@ package com.hardworkgroup.bridge_health_system.bridge_inspection.service;
 
 import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionPlan;
-
-
-import java.util.List;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.response.SimplePlan;
 
 /**
  * (TPatrolPlan)表服务接口
@@ -16,7 +14,7 @@ import java.util.List;
 public interface InspectionPlanService {
 
 
-    PageInfo<InspectionPlan> findAll(int pageNum, int pageSize);
+    PageInfo<SimplePlan> findAll(int pageNum, int pageSize);
 
     Integer save(InspectionPlan inspectionPlan);
 
@@ -26,5 +24,5 @@ public interface InspectionPlanService {
 
     void delete(String InspectionPlanID);
 
-    PageInfo<InspectionPlan> getPlanByBridgeID(Integer bridgeID, int pageNum, int pageSize);
+    PageInfo<SimplePlan> getPlanByBridgeID(Integer bridgeID, int pageNum, int pageSize);
 }

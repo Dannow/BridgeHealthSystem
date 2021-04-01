@@ -23,31 +23,27 @@
 
     <!--更新传感器健康状况-->
     <update id="updateByKey" parameterType="map">
-        update sensor
-        set sensorName=#{sensorName},
-        sensorLocation=#{sensorLocation},
-        sensorType=#{sensorType},
-        upperThreshold=#{upperThreshold},
-        lowerThreshold=#{lowerThreshold},
-        sensorStatus=#{sensorStatus}
-        where sensorID = #{sensorID}
+        update sensor_health
+        set sensorType=#{sensorType},
+        bridgeID=#{bridgeID},
+        sensorScore=#{sensorScore},
+        weight=#{weight}
+        where sensorHealthID = #{sensorHealthID}
     </update>
 
     <!--ID删除传感器健康状况-->
     <delete id="deleteByKey" parameterType="map">
-    	delete from sensor where sensorID = #{sensorID}
+    	delete from sensor_health where sensorHealthID = #{sensorHealthID}
   	</delete>
 
     <!--ID添加传感器健康状况-->
     <insert id="insertByKey" useGeneratedKeys="true" keyProperty="sensorID">
-        insert into sensor (
-        bridgeID,sensorName,sensorLocation,
-        sensorType,upperThreshold,lowerThreshold,
-        sensorStatus)
+        insert into sensor_health (
+        sensorType,bridgeID,
+        sensorScore,weight)
         value (
-        #{bridgeID},#{sensorName},#{sensorLocation},
-        #{sensorType},#{upperThreshold},#{lowerThreshold},
-        #{sensorStatus})
+        #{sensorType},#{bridgeID},
+        #{sensorScore},#{weight})
     </insert>
 
 </mapper>

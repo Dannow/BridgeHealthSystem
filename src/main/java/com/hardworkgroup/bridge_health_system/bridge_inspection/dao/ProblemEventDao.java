@@ -28,4 +28,6 @@ public interface ProblemEventDao extends Mapper<ProblemEvent> {
     void deleteByKey(String problemEventID);
 
     void updateByKey(ProblemEvent tempProblemEvent);
+
+    List<ProblemEvent> selectAllByBridgeID(Integer bridgeID);
 }

@@ -52,8 +52,12 @@ public class BridgeController {
      * @return 桥梁结果
      */
     @RequestMapping(value = "/bridges" , method = RequestMethod.GET)
+
     public Result findAll(){
-        return new Result(ResultCode.SUCCESS,bridgeService.findAll());
+        List<BridgeSimpleResult> all = bridgeService.findAll();
+        Map<String,Object> map =new HashMap<>();
+        map.put("rows",all);
+        return new Result(ResultCode.SUCCESS,map);
     }
 
     /**

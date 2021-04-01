@@ -7,9 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -56,10 +54,6 @@ public class ProblemEvent implements Serializable {
      */
     private String confirmStatus;
     /**
-     * 问题照片
-     */
-    private String problemPicture;
-    /**
      * 问题事件标题
      */
     private String problemTitle;
@@ -68,7 +62,15 @@ public class ProblemEvent implements Serializable {
      */
     private String problemDescription;
 
-    private Set<Sensor> sensors = new HashSet<>();
+    @ManyToOne
+    private InspectionRecord inspectionRecord;
 
-    private Set<User> users = new HashSet<>();
+    @ManyToOne
+    private Sensor sensor;
+
+    @ManyToOne
+    private User user;
+
+    @OneToMany
+    private Set<ProblemEventPicture> problemEventPictures = new HashSet<>();
 }

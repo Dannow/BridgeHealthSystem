@@ -77,6 +77,7 @@ public class SensorHealthController {
     /**
      * 根据Id修改传感器健康状况
      */
+
     @RequestMapping(value = "/sensorHealth/{id}" , method = RequestMethod.PUT)
     public Result update(@PathVariable(value = "id") String id , @RequestBody SensorHealth sensorHealth){
         //调用Service更新
