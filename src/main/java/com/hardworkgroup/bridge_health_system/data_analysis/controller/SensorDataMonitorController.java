@@ -5,6 +5,7 @@ import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configu
 import com.hardworkgroup.bridge_health_system.common_model.domain.data_analysis.entity.OriginalData;
 import com.hardworkgroup.bridge_health_system.common_model.domain.data_analysis.response.SensorCorrelationDataResult;
 import com.hardworkgroup.bridge_health_system.common_model.domain.data_analysis.response.SensorMonitorDataResult;
+import com.hardworkgroup.bridge_health_system.common_model.domain.data_analysis.response.SensorMonitorDataWithNameResult;
 import com.hardworkgroup.bridge_health_system.data_analysis.service.SensorDataService;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
@@ -59,7 +60,8 @@ public class SensorDataMonitorController {
             }
         }
         List<SensorMonitorDataResult> sensorOriginalData = sensorDataService.getSensorDataInSensorType(originalData.getOriginalDataPath(), sensorNameList, 18);
-        return new Result(ResultCode.SUCCESS, sensorOriginalData);
+
+        return new Result(ResultCode.SUCCESS, new SensorMonitorDataWithNameResult(sensorNameList, sensorOriginalData));
     }
 
     /*
@@ -99,6 +101,6 @@ public class SensorDataMonitorController {
             }
         }
         List<SensorMonitorDataResult> sensorOriginalData = sensorDataService.getSensorDataInSensorTypeByTime(originalData.getOriginalDataPath(), sensorNameList, targetTime);
-        return new Result(ResultCode.SUCCESS, sensorOriginalData);
+        return new Result(ResultCode.SUCCESS, new SensorMonitorDataWithNameResult(sensorNameList, sensorOriginalData));
     }
 }
