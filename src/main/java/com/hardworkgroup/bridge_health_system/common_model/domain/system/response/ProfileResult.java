@@ -17,6 +17,7 @@ public class ProfileResult implements Serializable,AuthCachePrincipal {
     private Integer userId;
     private String phone;
     private String username;
+    private String userPicture;
     //private String company;
     //private String companyId;
     private Map<String,Object> roles = new HashMap<>();
@@ -31,6 +32,7 @@ public class ProfileResult implements Serializable,AuthCachePrincipal {
         //this.company = user.getCompanyName();
         //this.companyId = user.getCompanyId();
         this.userId = user.getUserID();
+        this.userPicture = user.getUserPicture();
         Set<String> menus = new HashSet<>();
         Set<String> points = new HashSet<>();
         Set<String> apis = new HashSet<>();
@@ -57,6 +59,7 @@ public class ProfileResult implements Serializable,AuthCachePrincipal {
         //this.company = user.getCompanyName();
         //this.companyId = user.getCompanyId();
         this.userId = user.getUserID();
+        this.userPicture = user.getUserPicture();
 //      Set<RoleAndUserRelations> roleAndUserRelations = user.getRauRelations();
         Set<Role> roles = user.getRoles();
         Set<String> menus = new HashSet<>();

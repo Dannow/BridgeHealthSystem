@@ -22,6 +22,7 @@ public class BaseController {
     //protected String companyId;
     //protected String companyName;
     protected Integer userId;
+    protected String userPicture;
 
     //使用shiro获取
     //进入控制器之前执行的方法
@@ -40,6 +41,7 @@ public class BaseController {
             //this.companyId = result.getCompanyId();
             //this.companyName = result.getCompany();
             this.userId = result.getUserId();
+            this.userPicture = result.getUserPicture();
         }
     }
 

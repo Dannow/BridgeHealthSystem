@@ -9,6 +9,8 @@ import com.hardworkgroup.bridge_health_system.bridge_configuration.service.servi
 import com.hardworkgroup.bridge_health_system.common_model.domain.activiti.entity.SiteMessage;
 import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_management.entity.AlarmInformation;
 import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_management.response.AlarmCountResult;
+import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_management.response.AlarmInformationWithBridge;
+import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_management.response.AlarmCountResult;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User;
@@ -139,9 +141,8 @@ public class AlarmController extends BaseController {
     public Result findAll(@RequestBody Map<String,String > map){
         int pageNum = Integer.parseInt((String) map.get("pageNum"));
         int pageSize = Integer.parseInt((String) map.get("pageSize"));
-        PageInfo<AlarmInformation> pageInfo = alarmDataService.findAll(pageNum, pageSize);
-        PageResult<AlarmInformation> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
-        System.out.println(pageInfo.getList());
+        PageInfo<AlarmInformationWithBridge> pageInfo = alarmDataService.findAll(pageNum, pageSize);
+        PageResult<AlarmInformationWithBridge> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
         return new Result(ResultCode.SUCCESS,pageResult);
     }
 
@@ -153,8 +154,20 @@ public class AlarmController extends BaseController {
     public Result findAllByConfirmStatus(@PathVariable(value = "alarmConfirmStatus") Integer alarmConfirmStatus,@RequestBody Map<String,String > map){
         int pageNum = Integer.parseInt((String)map.get("pageNum"));
         int pageSize = Integer.parseInt((String) map.get("pageSize"));
-        PageInfo<AlarmInformation> pageInfo = alarmDataService.findAllByAlarmConfirmStatus(alarmConfirmStatus,pageNum, pageSize);
-        PageResult<AlarmInformation> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
+        PageInfo<AlarmInformationWithBridge> pageInfo = alarmDataService.findAllByAlarmConfirmStatus(alarmConfirmStatus,pageNum, pageSize);
+        PageResult<AlarmInformationWithBridge> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
+        return new Result(ResultCode.SUCCESS,pageResult);
+    }
+
+    /**
+     * 根据桥梁ID查询所有报警信息
+     */
+    @RequestMapping(value = "/alarmInformation/bridgeID/{bridgeID}" , method = RequestMethod.POST)
+    public Result findAllByBridgeID(@PathVariable(value = "bridgeID") Integer bridgeID,@RequestBody Map<String,String > map){
+        int pageNum = Integer.parseInt((String)map.get("pageNum"));
+        int pageSize = Integer.parseInt((String) map.get("pageSize"));
+        PageInfo<AlarmInformationWithBridge> pageInfo = alarmDataService.findAllByBridgeID(bridgeID,pageNum, pageSize);
+        PageResult<AlarmInformationWithBridge> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
         return new Result(ResultCode.SUCCESS,pageResult);
     }
     /**

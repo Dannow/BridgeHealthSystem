@@ -4,32 +4,45 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hardworkgroup.bridge_health_system.bridge_inspection.dao.InspectionDataDao">
 
-    <!--根据id查询巡检记录-->
-    <!--<select id="getProblemEventByID" resultMap="problemEventWithSensorAndUser">
-        select * from problem_event as e
-        LEFT JOIN sensor as s
-        on e.sensorID =s.sensorID
-        LEFT JOIN user as u on e.userID=u.userID
-        where problemEventID = #{problemEventID}
-    </select>
-
-    &lt;!&ndash;查询所有巡检记录&ndash;&gt;
-    <select id="selectAllProblemEvent" resultMap="problemEventWithSensorAndUser">
-        select * from problem_event as e
-        LEFT JOIN sensor as s
-        on e.sensorID =s.sensorID
-        LEFT JOIN user as u on e.userID=u.userID
-    </select>
-
-    &lt;!&ndash;根据planID获取所有巡检记录列表&ndash;&gt;
-    <select id="selectAllByRecordID" resultMap="problemEventWithSensorAndUser">
-        select * from inspectionDataID as d
+    <resultMap id="DataWithSensor" type="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionData">
+        <id property="inspectionDataID" column="inspectionDataID"/>
+        <result property="inspectionRecordID" column="inspectionRecordID"/>
+        <result property="sensorID" column="sensorID"/>
+        <result property="manualSensorData" column="manualSensorData"/>
+        <result property="status" column="status"/>
+        <association property="sensor"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor">
+            <id property="sensorID" column="sensorID"/>
+            <result property="bridgeID" column="bridgeID"/>
+            <result property="sensorName" column="sensorName"/>
+            <result property="sensorLocation" column="sensorLocation"/>
+            <result property="sensorType" column="sensorType"/>
+            <result property="upperThreshold" column="upperThreshold"/>
+            <result property="lowerThreshold" column="lowerThreshold"/>
+            <result property="sensorStatus" column="sensorStatus"/>
+        </association>
+    </resultMap>
+    <!--根据id查询巡检数据-->
+    <select id="getInspectionDataByID" resultMap="DataWithSensor">
+        select * from inspection_data as d
         LEFT JOIN sensor as s
         on d.sensorID =s.sensorID
-        LEFT JOIN inspection_record as r
-        on d.inspectionRecordID=r.inspectionRecordID
-        where d.inspectionDataID=#{inspectionDataID}
-    </select>-->
+        where d.inspectionDataID = #{inspectionDataID}
+    </select>
+
+    <!--查询所有巡检数据-->
+    <select id="selectAllInspectionData" resultMap="DataWithSensor">
+        select * from inspection_data as d
+        LEFT JOIN sensor as s
+        on d.sensorID =s.sensorID
+    </select>
+
+    <!--根据recordID获取所有巡检数据列表-->
+    <select id="selectAllByRecordID" resultMap="DataWithSensor">
+        select * from inspection_data as d
+        LEFT JOIN sensor as s
+        on d.sensorID =s.sensorID
+        where d.inspectionRecordID=#{inspectionRecordID}
+    </select>
 
     <!--更新巡检记录-->
     <update id="updateByKey" parameterType="map">

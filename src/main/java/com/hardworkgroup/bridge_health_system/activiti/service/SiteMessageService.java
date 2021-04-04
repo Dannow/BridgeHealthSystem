@@ -13,5 +13,5 @@ public interface SiteMessageService {
 
     int readMsg(Integer id, Integer userID);
 
-    int sendMsg(Integer userID, String taskId, Integer type, Integer isRead);
+    int sendMsg(Integer userID, String taskId, Integer type);
 }

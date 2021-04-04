@@ -54,6 +54,11 @@
         select * from alarm_information as a LEFT JOIN sensor as s on a.sensorID = s.sensorID LEFT JOIN bridge as b on b.bridgeID = s.bridgeID
     </select>
 
+    <!--根据桥梁ID确认状态查询所有报警信息-->
+    <select id="selectAllByBridgeID" resultMap="AlarmInformationWithSensor">
+        select * from alarm_information as a LEFT JOIN sensor as s on a.sensorID = s.sensorID LEFT JOIN bridge as b on b.bridgeID = s.bridgeID WHERE b.bridgeID = #{bridgeID}
+    </select>
+
     <!--根据管理员确认状态查询所有报警信息-->
     <select id="selectAllByAlarmConfirmStatus" resultMap="AlarmInformationWithSensor">
         select * from alarm_information as a LEFT JOIN sensor as s on a.sensorID = s.sensorID LEFT JOIN bridge as b on b.bridgeID = s.bridgeID WHERE a.alarmConfirmStatus = #{alarmConfirmStatus}

@@ -5,9 +5,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.alarm_management.dao.AlarmInformationDao;
 import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_management.entity.AlarmInformation;
+import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_management.response.AlarmInformationWithBridge;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,11 +28,27 @@ public class AlarmDataServiceImpl {
     /**
      * 查询所有报警数据
      */
-    public PageInfo<AlarmInformation> findAll(int pageNum, int pageSize) {
+    public PageInfo<AlarmInformationWithBridge> findAll(int pageNum, int pageSize) {
         Page<AlarmInformation> page = PageHelper.startPage(pageNum,pageSize);
         List<AlarmInformation> alarmInformation =  alarmInformationDao.selectAllAlarmInformation();
-        PageInfo<AlarmInformation> pageInfo = new PageInfo<>(alarmInformation,5);
-        return pageInfo;
+        List<AlarmInformationWithBridge> alarmInformationWithBridges = new ArrayList<>();
+        for (AlarmInformation information : alarmInformation) {
+            alarmInformationWithBridges.add(new AlarmInformationWithBridge(information));
+        }
+        return new PageInfo<>(alarmInformationWithBridges,5);
+    }
+
+    /**
+     * 根据桥梁ID查询所有报警数据
+     */
+    public PageInfo<AlarmInformationWithBridge> findAllByBridgeID(Integer bridgeID, int pageNum, int pageSize) {
+        Page<AlarmInformation> page = PageHelper.startPage(pageNum,pageSize);
+        List<AlarmInformation> alarmInformation =  alarmInformationDao.selectAllByBridgeID(bridgeID);
+        List<AlarmInformationWithBridge> alarmInformationWithBridges = new ArrayList<>();
+        for (AlarmInformation information : alarmInformation) {
+            alarmInformationWithBridges.add(new AlarmInformationWithBridge(information));
+        }
+        return new PageInfo<>(alarmInformationWithBridges,5);
     }
 
     /**
@@ -48,9 +66,13 @@ public class AlarmDataServiceImpl {
         alarmInformationDao.deleteByKey(alarmInformationID);
     }
 
-    public PageInfo<AlarmInformation> findAllByAlarmConfirmStatus(Integer alarmConfirmStatus, int pageNum, int pageSize) {
+    public PageInfo<AlarmInformationWithBridge> findAllByAlarmConfirmStatus(Integer alarmConfirmStatus, int pageNum, int pageSize) {
         Page<AlarmInformation> page = PageHelper.startPage(pageNum,pageSize);
         List<AlarmInformation> alarmInformation =  alarmInformationDao.selectAllByAlarmConfirmStatus(alarmConfirmStatus);
-        return new PageInfo<>(alarmInformation,5);
+        List<AlarmInformationWithBridge> alarmInformationWithBridges = new ArrayList<>();
+        for (AlarmInformation information : alarmInformation) {
+            alarmInformationWithBridges.add(new AlarmInformationWithBridge(information));
+        }
+        return new PageInfo<>(alarmInformationWithBridges,5);
     }
 }

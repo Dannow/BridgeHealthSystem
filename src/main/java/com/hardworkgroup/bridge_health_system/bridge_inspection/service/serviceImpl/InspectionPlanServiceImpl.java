@@ -7,10 +7,12 @@ import com.hardworkgroup.bridge_health_system.activiti.service.IActFlowCustomSer
 import com.hardworkgroup.bridge_health_system.bridge_inspection.dao.InspectionPlanDao;
 import com.hardworkgroup.bridge_health_system.bridge_inspection.service.InspectionPlanService;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionPlan;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.response.SimplePlan;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,17 +35,14 @@ public class InspectionPlanServiceImpl implements InspectionPlanService, IActFlo
     public PageInfo<InspectionPlan> findAll(int pageNum, int pageSize) {
         Page<InspectionPlan> page = PageHelper.startPage(pageNum,pageSize);
         List<InspectionPlan> inspectionPlans =  inspectionPlanDao.selectAllInspectionPlan();
-        PageInfo<InspectionPlan> pageInfo = new PageInfo<>(inspectionPlans,5);
-
-        return pageInfo;
+        return new PageInfo<>(inspectionPlans,5);
     }
 
     @Override
     public PageInfo<InspectionPlan> getPlanByBridgeID(Integer bridgeID, int pageNum, int pageSize) {
         Page<InspectionPlan> page = PageHelper.startPage(pageNum,pageSize);
         List<InspectionPlan> inspectionPlans =  inspectionPlanDao.selectAllByBridgeID(bridgeID);
-        PageInfo<InspectionPlan> pageInfo = new PageInfo<>(inspectionPlans,5);
-        return pageInfo;
+        return new PageInfo<>(inspectionPlans,5);
     }
 
     @Override

@@ -30,4 +30,6 @@ public interface InspectionRecordDao extends Mapper<InspectionRecord> {
     void deleteByKey(String inspectionRecordID);
 
     List<InspectionRecord> selectAllByPlanID(Integer inspectionPlanID);
+
+    List<InspectionRecord> selectAllByBridgeID(Integer bridgeID);
 }

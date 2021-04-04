@@ -25,7 +25,7 @@ public class SensorHealth {
     /**
      * 桥梁Id
      */
-    //private Integer bridgeID;
+    private Integer bridgeID;
     /**
      * 传感器分数
      */

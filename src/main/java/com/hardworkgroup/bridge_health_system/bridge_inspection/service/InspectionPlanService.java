@@ -3,9 +3,7 @@ package com.hardworkgroup.bridge_health_system.bridge_inspection.service;
 
 import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionPlan;
-
-
-import java.util.List;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.response.SimplePlan;
 
 /**
  * (TPatrolPlan)表服务接口

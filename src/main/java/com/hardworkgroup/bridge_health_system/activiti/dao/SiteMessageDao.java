@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,9 +22,9 @@ public interface SiteMessageDao {
     @Select("select * from siteMessage where isRead= 0 and userID=#{userID}")
     SiteMessage selectOne( @Param("userID") Integer userID);
 
-    @Update("update siteMessage where id=#{id} and userID=#{userID}")
+    @Update("update siteMessage set isRead=1 where id=#{id} and userID=#{userID}")
     int updateMsgRead(@Param("id") Integer id, @Param("userID") Integer userID);
 
-    @Insert("insert into siteMessage (userID,taskID,type,isRead) values (#{userID},#{taskID},#{type},#{isRead})")
-    int insertMsg(@Param("userID") Integer userID, @Param("taskID") String taskID, @Param("type") Integer type, @Param("isRead") Integer isRead);
+    @Insert("insert into siteMessage (userID,taskID,type,isRead) values (#{userID},#{taskID},#{type},0)")
+    int insertMsg(@Param("userID") Integer userID, @Param("taskID") String taskID, @Param("type") Integer type);
 }

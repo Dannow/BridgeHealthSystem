@@ -10,49 +10,88 @@
         <result property="inspectionTime" column="inspectionTime"/>
         <result property="inspectionRecordTitle" column="inspectionRecordTitle"/>
         <result property="inspectionContentDescription" column="inspectionContentDescription"/>
-        <association property="sensors"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor">
-            <id property="sensorID" column="sensorID"/>
-            <result property="bridgeID" column="bridgeID"/>
-            <result property="sensorName" column="sensorName"/>
-            <result property="sensorLocation" column="sensorLocation"/>
-            <result property="sensorType" column="sensorType"/>
-            <result property="upperThreshold" column="upperThreshold"/>
-            <result property="lowerThreshold" column="lowerThreshold"/>
-            <result property="sensorStatus" column="sensorStatus"/>
+        <collection property="inspectionPlan"  resultMap="PlanWithUserAndBridge">
+        </collection>
+    </resultMap>
+
+    <resultMap id="PlanWithUserAndBridge" type="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionPlan">
+        <id property="inspectionPlanID" column="inspectionPlanID"/>
+        <result property="userID" column="userID"/>
+        <result property="bridgeID" column="bridgeID"/>
+        <result property="inspectionStartTime" column="inspectionStartTime"/>
+        <result property="inspectionEndTime" column="inspectionEndTime"/>
+        <result property="inspectionCompletionStatus" column="inspectionCompletionStatus"/>
+        <result property="inspectionCheckInStatus" column="inspectionCheckInStatus"/>
+        <association property="bridge"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge">
+            <id property="bridgeID" column="bridgeID"/>
+            <result property="bridgeName" column="bridgeName"/>
+            <result property="bridgeType" column="bridgeType"/>
+            <result property="bridgeLength" column="bridgeLength"/>
+            <result property="bridgeMaxSpeed" column="bridgeMaxSpeed"/>
+            <result property="bridgeAddress" column="bridgeAddress"/>
+            <result property="bridgePicture" column="bridgePicture"/>
+            <result property="longitude" column="longitude"/>
+            <result property="dimension" column="dimension"/>
+            <result property="availableYear" column="availableYear"/>
+            <result property="constructionCompany" column="constructionCompany"/>
+            <result property="constructionDate" column="constructionDate"/>
+            <result property="healthState" column="healthState"/>
         </association>
-        <association property="inspectionData"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionData">
-            <id property="inspectionDataID" column="inspectionDataID"/>
-            <result property="inspectionRecordID" column="inspectionRecordID"/>
-            <result property="sensorID" column="sensorID"/>
-            <result property="manualSensorData" column="manualSensorData"/>
-            <result property="status" column="status"/>
+        <association property="user"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User">
+            <id property="userID" column="userID"/>
+            <result property="userName" column="userName"/>
+            <result property="userPhone" column="userPhone"/>
+            <result property="userEmail" column="userEmail"/>
+            <result property="userStatus" column="userStatus"/>
+            <result property="userLevel" column="userLevel"/>
         </association>
     </resultMap>
 
     <!--根据id查询巡检记录-->
     <select id="getRecordByID" resultMap="recordWithSensorAndData">
         select * from inspection_record as r
-        LEFT JOIN inspection_data as d
-        on r.inspectionRecordID =d.inspectionRecordID
-        LEFT JOIN sensor as s on d.sensorID=s.sensorID
+        LEFT JOIN inspection_plan ip
+        on r.inspectionPlanID = ip.inspectionPlanID
+        LEFT JOIN user as u
+        on u.userID = ip.userID
+        LEFT JOIN bridge as b
+        on b.bridgeID = ip.bridgeID
         where r.inspectionRecordID = #{inspectionRecordID}
     </select>
 
     <!--查询所有巡检记录-->
     <select id="selectAllInspectionRecord" resultMap="recordWithSensorAndData">
         select * from inspection_record as r
-        LEFT JOIN inspection_data as d
-        on r.inspectionRecordID =d.inspectionRecordID
-        LEFT JOIN sensor as s on d.sensorID=s.sensorID
+        LEFT JOIN inspection_plan ip
+        on r.inspectionPlanID = ip.inspectionPlanID
+        LEFT JOIN user as u
+        on u.userID = ip.userID
+        LEFT JOIN bridge as b
+        on b.bridgeID = ip.bridgeID
     </select>
 
     <!--根据planID获取所有巡检记录列表-->
     <select id="selectAllByPlanID" resultMap="recordWithSensorAndData">
         select * from inspection_record as r
-        LEFT JOIN inspection_data as d
-        on r.inspectionRecordID =d.inspectionRecordID
-        LEFT JOIN sensor as s on d.sensorID=s.sensorID
+        LEFT JOIN inspection_plan ip
+        on r.inspectionPlanID = ip.inspectionPlanID
+        LEFT JOIN user as u
+        on u.userID = ip.userID
+        LEFT JOIN bridge as b
+        on b.bridgeID = ip.bridgeID
         where r.inspectionPlanID=#{inspectionPlanID}
+    </select>
+
+    <!--根据bridgeID获取所有巡检记录列表-->
+    <select id="selectAllByBridgeID" resultMap="recordWithSensorAndData">
+        select * from inspection_record as r
+        LEFT JOIN inspection_plan ip
+        on r.inspectionPlanID = ip.inspectionPlanID
+        LEFT JOIN user as u
+        on u.userID = ip.userID
+        LEFT JOIN bridge as b
+        on b.bridgeID = ip.bridgeID
+        where b.bridgeID=#{bridgeID}
     </select>
 
     <!--更新巡检记录-->

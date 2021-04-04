@@ -12,11 +12,11 @@ import java.util.Date;
 @Data
 public class BridgeSimpleResult {
     private String bridgeName;
-    private int bridgeLength;
+    private String bridgeLength;
     private String bridgeAddress;
     private String constructionCompany;
     private String bridgePicture;
-    private String bridgeID;
+    private Integer bridgeID;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -24,7 +24,7 @@ public class BridgeSimpleResult {
     public BridgeSimpleResult(Bridge bridge){
         this.bridgeID = bridge.getBridgeID();
         this.bridgeName = bridge.getBridgeName();
-        this.bridgeLength = bridge.getBridgeLength();
+        this.bridgeLength = bridge.getBridgeLength().toString();
         this.bridgeAddress = bridge.getBridgeAddress();
         this.constructionCompany = bridge.getConstructionCompany();
         this.constructionDate = bridge.getConstructionDate();

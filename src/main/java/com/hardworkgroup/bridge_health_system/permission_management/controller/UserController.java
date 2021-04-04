@@ -3,6 +3,7 @@ package com.hardworkgroup.bridge_health_system.permission_management.controller;
 import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.response.ProfileResult;
+import com.hardworkgroup.bridge_health_system.common_model.domain.system.response.UserWithPictureResult;
 import com.hardworkgroup.bridge_health_system.permission_management.service.serviceImpl.RoleAndUserRelationsServiceImpl;
 import com.hardworkgroup.bridge_health_system.permission_management.service.serviceImpl.UserServiceImpl;
 import com.hardworkgroup.bridge_health_system.system_common.controller.BaseController;
@@ -21,8 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 //解决跨域
@@ -66,18 +66,34 @@ public class UserController extends BaseController {
             //获取sessionId
             String sessionId = (String) subject.getSession().getId();
             //构造返回结果
-            return new Result(ResultCode.SUCCESS , sessionId);
+            return new Result(ResultCode.SUCCESS ,sessionId);
         }catch (Exception e){
             return new Result(ResultCode.MOBILEORPASSWORDERROR);
         }
     }
 
-    @RequestMapping(value = "/userPicture" , method = RequestMethod.POST)
-    public Result userPicture(){
-        User user = userService.getUserByID(this.userId.toString());
-        String userPicture = "http://121.199.75.149:9999/img/"+user.getUserPicture();
-        return new Result(ResultCode.SUCCESS,userPicture);
-
+    @RequestMapping(value = "/loginWithUserPicture" , method = RequestMethod.POST)
+    public Result userPicture(@RequestBody Map<String,Object> loginMap){
+        String phone = (String) loginMap.get("phone");
+        String password = (String) loginMap.get("password");
+        try {
+            //构造登录令牌
+            password = new Md5Hash(password , phone , 3).toString();
+            UsernamePasswordToken upToken = new UsernamePasswordToken(phone , password);
+            //获取subject
+            Subject subject = SecurityUtils.getSubject();
+            //调用login方法,进入realm完成认证
+            subject.login(upToken);
+            //获取sessionId
+            String sessionId = (String) subject.getSession().getId();
+            String userPicture = "http://121.199.75.149:9999/img/"+this.userPicture;
+            Map<String, Object> map = new HashMap<>();
+            map.put("rows",new UserWithPictureResult(sessionId,userPicture));
+            //构造返回结果
+            return new Result(ResultCode.SUCCESS , map);
+        }catch (Exception e){
+            return new Result(ResultCode.MOBILEORPASSWORDERROR);
+        }
     }
     /**
      * 用户登录成功之后,获取用户信息

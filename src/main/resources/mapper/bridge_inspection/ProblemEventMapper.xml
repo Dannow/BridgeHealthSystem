@@ -12,20 +12,9 @@
         <result property="problemCreationTime" column="problemCreationTime"/>
         <result property="maintenanceStatus" column="maintenanceStatus"/>
         <result property="confirmStatus" column="confirmStatus"/>
-        <result property="problemPicture" column="problemPicture"/>
         <result property="problemTitle" column="problemTitle"/>
         <result property="problemDescription" column="problemDescription"/>
-        <association property="sensors"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor">
-            <id property="sensorID" column="sensorID"/>
-            <result property="bridgeID" column="bridgeID"/>
-            <result property="sensorName" column="sensorName"/>
-            <result property="sensorLocation" column="sensorLocation"/>
-            <result property="sensorType" column="sensorType"/>
-            <result property="upperThreshold" column="upperThreshold"/>
-            <result property="lowerThreshold" column="lowerThreshold"/>
-            <result property="sensorStatus" column="sensorStatus"/>
-        </association>
-        <association property="users"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User">
+        <association property="user"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User">
             <id property="userID" column="userID"/>
             <result property="userName" column="userName"/>
             <result property="userPhone" column="userPhone"/>
@@ -34,60 +23,105 @@
             <result property="userStatus" column="userStatus"/>
             <result property="userLevel" column="userLevel"/>
         </association>
+        <collection property="sensor"  resultMap="sensorsWithBridge">
+        </collection>
+    </resultMap>
+    <resultMap id="sensorsWithBridge" type="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor">
+        <id property="sensorID" column="sensorID"/>
+        <result property="bridgeID" column="bridgeID"/>
+        <result property="sensorName" column="sensorName"/>
+        <result property="sensorLocation" column="sensorLocation"/>
+        <result property="sensorType" column="sensorType"/>
+        <result property="upperThreshold" column="upperThreshold"/>
+        <result property="lowerThreshold" column="lowerThreshold"/>
+        <result property="sensorStatus" column="sensorStatus"/>
+        <association property="bridge" javaType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge">
+            <id property="bridgeID" column="bridgeID"/>
+            <result property="bridgeName" column="bridgeName"/>
+            <result property="bridgeType" column="bridgeType"/>
+            <result property="bridgeLength" column="bridgeLength"/>
+            <result property="bridgeMaxSpeed" column="bridgeMaxSpeed"/>
+            <result property="bridgeAddress" column="bridgeAddress"/>
+            <result property="bridgePicture" column="bridgePicture"/>
+            <result property="longitude" column="longitude"/>
+            <result property="dimension" column="dimension"/>
+            <result property="availableYear" column="availableYear"/>
+            <result property="constructionCompany" column="constructionCompany"/>
+            <result property="constructionDate" column="constructionDate"/>
+            <result property="healthState" column="healthState"/>
+        </association>
     </resultMap>
 
-    <!--根据id查询巡检记录-->
+    <!--根据id查询问题事件-->
     <select id="getProblemEventByID" resultMap="problemEventWithSensorAndUser">
         select * from problem_event as e
         LEFT JOIN sensor as s
         on e.sensorID =s.sensorID
-        LEFT JOIN user as u on e.userID=u.userID
-        where problemEventID = #{problemEventID}
+        LEFT JOIN user as u
+        on e.userID=u.userID
+        LEFT JOIN bridge b
+        on s.bridgeID = b.bridgeID
+        where e.problemEventID = #{problemEventID}
     </select>
 
-    <!--查询所有巡检记录-->
+    <!--查询所有问题事件-->
     <select id="selectAllProblemEvent" resultMap="problemEventWithSensorAndUser">
         select * from problem_event as e
         LEFT JOIN sensor as s
         on e.sensorID =s.sensorID
-        LEFT JOIN user as u on e.userID=u.userID
+        LEFT JOIN user as u
+        on e.userID=u.userID
+        LEFT JOIN bridge b
+        on s.bridgeID = b.bridgeID
     </select>
 
-    <!--根据planID获取所有巡检记录列表-->
+    <!--根据planID获取所有问题事件列表-->
     <select id="selectAllByRecordID" resultMap="problemEventWithSensorAndUser">
         select * from problem_event as e
         LEFT JOIN sensor as s
         on e.sensorID =s.sensorID
-        LEFT JOIN user as u on e.userID=u.userID
+        LEFT JOIN user as u
+        on e.userID=u.userID
+        LEFT JOIN bridge b
+        on s.bridgeID = b.bridgeID
         where e.inspectionRecordID=#{inspectionRecordID}
     </select>
 
-    <!--更新巡检记录-->
+    <!--根据bridgeID获取所有问题事件列表-->
+    <select id="selectAllByBridgeID" resultMap="problemEventWithSensorAndUser">
+        select * from problem_event as e
+        LEFT JOIN sensor as s
+        on e.sensorID =s.sensorID
+        LEFT JOIN user as u
+        on e.userID=u.userID
+        LEFT JOIN bridge b
+        on s.bridgeID = b.bridgeID
+        where b.bridgeID=#{bridgeID}
+    </select>
+
+    <!--更新问题事件-->
     <update id="updateByKey" parameterType="map">
         update problem_event
         set inspectionRecordID=#{inspectionRecordID},sensorID=#{sensorID},
         userID=#{userID},problemCreationTime=#{problemCreationTime},
         maintenanceStatus=#{maintenanceStatus},confirmStatus=#{confirmStatus},
-        problemPicture=#{problemPicture},problemTitle=#{problemTitle},
-        problemDescription=#{problemDescription}
+        problemTitle=#{problemTitle},problemDescription=#{problemDescription}
         where problemEventID = #{problemEventID}
     </update>
 
-    <!--ID删除巡检记录-->
+    <!--ID删除问题事件-->
     <delete id="deleteByKey" parameterType="map">
     	delete from problem_event where problemEventID = #{problemEventID}
   	</delete>
 
-    <!--ID添加巡检记录-->
+    <!--ID添加问题事件-->
     <insert id="insertByKey" useGeneratedKeys="true" keyProperty="problemEventID">
         insert into problem_event (
         inspectionRecordID,sensorID,userID,
         problemCreationTime,maintenanceStatus,
-        confirmStatus,problemPicture,
-        problemTitle,problemDescription)
+        confirmStatus,problemTitle,problemDescription)
         value (#{inspectionRecordID},#{sensorID},#{userID},
         #{problemCreationTime},#{maintenanceStatus},
-        #{confirmStatus},#{problemPicture},
-        #{problemTitle},#{problemDescription})
+        #{confirmStatus},#{problemTitle},#{problemDescription})
     </insert>
 </mapper>

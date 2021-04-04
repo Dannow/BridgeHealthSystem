@@ -30,7 +30,7 @@ public class SiteMessageServiceImpl implements SiteMessageService {
         return siteMessageDao.updateMsgRead(id,userID);
     }
     @Override
-    public int sendMsg(Integer userID, String taskId, Integer type, Integer isRead) {
-        return siteMessageDao.insertMsg(userID,taskId,type,isRead);
+    public int sendMsg(Integer userID, String taskId, Integer type) {
+        return siteMessageDao.insertMsg(userID,taskId,type);
     }
 }

@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.activiti.service.serviceImpl.ActFlowCommServiceImpl;
 import com.hardworkgroup.bridge_health_system.bridge_inspection.service.serviceImpl.InspectionPlanServiceImpl;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionPlan;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.response.SimplePlan;
 import com.hardworkgroup.bridge_health_system.system_common.controller.BaseController;
 import com.hardworkgroup.bridge_health_system.system_common.entity.PageResult;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
@@ -16,6 +17,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +51,11 @@ public class InspectionPlanController extends BaseController {
         int pageNum = Integer.parseInt((String) map.get("pageNum"));
         int pageSize = Integer.parseInt((String) map.get("pageSize"));
         PageInfo<InspectionPlan> pageInfo = inspectionPlanService.findAll(pageNum, pageSize);
-        PageResult<InspectionPlan> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
+        List<SimplePlan> simplePlans= new ArrayList<>();
+        for (InspectionPlan inspectionPlan : pageInfo.getList()) {
+            simplePlans.add(new SimplePlan(inspectionPlan));
+        }
+        PageResult<SimplePlan> pageResult = new PageResult<>(pageInfo.getTotal(), simplePlans);
         return new Result(ResultCode.SUCCESS,pageResult);
     }
 
@@ -62,7 +68,11 @@ public class InspectionPlanController extends BaseController {
         int pageSize = Integer.parseInt((String) map.get("pageSize"));
         //根据bridgeID查询巡检计划
         PageInfo<InspectionPlan> pageInfo = inspectionPlanService.getPlanByBridgeID(bridgeID, pageNum, pageSize);
-        PageResult<InspectionPlan> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
+        List<SimplePlan> simplePlans = new ArrayList<>();
+        for (InspectionPlan inspectionPlan : pageInfo.getList()) {
+            simplePlans.add(new SimplePlan(inspectionPlan));
+        }
+        PageResult<SimplePlan> pageResult = new PageResult<>(pageInfo.getTotal(), simplePlans);
         return new Result(ResultCode.SUCCESS , pageResult);
     }
 
@@ -73,7 +83,8 @@ public class InspectionPlanController extends BaseController {
     public Result findById(@PathVariable(value = "id") String id){
         //添加planID
         InspectionPlan inspectionRecord = inspectionPlanService.getPlanByID(id);
-        return new Result(ResultCode.SUCCESS , inspectionRecord);
+        SimplePlan simplePlan = new SimplePlan(inspectionRecord);
+        return new Result(ResultCode.SUCCESS , simplePlan);
     }
 
     /**

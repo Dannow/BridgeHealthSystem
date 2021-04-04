@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hardworkgroup.bridge_health_system.bridge_inspection.dao.ProblemEventPictureDao">
+
+    <!--根据id查询问题事件照片-->
+    <select id="getProblemEventPictureByID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.ProblemEventPicture">
+        select * from problem_event_picture
+        where problemPictureID = #{problemPictureID}
+    </select>
+
+    <!--根据problemEventID获取所有问题事件照片-->
+    <select id="selectAllByEventID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.ProblemEventPicture">
+        select * from problem_event_picture
+        where problemEventID=#{problemEventID}
+    </select>
+
+    <!--获取所有问题事件照片-->
+    <select id="selectAllProblemEventPicture" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.ProblemEventPicture">
+        select * from problem_event_picture
+    </select>
+
+    <!--更新问题事件照片-->
+    <update id="updateByKey" parameterType="map">
+        update problem_event_picture
+        set problemEventID=#{problemEventID},problemPicture=#{problemPicture}
+        where problemEventID = #{problemEventID}
+    </update>
+
+    <!--ID删除问题事件照片-->
+    <delete id="deleteByKey" parameterType="map">
+    	delete from problem_event_picture where problemPictureID = #{problemPictureID}
+  	</delete>
+
+    <!--ID添加问题事件照片-->
+    <insert id="insertByKey" useGeneratedKeys="true" keyProperty="problemEventID">
+        insert into problem_event_picture (
+        problemEventID,problemPicture)
+        value (#{problemEventID},#{problemPicture})
+    </insert>
+</mapper>

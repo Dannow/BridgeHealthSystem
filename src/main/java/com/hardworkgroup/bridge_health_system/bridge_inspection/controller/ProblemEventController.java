@@ -1,15 +1,22 @@
 package com.hardworkgroup.bridge_health_system.bridge_inspection.controller;
 
 import com.github.pagehelper.PageInfo;
+import com.hardworkgroup.bridge_health_system.bridge_inspection.dao.ProblemEventPictureDao;
 import com.hardworkgroup.bridge_health_system.bridge_inspection.service.serviceImpl.ProblemEventServiceImpl;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.ProblemEvent;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.ProblemEventPicture;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.response.SimpleEvent;
 import com.hardworkgroup.bridge_health_system.system_common.entity.PageResult;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * (ProblemEventController)表控制层
@@ -25,32 +32,67 @@ public class ProblemEventController {
     /**
      * 服务对象
      */
-    @Autowired
+    @Resource
     private ProblemEventServiceImpl problemEventService;
 
+    @Resource
+    ProblemEventPictureDao problemEventPictureDao;
     /**
      * 获取所有问题事件列表
      * @return 巡检计划结果
      */
+    @Transactional
     @RequestMapping(value = "/problemEvents" , method = RequestMethod.POST)
     public Result findAll(@RequestBody Map<String,String > map){
         int pageNum = Integer.parseInt((String) map.get("pageNum"));
         int pageSize = Integer.parseInt((String) map.get("pageSize"));
         PageInfo<ProblemEvent> pageInfo = problemEventService.findAll(pageNum, pageSize);
-        PageResult<ProblemEvent> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
+        List<SimpleEvent> simpleEvents = new ArrayList<>();
+        for (ProblemEvent problemEvent : pageInfo.getList()) {
+            List<ProblemEventPicture> problemEventPictures =  problemEventPictureDao.selectAllByEventID(problemEvent.getProblemEventID());
+            problemEvent.setProblemEventPictures(problemEventPictures);
+            simpleEvents.add(new SimpleEvent(problemEvent));
+        }
+        PageResult<SimpleEvent> pageResult = new PageResult<>(pageInfo.getTotal(), simpleEvents);
         return new Result(ResultCode.SUCCESS,pageResult);
     }
 
     /**
      * 根据记录Id查询问题事件
      */
+    @Transactional
     @RequestMapping(value = "/problemEvent/record/{recordID}" , method = RequestMethod.POST)
-    public Result findByBridgeId(@PathVariable(value = "recordID") Integer recordID, @RequestBody Map<String,String > map){
+    public Result findByRecordID(@PathVariable(value = "recordID") Integer recordID, @RequestBody Map<String,String > map){
         int pageNum = Integer.parseInt((String) map.get("pageNum"));
         int pageSize = Integer.parseInt((String) map.get("pageSize"));
         //根据bridgeID查询巡检计划
         PageInfo<ProblemEvent> pageInfo = problemEventService.getProblemEventByRecordID(recordID, pageNum, pageSize);
-        PageResult<ProblemEvent> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
+        List<SimpleEvent> simpleEvents = new ArrayList<>();
+        for (ProblemEvent problemEvent : pageInfo.getList()) {
+            List<ProblemEventPicture> problemEventPictures =  problemEventPictureDao.selectAllByEventID(problemEvent.getProblemEventID());
+            problemEvent.setProblemEventPictures(problemEventPictures);
+            simpleEvents.add(new SimpleEvent(problemEvent));
+        }
+        PageResult<SimpleEvent> pageResult = new PageResult<>(pageInfo.getTotal(), simpleEvents);
+        return new Result(ResultCode.SUCCESS , pageResult);
+    }
+
+    /**
+     * 根据桥梁Id查询问题事件
+     */
+    @Transactional
+    @RequestMapping(value = "/problemEvent/bridgeID/{bridgeID}" , method = RequestMethod.POST)
+    public Result findByBridgeId(@PathVariable(value = "bridgeID") Integer bridgeID, @RequestBody Map<String,String > map){
+        int pageNum = Integer.parseInt((String) map.get("pageNum"));
+        int pageSize = Integer.parseInt((String) map.get("pageSize"));
+        PageInfo<ProblemEvent> pageInfo = problemEventService.findAllByBridgeID(bridgeID, pageNum, pageSize);
+        List<SimpleEvent> simpleEvents = new ArrayList<>();
+        for (ProblemEvent problemEvent : pageInfo.getList()) {
+            List<ProblemEventPicture> problemEventPictures =  problemEventPictureDao.selectAllByEventID(problemEvent.getProblemEventID());
+            problemEvent.setProblemEventPictures(problemEventPictures);
+            simpleEvents.add(new SimpleEvent(problemEvent));
+        }
+        PageResult<SimpleEvent> pageResult = new PageResult<>(pageInfo.getTotal(), simpleEvents);
         return new Result(ResultCode.SUCCESS , pageResult);
     }
 
@@ -61,7 +103,8 @@ public class ProblemEventController {
     public Result findById(@PathVariable(value = "id") String id){
         //添加planID
         ProblemEvent problemEvent = problemEventService.getProblemEventByID(id);
-        return new Result(ResultCode.SUCCESS , problemEvent);
+        SimpleEvent simpleEvent = new SimpleEvent(problemEvent);
+        return new Result(ResultCode.SUCCESS , simpleEvent);
     }
 
     /**

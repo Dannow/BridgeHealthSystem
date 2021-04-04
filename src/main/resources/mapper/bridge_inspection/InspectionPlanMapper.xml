@@ -12,7 +12,7 @@
         <result property="inspectionEndTime" column="inspectionEndTime"/>
         <result property="inspectionCompletionStatus" column="inspectionCompletionStatus"/>
         <result property="inspectionCheckInStatus" column="inspectionCheckInStatus"/>
-        <association property="bridges"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge">
+        <association property="bridge"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge">
             <id property="bridgeID" column="bridgeID"/>
             <result property="bridgeName" column="bridgeName"/>
             <result property="bridgeType" column="bridgeType"/>
@@ -26,7 +26,7 @@
             <result property="constructionCompany" column="constructionCompany"/>
             <result property="constructionDate" column="constructionDate"/>
         </association>
-        <association property="users"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User">
+        <association property="user"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User">
             <id property="userID" column="userID"/>
             <result property="userName" column="userName"/>
             <result property="userPhone" column="userPhone"/>

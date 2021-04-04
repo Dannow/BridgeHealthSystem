@@ -26,7 +26,7 @@ public class Bridge implements Serializable {
      * ID
      */
     @Id
-    private String bridgeID;
+    private Integer bridgeID;
     /**
      * 桥梁名称
      */

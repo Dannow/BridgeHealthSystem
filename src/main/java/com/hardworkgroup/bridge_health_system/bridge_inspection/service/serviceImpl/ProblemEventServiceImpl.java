@@ -7,10 +7,12 @@ import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.bridge_inspection.dao.ProblemEventDao;
 import com.hardworkgroup.bridge_health_system.bridge_inspection.service.ProblemEventService;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.ProblemEvent;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.response.SimpleEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,8 +36,18 @@ public class ProblemEventServiceImpl implements ProblemEventService {
     public PageInfo<ProblemEvent> findAll(int pageNum, int pageSize) {
         Page<ProblemEvent> page = PageHelper.startPage(pageNum,pageSize);
         List<ProblemEvent> problemEvents =  problemEventDao.selectAllProblemEvent();
-        PageInfo<ProblemEvent> pageInfo = new PageInfo<>(problemEvents,5);
-        return pageInfo;
+        return new PageInfo<>(problemEvents,5);
+    }
+
+    /**
+     * 根据bridgeID获取所有巡检记录列表
+     * @return 巡检记录结果
+     */
+    @Override
+    public PageInfo<ProblemEvent> findAllByBridgeID(Integer bridgeID, int pageNum, int pageSize) {
+        Page<ProblemEvent> page = PageHelper.startPage(pageNum,pageSize);
+        List<ProblemEvent> problemEvents =  problemEventDao.selectAllByBridgeID(bridgeID);
+        return new PageInfo<>(problemEvents,5);
     }
 
     /**
@@ -46,8 +58,7 @@ public class ProblemEventServiceImpl implements ProblemEventService {
     public PageInfo<ProblemEvent> getProblemEventByRecordID(Integer inspectionRecordID, int pageNum, int pageSize) {
         Page<ProblemEvent> page = PageHelper.startPage(pageNum,pageSize);
         List<ProblemEvent> problemEvents =  problemEventDao.selectAllByRecordID(inspectionRecordID);
-        PageInfo<ProblemEvent> pageInfo = new PageInfo<>(problemEvents,5);
-        return pageInfo;
+        return new PageInfo<>(problemEvents,5);
     }
 
     /**
@@ -80,16 +91,15 @@ public class ProblemEventServiceImpl implements ProblemEventService {
      */
     @Override
     public void update(String id, ProblemEvent problemEvent) {
-        ProblemEvent tempProblemEvent = problemEventDao.getProblemEventByID(id);
+        /*ProblemEvent tempProblemEvent = problemEventDao.getProblemEventByID(id);
         tempProblemEvent.setInspectionRecordID(problemEvent.getInspectionRecordID());
         tempProblemEvent.setSensorID(problemEvent.getSensorID());
         tempProblemEvent.setUserID(problemEvent.getUserID());
         tempProblemEvent.setProblemCreationTime(problemEvent.getProblemCreationTime());
         tempProblemEvent.setMaintenanceStatus(problemEvent.getMaintenanceStatus());
         tempProblemEvent.setConfirmStatus(problemEvent.getConfirmStatus());
-        tempProblemEvent.setProblemPicture(problemEvent.getProblemPicture());
         tempProblemEvent.setProblemTitle(problemEvent.getProblemTitle());
-        tempProblemEvent.setProblemDescription(problemEvent.getProblemDescription());
-        problemEventDao.updateByKey(tempProblemEvent);
+        tempProblemEvent.setProblemDescription(problemEvent.getProblemDescription());*/
+        problemEventDao.updateByKey(problemEvent);
     }
 }

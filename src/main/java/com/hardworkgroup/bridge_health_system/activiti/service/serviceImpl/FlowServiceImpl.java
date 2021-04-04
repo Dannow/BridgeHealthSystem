@@ -93,7 +93,7 @@ public class FlowServiceImpl implements FlowService {
         String taskId = delegateTask.getId();
         if(!assignee.equals(userId.toString())){
             int type =1;
-            siteMessageService.sendMsg(Integer.parseInt(assignee),taskId,type,0);
+            siteMessageService.sendMsg(Integer.parseInt(assignee),taskId,type);
         }
 
     }

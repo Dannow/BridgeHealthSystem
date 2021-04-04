@@ -3,7 +3,7 @@ package com.hardworkgroup.bridge_health_system;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import tk.mybatis.spring.annotation.MapperScan;
 
 //1.配置springboot的包扫描
@@ -15,6 +15,7 @@ import tk.mybatis.spring.annotation.MapperScan;
         "com.hardworkgroup.bridge_health_system.bridge_configuration.dao",
         "com.hardworkgroup.bridge_health_system.activiti.dao",
         "com.hardworkgroup.bridge_health_system.data_analysis.dao"})
+@EnableScheduling
 public class BridgeHealthSystemApplication {
 
     public static void main(String[] args) {

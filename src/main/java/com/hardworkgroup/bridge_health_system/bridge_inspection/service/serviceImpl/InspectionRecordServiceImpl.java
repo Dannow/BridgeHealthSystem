@@ -5,13 +5,18 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.bridge_inspection.service.InspectionRecordService;
 import com.hardworkgroup.bridge_health_system.bridge_inspection.dao.InspectionRecordDao;
+import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_management.entity.AlarmInformation;
+import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_management.response.AlarmInformationWithBridge;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionRecord;
 
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.ProblemEvent;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.response.SimpleRecord;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +29,7 @@ import java.util.List;
 @Service
 public class InspectionRecordServiceImpl implements InspectionRecordService {
 
-    @Autowired
+    @Resource
     private InspectionRecordDao inspectionRecordDao;
 
     @Override
@@ -49,8 +54,7 @@ public class InspectionRecordServiceImpl implements InspectionRecordService {
     public PageInfo<InspectionRecord> findAll(int pageNum, int pageSize) {
         Page<InspectionRecord> page = PageHelper.startPage(pageNum,pageSize);
         List<InspectionRecord> inspectionRecords =  inspectionRecordDao.selectAllInspectionRecord();
-        PageInfo<InspectionRecord> pageInfo = new PageInfo<>(inspectionRecords,5);
-        return pageInfo;
+        return new PageInfo<>(inspectionRecords,5);
     }
 
     /**
@@ -61,8 +65,14 @@ public class InspectionRecordServiceImpl implements InspectionRecordService {
     public PageInfo<InspectionRecord> findAllByPlanID(Integer inspectionPlanID, int pageNum, int pageSize) {
         Page<InspectionRecord> page = PageHelper.startPage(pageNum,pageSize);
         List<InspectionRecord> inspectionRecords =  inspectionRecordDao.selectAllByPlanID(inspectionPlanID);
-        PageInfo<InspectionRecord> pageInfo = new PageInfo<>(inspectionRecords,5);
-        return pageInfo;
+        return new PageInfo<>(inspectionRecords,5);
+    }
+
+    @Override
+    public PageInfo<InspectionRecord> findAllByBridgeID(Integer bridgeID, int pageNum, int pageSize) {
+        Page<InspectionRecord> page = PageHelper.startPage(pageNum,pageSize);
+        List<InspectionRecord> inspectionRecords =  inspectionRecordDao.selectAllByBridgeID(bridgeID);
+        return new PageInfo<>(inspectionRecords,5);
     }
 
     @Override

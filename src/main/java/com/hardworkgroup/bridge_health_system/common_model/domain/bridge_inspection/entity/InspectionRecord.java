@@ -6,9 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -38,7 +36,9 @@ public class InspectionRecord {
 
     private String inspectionContentDescription;
 
-    private Set<Sensor> sensors = new HashSet<>();
+    @ManyToOne
+    private InspectionPlan inspectionPlan;
 
+    @OneToMany
     private Set<InspectionData> inspectionData = new HashSet<>();
 }
