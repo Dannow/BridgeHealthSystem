@@ -9,9 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 用户实体类
@@ -72,5 +70,5 @@ public class ProblemEvent implements Serializable {
     private User user;
 
     @OneToMany
-    private Set<ProblemEventPicture> problemEventPictures = new HashSet<>();
+    private List<ProblemEventPicture> problemEventPictures = new ArrayList<>();
 }

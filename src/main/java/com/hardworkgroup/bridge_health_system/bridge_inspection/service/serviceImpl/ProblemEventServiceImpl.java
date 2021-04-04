@@ -33,14 +33,10 @@ public class ProblemEventServiceImpl implements ProblemEventService {
      * @return 巡检记录结果
      */
     @Override
-    public PageInfo<SimpleEvent> findAll(int pageNum, int pageSize) {
+    public PageInfo<ProblemEvent> findAll(int pageNum, int pageSize) {
         Page<ProblemEvent> page = PageHelper.startPage(pageNum,pageSize);
         List<ProblemEvent> problemEvents =  problemEventDao.selectAllProblemEvent();
-        List<SimpleEvent> simpleEvents = new ArrayList<>();
-        for (ProblemEvent problemEvent : problemEvents) {
-            simpleEvents.add(new SimpleEvent(problemEvent));
-        }
-        return new PageInfo<>(simpleEvents,5);
+        return new PageInfo<>(problemEvents,5);
     }
 
     /**
@@ -48,14 +44,10 @@ public class ProblemEventServiceImpl implements ProblemEventService {
      * @return 巡检记录结果
      */
     @Override
-    public PageInfo<SimpleEvent> findAllByBridgeID(Integer bridgeID, int pageNum, int pageSize) {
+    public PageInfo<ProblemEvent> findAllByBridgeID(Integer bridgeID, int pageNum, int pageSize) {
         Page<ProblemEvent> page = PageHelper.startPage(pageNum,pageSize);
         List<ProblemEvent> problemEvents =  problemEventDao.selectAllByBridgeID(bridgeID);
-        List<SimpleEvent> simpleEvents = new ArrayList<>();
-        for (ProblemEvent problemEvent : problemEvents) {
-            simpleEvents.add(new SimpleEvent(problemEvent));
-        }
-        return new PageInfo<>(simpleEvents,5);
+        return new PageInfo<>(problemEvents,5);
     }
 
     /**
@@ -63,14 +55,10 @@ public class ProblemEventServiceImpl implements ProblemEventService {
      * @return 巡检记录结果
      */
     @Override
-    public PageInfo<SimpleEvent> getProblemEventByRecordID(Integer inspectionRecordID, int pageNum, int pageSize) {
+    public PageInfo<ProblemEvent> getProblemEventByRecordID(Integer inspectionRecordID, int pageNum, int pageSize) {
         Page<ProblemEvent> page = PageHelper.startPage(pageNum,pageSize);
         List<ProblemEvent> problemEvents =  problemEventDao.selectAllByRecordID(inspectionRecordID);
-        List<SimpleEvent> simpleEvents = new ArrayList<>();
-        for (ProblemEvent problemEvent : problemEvents) {
-            simpleEvents.add(new SimpleEvent(problemEvent));
-        }
-        return new PageInfo<>(simpleEvents,5);
+        return new PageInfo<>(problemEvents,5);
     }
 
     /**

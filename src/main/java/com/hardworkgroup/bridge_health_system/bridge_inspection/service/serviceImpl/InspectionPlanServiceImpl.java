@@ -32,25 +32,17 @@ public class InspectionPlanServiceImpl implements InspectionPlanService, IActFlo
     InspectionPlanDao inspectionPlanDao;
 
     @Override
-    public PageInfo<SimplePlan> findAll(int pageNum, int pageSize) {
+    public PageInfo<InspectionPlan> findAll(int pageNum, int pageSize) {
         Page<InspectionPlan> page = PageHelper.startPage(pageNum,pageSize);
         List<InspectionPlan> inspectionPlans =  inspectionPlanDao.selectAllInspectionPlan();
-        List<SimplePlan> simplePlans= new ArrayList<>();
-        for (InspectionPlan inspectionPlan : inspectionPlans) {
-            simplePlans.add(new SimplePlan(inspectionPlan));
-        }
-        return new PageInfo<>(simplePlans,5);
+        return new PageInfo<>(inspectionPlans,5);
     }
 
     @Override
-    public PageInfo<SimplePlan> getPlanByBridgeID(Integer bridgeID, int pageNum, int pageSize) {
+    public PageInfo<InspectionPlan> getPlanByBridgeID(Integer bridgeID, int pageNum, int pageSize) {
         Page<InspectionPlan> page = PageHelper.startPage(pageNum,pageSize);
         List<InspectionPlan> inspectionPlans =  inspectionPlanDao.selectAllByBridgeID(bridgeID);
-        List<SimplePlan> simplePlans= new ArrayList<>();
-        for (InspectionPlan inspectionPlan : inspectionPlans) {
-            simplePlans.add(new SimplePlan(inspectionPlan));
-        }
-        return new PageInfo<>(simplePlans,5);
+        return new PageInfo<>(inspectionPlans,5);
     }
 
     @Override

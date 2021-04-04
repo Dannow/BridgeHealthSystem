@@ -16,9 +16,9 @@ public interface ProblemEventService {
 
     void save(ProblemEvent problemEvent);
 
-    PageInfo<SimpleEvent> findAll(int pageNum, int pageSize);
+    PageInfo<ProblemEvent> findAll(int pageNum, int pageSize);
 
-    PageInfo<SimpleEvent> getProblemEventByRecordID(Integer recordID, int pageNum, int pageSize);
+    PageInfo<ProblemEvent> getProblemEventByRecordID(Integer recordID, int pageNum, int pageSize);
 
     ProblemEvent getProblemEventByID(String id);
 
@@ -26,5 +26,5 @@ public interface ProblemEventService {
 
     void update(String id, ProblemEvent problemEvent);
 
-    PageInfo<SimpleEvent> findAllByBridgeID(Integer bridgeID, int pageNum, int pageSize);
+    PageInfo<ProblemEvent> findAllByBridgeID(Integer bridgeID, int pageNum, int pageSize);
 }

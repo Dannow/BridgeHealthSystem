@@ -10,13 +10,6 @@
         <result property="inspectionTime" column="inspectionTime"/>
         <result property="inspectionRecordTitle" column="inspectionRecordTitle"/>
         <result property="inspectionContentDescription" column="inspectionContentDescription"/>
-        <association property="inspectionData"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionData">
-            <id property="inspectionDataID" column="inspectionDataID"/>
-            <result property="inspectionRecordID" column="inspectionRecordID"/>
-            <result property="sensorID" column="sensorID"/>
-            <result property="manualSensorData" column="manualSensorData"/>
-            <result property="status" column="status"/>
-        </association>
         <collection property="inspectionPlan"  resultMap="PlanWithUserAndBridge">
         </collection>
     </resultMap>
@@ -57,8 +50,6 @@
     <!--根据id查询巡检记录-->
     <select id="getRecordByID" resultMap="recordWithSensorAndData">
         select * from inspection_record as r
-        LEFT JOIN inspection_data as d
-        on r.inspectionRecordID =d.inspectionRecordID
         LEFT JOIN inspection_plan ip
         on r.inspectionPlanID = ip.inspectionPlanID
         LEFT JOIN user as u
@@ -71,8 +62,6 @@
     <!--查询所有巡检记录-->
     <select id="selectAllInspectionRecord" resultMap="recordWithSensorAndData">
         select * from inspection_record as r
-        LEFT JOIN inspection_data as d
-        on r.inspectionRecordID =d.inspectionRecordID
         LEFT JOIN inspection_plan ip
         on r.inspectionPlanID = ip.inspectionPlanID
         LEFT JOIN user as u
@@ -84,8 +73,6 @@
     <!--根据planID获取所有巡检记录列表-->
     <select id="selectAllByPlanID" resultMap="recordWithSensorAndData">
         select * from inspection_record as r
-        LEFT JOIN inspection_data as d
-        on r.inspectionRecordID =d.inspectionRecordID
         LEFT JOIN inspection_plan ip
         on r.inspectionPlanID = ip.inspectionPlanID
         LEFT JOIN user as u
@@ -98,8 +85,6 @@
     <!--根据bridgeID获取所有巡检记录列表-->
     <select id="selectAllByBridgeID" resultMap="recordWithSensorAndData">
         select * from inspection_record as r
-        LEFT JOIN inspection_data as d
-        on r.inspectionRecordID =d.inspectionRecordID
         LEFT JOIN inspection_plan ip
         on r.inspectionPlanID = ip.inspectionPlanID
         LEFT JOIN user as u

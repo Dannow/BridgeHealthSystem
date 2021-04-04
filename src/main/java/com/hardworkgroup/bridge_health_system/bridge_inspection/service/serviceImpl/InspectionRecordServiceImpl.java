@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,7 @@ import java.util.List;
 @Service
 public class InspectionRecordServiceImpl implements InspectionRecordService {
 
-    @Autowired
+    @Resource
     private InspectionRecordDao inspectionRecordDao;
 
     @Override
@@ -50,14 +51,10 @@ public class InspectionRecordServiceImpl implements InspectionRecordService {
      * @return 巡检记录结果
      */
     @Override
-    public PageInfo<SimpleRecord> findAll(int pageNum, int pageSize) {
+    public PageInfo<InspectionRecord> findAll(int pageNum, int pageSize) {
         Page<InspectionRecord> page = PageHelper.startPage(pageNum,pageSize);
         List<InspectionRecord> inspectionRecords =  inspectionRecordDao.selectAllInspectionRecord();
-        List<SimpleRecord> simpleRecords = new ArrayList<>();
-        for (InspectionRecord inspectionRecord : inspectionRecords) {
-            simpleRecords.add(new SimpleRecord(inspectionRecord));
-        }
-        return new PageInfo<>(simpleRecords,5);
+        return new PageInfo<>(inspectionRecords,5);
     }
 
     /**
@@ -65,25 +62,17 @@ public class InspectionRecordServiceImpl implements InspectionRecordService {
      * @return 巡检记录结果
      */
     @Override
-    public PageInfo<SimpleRecord> findAllByPlanID(Integer inspectionPlanID, int pageNum, int pageSize) {
+    public PageInfo<InspectionRecord> findAllByPlanID(Integer inspectionPlanID, int pageNum, int pageSize) {
         Page<InspectionRecord> page = PageHelper.startPage(pageNum,pageSize);
         List<InspectionRecord> inspectionRecords =  inspectionRecordDao.selectAllByPlanID(inspectionPlanID);
-        List<SimpleRecord> simpleRecords = new ArrayList<>();
-        for (InspectionRecord inspectionRecord : inspectionRecords) {
-            simpleRecords.add(new SimpleRecord(inspectionRecord));
-        }
-        return new PageInfo<>(simpleRecords,5);
+        return new PageInfo<>(inspectionRecords,5);
     }
 
     @Override
-    public PageInfo<SimpleRecord> findAllByBridgeID(Integer bridgeID, int pageNum, int pageSize) {
+    public PageInfo<InspectionRecord> findAllByBridgeID(Integer bridgeID, int pageNum, int pageSize) {
         Page<InspectionRecord> page = PageHelper.startPage(pageNum,pageSize);
         List<InspectionRecord> inspectionRecords =  inspectionRecordDao.selectAllByBridgeID(bridgeID);
-        List<SimpleRecord> simpleRecords = new ArrayList<>();
-        for (InspectionRecord inspectionRecord : inspectionRecords) {
-            simpleRecords.add(new SimpleRecord(inspectionRecord));
-        }
-        return new PageInfo<>(simpleRecords,5);
+        return new PageInfo<>(inspectionRecords,5);
     }
 
     @Override

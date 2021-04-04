@@ -35,7 +35,7 @@ public class SimpleRecord {
 
     private String userName;
 
-    private Set<InspectionData> inspectionData = new HashSet<>();
+    private Set<SimpleData> simpleData = new HashSet<>();
 
     public SimpleRecord(InspectionRecord inspectionRecord){
         this.inspectionRecordID = inspectionRecord.getInspectionRecordID();
@@ -47,6 +47,8 @@ public class SimpleRecord {
         this.bridgeName = inspectionRecord.getInspectionPlan().getBridge().getBridgeName();
         this.userID = inspectionRecord.getInspectionPlan().getUserID();
         this.userName = inspectionRecord.getInspectionPlan().getUser().getUserName();
-        this.inspectionData = inspectionRecord.getInspectionData();
+        for (InspectionData inspectionDatum : inspectionRecord.getInspectionData()) {
+            this.simpleData.add(new SimpleData(inspectionDatum));
+        }
     }
 }

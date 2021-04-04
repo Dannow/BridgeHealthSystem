@@ -88,9 +88,7 @@ public class UserController extends BaseController {
             String sessionId = (String) subject.getSession().getId();
             String userPicture = "http://121.199.75.149:9999/img/"+this.userPicture;
             Map<String, Object> map = new HashMap<>();
-            List<UserWithPictureResult> userWithPictureResults = new ArrayList<>();
-            userWithPictureResults.add(new UserWithPictureResult(sessionId,userPicture));
-            map.put("rows",userWithPictureResults);
+            map.put("rows",new UserWithPictureResult(sessionId,userPicture));
             //构造返回结果
             return new Result(ResultCode.SUCCESS , map);
         }catch (Exception e){

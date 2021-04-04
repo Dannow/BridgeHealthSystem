@@ -18,7 +18,7 @@ public interface InspectionRecordService {
 
     void save(InspectionRecord inspectionRecord);
 
-    PageInfo<SimpleRecord> findAll(int pageNum, int pageSize);
+    PageInfo<InspectionRecord> findAll(int pageNum, int pageSize);
 
     void update(InspectionRecord inspectionRecord);
 
@@ -26,7 +26,7 @@ public interface InspectionRecordService {
 
     void delete(String id);
 
-    PageInfo<SimpleRecord> findAllByPlanID(Integer planID, int pageNum, int pageSize);
+    PageInfo<InspectionRecord> findAllByPlanID(Integer planID, int pageNum, int pageSize);
 
-    PageInfo<SimpleRecord> findAllByBridgeID(Integer bridgeID, int pageNum, int pageSize);
+    PageInfo<InspectionRecord> findAllByBridgeID(Integer bridgeID, int pageNum, int pageSize);
 }

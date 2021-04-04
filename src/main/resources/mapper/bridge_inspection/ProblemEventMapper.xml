@@ -23,11 +23,6 @@
             <result property="userStatus" column="userStatus"/>
             <result property="userLevel" column="userLevel"/>
         </association>
-        <collection property="problemEventPictures"  ofType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.ProblemEventPicture">
-            <id property="problemPictureID" column="problemPictureID"/>
-            <result property="problemEventID" column="problemEventID"/>
-            <result property="problemPicture" column="problemPicture"/>
-        </collection>
         <collection property="sensor"  resultMap="sensorsWithBridge">
         </collection>
     </resultMap>
@@ -64,8 +59,6 @@
         on e.sensorID =s.sensorID
         LEFT JOIN user as u
         on e.userID=u.userID
-        LEFT JOIN problem_event_picture pep
-        on e.problemEventID = pep.problemEventID
         LEFT JOIN bridge b
         on s.bridgeID = b.bridgeID
         where e.problemEventID = #{problemEventID}
@@ -78,8 +71,6 @@
         on e.sensorID =s.sensorID
         LEFT JOIN user as u
         on e.userID=u.userID
-        LEFT JOIN problem_event_picture pep
-        on e.problemEventID = pep.problemEventID
         LEFT JOIN bridge b
         on s.bridgeID = b.bridgeID
     </select>
@@ -91,8 +82,6 @@
         on e.sensorID =s.sensorID
         LEFT JOIN user as u
         on e.userID=u.userID
-        LEFT JOIN problem_event_picture pep
-        on e.problemEventID = pep.problemEventID
         LEFT JOIN bridge b
         on s.bridgeID = b.bridgeID
         where e.inspectionRecordID=#{inspectionRecordID}
@@ -105,8 +94,6 @@
         on e.sensorID =s.sensorID
         LEFT JOIN user as u
         on e.userID=u.userID
-        LEFT JOIN problem_event_picture pep
-        on e.problemEventID = pep.problemEventID
         LEFT JOIN bridge b
         on s.bridgeID = b.bridgeID
         where b.bridgeID=#{bridgeID}
@@ -118,8 +105,7 @@
         set inspectionRecordID=#{inspectionRecordID},sensorID=#{sensorID},
         userID=#{userID},problemCreationTime=#{problemCreationTime},
         maintenanceStatus=#{maintenanceStatus},confirmStatus=#{confirmStatus},
-        problemPicture=#{problemPicture},problemTitle=#{problemTitle},
-        problemDescription=#{problemDescription}
+        problemTitle=#{problemTitle},problemDescription=#{problemDescription}
         where problemEventID = #{problemEventID}
     </update>
 
@@ -133,11 +119,9 @@
         insert into problem_event (
         inspectionRecordID,sensorID,userID,
         problemCreationTime,maintenanceStatus,
-        confirmStatus,problemPicture,
-        problemTitle,problemDescription)
+        confirmStatus,problemTitle,problemDescription)
         value (#{inspectionRecordID},#{sensorID},#{userID},
         #{problemCreationTime},#{maintenanceStatus},
-        #{confirmStatus},#{problemPicture},
-        #{problemTitle},#{problemDescription})
+        #{confirmStatus},#{problemTitle},#{problemDescription})
     </insert>
 </mapper>

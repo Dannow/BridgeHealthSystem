@@ -17,6 +17,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -49,8 +50,12 @@ public class InspectionPlanController extends BaseController {
     public Result findAll(@RequestBody Map<String,String > map){
         int pageNum = Integer.parseInt((String) map.get("pageNum"));
         int pageSize = Integer.parseInt((String) map.get("pageSize"));
-        PageInfo<SimplePlan> pageInfo = inspectionPlanService.findAll(pageNum, pageSize);
-        PageResult<SimplePlan> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
+        PageInfo<InspectionPlan> pageInfo = inspectionPlanService.findAll(pageNum, pageSize);
+        List<SimplePlan> simplePlans= new ArrayList<>();
+        for (InspectionPlan inspectionPlan : pageInfo.getList()) {
+            simplePlans.add(new SimplePlan(inspectionPlan));
+        }
+        PageResult<SimplePlan> pageResult = new PageResult<>(pageInfo.getTotal(), simplePlans);
         return new Result(ResultCode.SUCCESS,pageResult);
     }
 
@@ -62,8 +67,12 @@ public class InspectionPlanController extends BaseController {
         int pageNum = Integer.parseInt((String) map.get("pageNum"));
         int pageSize = Integer.parseInt((String) map.get("pageSize"));
         //根据bridgeID查询巡检计划
-        PageInfo<SimplePlan> pageInfo = inspectionPlanService.getPlanByBridgeID(bridgeID, pageNum, pageSize);
-        PageResult<SimplePlan> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
+        PageInfo<InspectionPlan> pageInfo = inspectionPlanService.getPlanByBridgeID(bridgeID, pageNum, pageSize);
+        List<SimplePlan> simplePlans = new ArrayList<>();
+        for (InspectionPlan inspectionPlan : pageInfo.getList()) {
+            simplePlans.add(new SimplePlan(inspectionPlan));
+        }
+        PageResult<SimplePlan> pageResult = new PageResult<>(pageInfo.getTotal(), simplePlans);
         return new Result(ResultCode.SUCCESS , pageResult);
     }
 

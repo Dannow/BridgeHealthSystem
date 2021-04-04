@@ -2,10 +2,12 @@ package com.hardworkgroup.bridge_health_system.bridge_inspection.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.bridge_configuration.service.serviceImpl.SensorServiceImpl;
+import com.hardworkgroup.bridge_health_system.bridge_inspection.dao.InspectionDataDao;
 import com.hardworkgroup.bridge_health_system.bridge_inspection.service.serviceImpl.InspectionDataServiceImpl;
 import com.hardworkgroup.bridge_health_system.bridge_inspection.service.serviceImpl.InspectionRecordServiceImpl;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionData;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionRecord;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.response.SimpleData;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.response.SimpleRecord;
 import com.hardworkgroup.bridge_health_system.system_common.entity.PageResult;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
@@ -15,7 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import javax.annotation.Resource;
+import java.util.*;
 
 /**
  * (InspectionRecordController)表控制层
@@ -33,13 +36,15 @@ public class InspectionRecordController {
     /**
      * 服务对象
      */
-    @Autowired
+    @Resource
     private InspectionRecordServiceImpl inspectionRecordService;
 
-    @Autowired
-    private InspectionDataServiceImpl InspectionDataService;
+    @Resource
+    private InspectionDataServiceImpl inspectionDataService;
 
-    @Autowired
+    @Resource
+    private InspectionDataDao inspectionDataDao;
+    @Resource
     private SensorServiceImpl sensorService;
 
     /**
@@ -50,8 +55,13 @@ public class InspectionRecordController {
     public Result findAll(@RequestBody Map<String, String> map) {
         int pageNum = Integer.parseInt((String) map.get("pageNum"));
         int pageSize = Integer.parseInt((String) map.get("pageSize"));
-        PageInfo<SimpleRecord> pageInfo = inspectionRecordService.findAll(pageNum, pageSize);
-        PageResult<SimpleRecord> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
+        PageInfo<InspectionRecord> pageInfo = inspectionRecordService.findAll(pageNum, pageSize);
+        List<SimpleRecord> simpleRecords = new ArrayList<>();
+        for (InspectionRecord inspectionRecord : pageInfo.getList()) {
+            inspectionRecord.setInspectionData(new HashSet<>(inspectionDataDao.selectAllByRecordID(inspectionRecord.getInspectionRecordID())));
+            simpleRecords.add(new SimpleRecord(inspectionRecord));
+        }
+        PageResult<SimpleRecord> pageResult = new PageResult<>(pageInfo.getTotal(),simpleRecords);
         return new Result(ResultCode.SUCCESS, pageResult);
     }
 
@@ -63,8 +73,13 @@ public class InspectionRecordController {
     public Result findByRecordID(@PathVariable(value = "planID") Integer planID,@RequestBody Map<String, String> map) {
         int pageNum = Integer.parseInt((String) map.get("pageNum"));
         int pageSize = Integer.parseInt((String) map.get("pageSize"));
-        PageInfo<SimpleRecord> pageInfo = inspectionRecordService.findAllByPlanID(planID,pageNum, pageSize);
-        PageResult<SimpleRecord> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
+        PageInfo<InspectionRecord> pageInfo = inspectionRecordService.findAllByPlanID(planID,pageNum, pageSize);
+        List<SimpleRecord> simpleRecords = new ArrayList<>();
+        for (InspectionRecord inspectionRecord : pageInfo.getList()) {
+            inspectionRecord.setInspectionData(new HashSet<>(inspectionDataDao.selectAllByRecordID(inspectionRecord.getInspectionRecordID())));
+            simpleRecords.add(new SimpleRecord(inspectionRecord));
+        }
+        PageResult<SimpleRecord> pageResult = new PageResult<>(pageInfo.getTotal(),simpleRecords);
         return new Result(ResultCode.SUCCESS, pageResult);
     }
 
@@ -76,8 +91,13 @@ public class InspectionRecordController {
     public Result findByBridgeID(@PathVariable(value = "bridgeID") Integer bridgeID,@RequestBody Map<String, String> map) {
         int pageNum = Integer.parseInt((String) map.get("pageNum"));
         int pageSize = Integer.parseInt((String) map.get("pageSize"));
-        PageInfo<SimpleRecord> pageInfo = inspectionRecordService.findAllByBridgeID(bridgeID,pageNum, pageSize);
-        PageResult<SimpleRecord> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
+        PageInfo<InspectionRecord> pageInfo = inspectionRecordService.findAllByBridgeID(bridgeID,pageNum, pageSize);
+        List<SimpleRecord> simpleRecords = new ArrayList<>();
+        for (InspectionRecord inspectionRecord : pageInfo.getList()) {
+            inspectionRecord.setInspectionData(new HashSet<>(inspectionDataDao.selectAllByRecordID(inspectionRecord.getInspectionRecordID())));
+            simpleRecords.add(new SimpleRecord(inspectionRecord));
+        }
+        PageResult<SimpleRecord> pageResult = new PageResult<>(pageInfo.getTotal(),simpleRecords);
         return new Result(ResultCode.SUCCESS, pageResult);
     }
 
@@ -91,7 +111,7 @@ public class InspectionRecordController {
         inspectionRecordService.save(inspectionRecord);
         inspectionData.setInspectionRecordID(inspectionRecord.getInspectionRecordID());
         log.info(inspectionRecord.getInspectionRecordID().toString());
-        InspectionDataService.save(inspectionData);
+        inspectionDataService.save(inspectionData);
         return new Result(ResultCode.SUCCESS);
     }
 
@@ -115,7 +135,7 @@ public class InspectionRecordController {
         InspectionRecord inspectionRecord = BeanMapUtils.mapToBean(map, InspectionRecord.class);
         InspectionData inspectionData = BeanMapUtils.mapToBean(map, InspectionData.class);
         //调用Service更新
-        InspectionDataService.update(inspectionData);
+        inspectionDataService.update(inspectionData);
         inspectionRecordService.update(inspectionRecord);
         return new Result(ResultCode.SUCCESS);
     }

@@ -14,7 +14,7 @@ import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspect
 public interface InspectionPlanService {
 
 
-    PageInfo<SimplePlan> findAll(int pageNum, int pageSize);
+    PageInfo<InspectionPlan> findAll(int pageNum, int pageSize);
 
     Integer save(InspectionPlan inspectionPlan);
 
@@ -24,5 +24,5 @@ public interface InspectionPlanService {
 
     void delete(String InspectionPlanID);
 
-    PageInfo<SimplePlan> getPlanByBridgeID(Integer bridgeID, int pageNum, int pageSize);
+    PageInfo<InspectionPlan> getPlanByBridgeID(Integer bridgeID, int pageNum, int pageSize);
 }

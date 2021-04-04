@@ -1,16 +1,13 @@
 package com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionPlan;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.ProblemEvent;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.ProblemEventPicture;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 
 @Data
@@ -44,7 +41,7 @@ public class SimpleEvent {
 
     private String userName;
 
-    private Set<ProblemEventPicture> problemEventPictures = new HashSet<>();
+    private List<ProblemEventPicture> problemEventPictures = new ArrayList<>();
 
     public SimpleEvent(ProblemEvent problemEvent){
         this.problemEventID = problemEvent.getProblemEventID();
