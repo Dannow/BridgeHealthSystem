@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hardworkgroup.bridge_health_system.realTime_dataCollection.dao.RawDataTemperatureDao">
+    <insert id="insertTemperatureData" parameterType="com.hardworkgroup.bridge_health_system.common_model.domain.realTime_dataCollection.entity.RawDataTemperature">
+        insert into rawData_Temperature (sensorID, acquisitionTime, temperatureValue) values (#{sensor.sensorID}, #{acquisitionTime}, #{temperatureValue})
+    </insert>
+    
+    <select id="selectBatchRawDataTemperatureBySensorID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.realTime_dataCollection.entity.RawDataTemperature">
+        select * from rawData_Temperature where sensorID = #{sensorID} order by ID desc limit #{number}
+    </select>
+</mapper>

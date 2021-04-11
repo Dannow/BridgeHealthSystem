@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hardworkgroup.bridge_health_system.realTime_dataCollection.dao.RawDataFireDao">
+    <insert id="insertRawDataFire" parameterType="com.hardworkgroup.bridge_health_system.common_model.domain.realTime_dataCollection.entity.RawDataFire">
+        insert into rawData_Fire (sensorID, acquisitionTime, fireValue) values (#{sensor.sensorID}, #{acquisitionTime}, #{fireValue})
+    </insert>
+</mapper>
