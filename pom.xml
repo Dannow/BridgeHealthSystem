@@ -158,6 +158,14 @@
             <artifactId>activiti-spring-boot-starter</artifactId>
             <version>7.0.0.Beta2</version>
         </dependency>
+
+        <!--Netty-->
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.25.Final</version>
+        </dependency>
+
     </dependencies>
 
     <build>

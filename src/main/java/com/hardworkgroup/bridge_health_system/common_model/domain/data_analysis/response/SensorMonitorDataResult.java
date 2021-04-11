@@ -17,10 +17,11 @@ public class SensorMonitorDataResult {
     private Date sensorDataTime;
 
     // 传感器数据
-    private List<Map<String, Float>> sensorData;
+//    private List<Map<String, Float>> sensorData;
+    private List<Float> sensorData;
 
     // 构造函数
-    public SensorMonitorDataResult(Date sensorDataTime, List<Map<String, Float>> sensorData){
+    public SensorMonitorDataResult(Date sensorDataTime, List<Float> sensorData){
         this.sensorDataTime = sensorDataTime;
         this.sensorData = sensorData;
     }
