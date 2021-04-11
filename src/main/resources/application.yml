@@ -41,7 +41,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     # 服务器数据库
-    url: jdbc:mysql://121.199.75.149:3306/bridge_health_system?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT
+    url: jdbc:mysql://121.199.75.149:3306/bridge_health_system?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2b8
     username: root
     password: Root_root250
     # 本地数据库

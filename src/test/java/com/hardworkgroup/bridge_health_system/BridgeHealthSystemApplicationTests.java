@@ -25,15 +25,16 @@ class BridgeHealthSystemApplicationTests {
 
     @Test
     public void test() throws Exception {
-        // 获得当前时间
-        Date nowTime = new Date();
-
-        // 得到指定的日期
-        Calendar c = Calendar.getInstance();
-        c.setTime(nowTime);
-        c.add(Calendar.DAY_OF_MONTH, -2);
-        Date targetTime = c.getTime();
-        System.out.println(targetTime);
+        System.out.println(sensorService.getSensorByID("1"));
+//        // 获得当前时间
+//        Date nowTime = new Date();
+//
+//        // 得到指定的日期
+//        Calendar c = Calendar.getInstance();
+//        c.setTime(nowTime);
+//        c.add(Calendar.DAY_OF_MONTH, -2);
+//        Date targetTime = c.getTime();
+//        System.out.println(targetTime);
 //        System.out.println(bridgeService.getSensorByBridgeID("1"));
 //        System.out.println(sensorDataService.getSensorDataBySensorID("长期温度监测表.xlsx","温度传感器A1",18));
 //        String sensorName = "温度a传感器A1";

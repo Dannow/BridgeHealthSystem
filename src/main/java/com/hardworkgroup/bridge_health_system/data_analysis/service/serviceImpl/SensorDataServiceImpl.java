@@ -132,14 +132,16 @@ public class SensorDataServiceImpl implements SensorDataService {
             Date sensorDataTime = formatter.parse(time);
 
             // 同一类型传感器数据
-            Map<String, Float> sensorDataMap = new HashMap<>();
+//            Map<String, Float> sensorDataMap = new LinkedHashMap<>();
+            List<Float> sensorDataList = new ArrayList<>();
             for (int j = 0; j < sensorColumnIndexList.size(); j++){
                 // 读取传感器数据
                 float sensorData = (float) row.getCell(sensorColumnIndexList.get(j)).getNumericCellValue();
-                sensorDataMap.put(sensorName.get(j), sensorData);
+                sensorDataList.add(sensorData);
+//                sensorDataMap.put(sensorName.get(j), sensorData);
             }
-            List<Map<String, Float>> sensorDataList = new ArrayList<>();
-            sensorDataList.add(sensorDataMap);
+//            List<Map<String, Float>> sensorDataList = new ArrayList<>();
+//            sensorDataList.add(sensorDataMap);
             // 封装到SensorMonitorDataResult
             sensorMonitorDataResult.add(new SensorMonitorDataResult(sensorDataTime,sensorDataList));
         }
@@ -174,15 +176,17 @@ public class SensorDataServiceImpl implements SensorDataService {
             // 查找大于目标时间的传感器数据
             if (targetTime.before(sensorDataTime) || targetTime.equals(sensorDataTime)){
                 // 同一类型传感器数据
-                Map<String, Float> sensorDataMap = new HashMap<>();
+//                Map<String, Float> sensorDataMap = new HashMap<>();
+                List<Float> sensorDataList = new ArrayList<>();
                 // 遍历所有同一类型的传感器
                 for (int j = 0; j < sensorColumnIndexList.size(); j++){
                     // 读取传感器数据
                     float sensorData = (float) row.getCell(sensorColumnIndexList.get(j)).getNumericCellValue();
-                    sensorDataMap.put(sensorName.get(j), sensorData);
+                    sensorDataList.add(sensorData);
+//                    sensorDataMap.put(sensorName.get(j), sensorData);
                 }
-                List<Map<String, Float>> sensorDataList = new ArrayList<>();
-                sensorDataList.add(sensorDataMap);
+//                List<Map<String, Float>> sensorDataList = new ArrayList<>();
+//                sensorDataList.add(sensorDataMap);
                 // 封装到SensorMonitorDataResult
                 sensorMonitorDataResult.add(new SensorMonitorDataResult(sensorDataTime,sensorDataList));
             }
