@@ -21,7 +21,10 @@ public enum ResultCode {
     SensorIsShort_ERROR(false,20000,"你需要预测的传感器与数据不符"),
 
     //用户操作返回码
-    MOBILEORPASSWORDERROR(false,20001,"手机号码或密码错误");
+    MOBILEORPASSWORDERROR(false,20001,"手机号码或密码错误"),
+
+    //用户操作返回码
+    CHECKERROR(false,30001,"无巡检计划需要打卡");
 
     //类型中的参数定义
     boolean success;    //操作是否成功

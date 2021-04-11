@@ -32,4 +32,6 @@ public interface InspectionRecordDao extends Mapper<InspectionRecord> {
     List<InspectionRecord> selectAllByPlanID(Integer inspectionPlanID);
 
     List<InspectionRecord> selectAllByBridgeID(Integer bridgeID);
+
+    List<InspectionRecord> selectAllByUserID(Integer userID);
 }

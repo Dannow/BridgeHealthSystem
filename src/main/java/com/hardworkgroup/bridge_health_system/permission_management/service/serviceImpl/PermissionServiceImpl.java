@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,27 +32,29 @@ import java.util.Map;
 @Service
 public class PermissionServiceImpl implements PermissionService {
 
-    @Autowired
+    @Resource
     private PermissionDao permissionDao;
 
-    @Autowired
+    @Resource
     private PermissionMenuDao permissionMenuDao;
 
-    @Autowired
+    @Resource
     private PermissionPointDao permissionPointDao;
     
-    @Autowired
+    @Resource
     private PermissionApiDao permissionApiDao;
 
-    @Autowired
+    @Resource
     private IdWorker idWorker;
 
     /**
      * 保存新增权限
      */
+    @Override
+    @Transactional
     public void save(Map<String,Object> map) throws Exception {
         //设置主键
-        String id = idWorker.nextId() + "";
+        //String id = idWorker.nextId() + "";
         //通过map构造权限对象
         Permission perm = BeanMapUtils.mapToBean(map , Permission.class);
         //perm.setPermissionID(id);
@@ -83,6 +86,7 @@ public class PermissionServiceImpl implements PermissionService {
     /**
      * 更新
      */
+    @Override
     public void update(Map<String,Object> map) throws Exception {
         Permission perm = BeanMapUtils.mapToBean(map , Permission.class);
         //通过传递的权限id查询权限
@@ -123,6 +127,7 @@ public class PermissionServiceImpl implements PermissionService {
     /**
      * 根据id查询权限
      */
+    @Override
     public Map<String,Object> findById(String id) throws CommonException {
         //查询权限
         Permission perm = permissionDao.getPermissionByID(id);
@@ -167,6 +172,7 @@ public class PermissionServiceImpl implements PermissionService {
     /**
      * 根据id删除权限
      */
+    @Override
     public void deleteById(String id) throws CommonException {
         //通过传递的权限id查询权限
         Permission permission = permissionDao.getPermissionByID(id);

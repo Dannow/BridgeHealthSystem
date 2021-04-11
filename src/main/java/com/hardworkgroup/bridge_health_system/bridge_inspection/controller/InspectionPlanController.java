@@ -11,13 +11,14 @@ import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.runtime.ProcessInstance;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +47,7 @@ public class InspectionPlanController extends BaseController {
      * 获取所有巡检计划列表
      * @return 巡检计划结果
      */
+    @RequiresPermissions(value = "MENU-INSPECTION-PLANS")
     @RequestMapping(value = "/plans" , method = RequestMethod.POST)
     public Result findAll(@RequestBody Map<String,String > map){
         int pageNum = Integer.parseInt((String) map.get("pageNum"));
@@ -62,6 +64,7 @@ public class InspectionPlanController extends BaseController {
     /**
      * 根据桥梁Id查询巡检计划
      */
+    @RequiresPermissions(value = "MENU-INSPECTION-PLANS")
     @RequestMapping(value = "/plan/bridge/{bridgeID}" , method = RequestMethod.POST)
     public Result findByBridgeId(@PathVariable(value = "bridgeID") Integer bridgeID, @RequestBody Map<String,String > map){
         int pageNum = Integer.parseInt((String) map.get("pageNum"));
@@ -77,8 +80,35 @@ public class InspectionPlanController extends BaseController {
     }
 
     /**
+     * 手机端根据桥梁Id查询巡检计划
+     */
+    @RequiresPermissions(value = "MENU-INSPECTION-PLANS")
+    @RequestMapping(value = "/plan/bridge/{bridgeID}" , method = RequestMethod.GET)
+    public Result findByBridgeId(@PathVariable(value = "bridgeID") Integer bridgeID){
+        //根据userID查询巡检计划
+        List<SimplePlan> simplePlans = inspectionPlanService.getPlanByBridgeID(bridgeID);
+        Map<String, Object> map = new HashMap<>();
+        map.put("rows",simplePlans);
+        return new Result(ResultCode.SUCCESS , map);
+    }
+
+    /**
+     * 手机端根据用户Id查询巡检计划
+     */
+    @RequiresPermissions(value = "MENU-INSPECTION-PLANS")
+    @RequestMapping(value = "/plan/user/{userID}" , method = RequestMethod.GET)
+    public Result findByUserId(@PathVariable(value = "userID") Integer userID){
+        //根据userID查询巡检计划
+        List<SimplePlan> simplePlans = inspectionPlanService.getPlanByUserID(userID);
+        Map<String, Object> map = new HashMap<>();
+        map.put("rows",simplePlans);
+        return new Result(ResultCode.SUCCESS , map);
+    }
+
+    /**
      * 根据计划Id查询巡检计划
      */
+    @RequiresPermissions(value = "MENU-INSPECTION-PLANS")
     @RequestMapping(value = "/plan/{id}" , method = RequestMethod.GET)
     public Result findById(@PathVariable(value = "id") String id){
         //添加planID
@@ -90,6 +120,7 @@ public class InspectionPlanController extends BaseController {
     /**
      * 保存巡检计划
      */
+    @RequiresPermissions(value = "POINT-INSPECTION-PLAN-ADD")
     @RequestMapping(value = "/plan/import",method = RequestMethod.POST)
     @Transactional
     public Result save(@RequestBody InspectionPlan inspectionPlan) {
@@ -124,6 +155,7 @@ public class InspectionPlanController extends BaseController {
     /**
      * 根据Id修改巡检计划
      */
+    @RequiresPermissions(value = "POINT-INSPECTION-PLAN-UPDATE")
     @RequestMapping(value = "/plan/{id}" , method = RequestMethod.PUT)
     public Result update(@PathVariable(value = "id") String id , @RequestBody InspectionPlan inspectionPlan){
         //调用Service更新
@@ -134,6 +166,7 @@ public class InspectionPlanController extends BaseController {
     /**
      * 根据Id删除巡检计划
      */
+    @RequiresPermissions(value = "POINT-INSPECTION-PLAN-DELETE")
     @RequestMapping(value = "/plan/{id}" , method = RequestMethod.DELETE)
     public Result delete(@PathVariable(value = "id") String id){
         inspectionPlanService.delete(id);

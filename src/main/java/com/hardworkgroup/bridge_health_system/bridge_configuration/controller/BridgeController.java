@@ -48,11 +48,10 @@ public class BridgeController {
     }
 
     /**
-     * 获取所有桥梁列表
+     * 手机端获取所有桥梁列表
      * @return 桥梁结果
      */
     @RequestMapping(value = "/bridges" , method = RequestMethod.GET)
-
     public Result findAll(){
         List<BridgeSimpleResult> all = bridgeService.findAll();
         Map<String,Object> map =new HashMap<>();

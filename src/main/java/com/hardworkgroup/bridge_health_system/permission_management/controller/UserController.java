@@ -3,7 +3,7 @@ package com.hardworkgroup.bridge_health_system.permission_management.controller;
 import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.response.ProfileResult;
-import com.hardworkgroup.bridge_health_system.common_model.domain.system.response.UserWithPictureResult;
+import com.hardworkgroup.bridge_health_system.common_model.domain.system.response.UserWithDateResult;
 import com.hardworkgroup.bridge_health_system.permission_management.service.serviceImpl.RoleAndUserRelationsServiceImpl;
 import com.hardworkgroup.bridge_health_system.permission_management.service.serviceImpl.UserServiceImpl;
 import com.hardworkgroup.bridge_health_system.system_common.controller.BaseController;
@@ -86,9 +86,8 @@ public class UserController extends BaseController {
             subject.login(upToken);
             //获取sessionId
             String sessionId = (String) subject.getSession().getId();
-            String userPicture = "http://121.199.75.149:9999/img/"+this.userPicture;
             Map<String, Object> map = new HashMap<>();
-            map.put("rows",new UserWithPictureResult(sessionId,userPicture));
+            map.put("rows",new UserWithDateResult(sessionId));
             //构造返回结果
             return new Result(ResultCode.SUCCESS , map);
         }catch (Exception e){
@@ -100,15 +99,30 @@ public class UserController extends BaseController {
      */
     @RequestMapping(value = "/profile" , method = RequestMethod.POST)
     public Result profile(HttpServletRequest request) throws Exception {
-
         //获取session中的安全数据
         Subject subject = SecurityUtils.getSubject();
         //subject获取所有的安全集合
         PrincipalCollection principals = subject.getPrincipals();
         //获取安全数据
         ProfileResult result = (ProfileResult) principals.getPrimaryPrincipal();
-
         return new Result(ResultCode.SUCCESS,result);
+    }
+
+    /**
+     * 用户登录成功之后,获取用户信息
+     */
+    @RequestMapping(value = "/profile" , method = RequestMethod.GET)
+    public Result profile(){
+        //获取session中的安全数据
+        Subject subject = SecurityUtils.getSubject();
+        //subject获取所有的安全集合
+        PrincipalCollection principals = subject.getPrincipals();
+        //获取安全数据
+        ProfileResult result = (ProfileResult) principals.getPrimaryPrincipal();
+        result.setUserPicture("http://121.199.75.149:9999/img/"+result.getUserPicture());
+        Map<String, Object> map = new HashMap<>();
+        map.put("rows",result);
+        return new Result(ResultCode.SUCCESS,map);
     }
 
     /**

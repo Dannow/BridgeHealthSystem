@@ -74,18 +74,14 @@ public class UserServiceImpl implements UserService {
     /**
      * 更新用户
      */
+    @Override
     public void update(String id , User user){
-        User tempUser = userDao.getUserByID(id);
-        if (!ObjectUtils.isEmpty(tempUser) && !ObjectUtils.isEmpty(user)){
-            tempUser.setUserName(user.getUserName());
-            String password = new Md5Hash(user.getUserPassword() , user.getUserPhone() , 3).toString();
-            tempUser.setUserPassword(password);
-            tempUser.setUserEmail(user.getUserEmail());
-            tempUser.setUserLevel(user.getUserLevel());
-            tempUser.setUserStatus(user.getUserStatus());
-        }
+        log.info(user.getUserPassword());
+        String password = new Md5Hash(user.getUserPassword() , user.getUserPhone() , 3).toString();
+        log.info(password);
+        user.setUserPassword(password);
         //更新用户
-        userDao.updateByKey(tempUser);
+        userDao.updateByKey(user);
         //userDao.updateByPrimaryKey(tempUser);
     }
 

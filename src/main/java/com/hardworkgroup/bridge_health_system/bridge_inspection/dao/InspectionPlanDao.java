@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,4 +34,8 @@ public interface InspectionPlanDao extends Mapper<InspectionPlan> {
 
     @Update("update inspection_plan set inspectionCompletionStatus=1 where inspectionPlanID=#{inspectionPlanID}")
     int endTask(Integer inspectionPlanID);
+
+    List<InspectionPlan> selectAllByUserID(Integer userID);
+
+    InspectionPlan getPlanByBridgeNameAndCheckTime(Integer userID, String bridgeName, Date checkTime);
 }

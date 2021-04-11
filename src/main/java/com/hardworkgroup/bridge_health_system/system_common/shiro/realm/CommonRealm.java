@@ -10,6 +10,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -30,12 +31,15 @@ public class CommonRealm extends AuthorizingRealm {
         //获取安全数据
         ProfileResult result = (ProfileResult) principalCollection.getPrimaryPrincipal();
         //获取权限信息
-        Set<String> apisPerms = (Set<String>) result.getRoles().get("points");
+        Set<String> apisPerms = (Set<String>) result.getRoles().get("apis");
         Set<String> menusPerms = (Set<String>) result.getRoles().get("menus");
+        Set<String> pointsPerms = (Set<String>) result.getRoles().get("points");
+        Set<String> perms = new HashSet<>(apisPerms);
+        perms.addAll(menusPerms);
+        perms.addAll(pointsPerms);
         //构造权限信息,返回值
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        info.setStringPermissions(apisPerms);
-        info.setStringPermissions(menusPerms);
+        info.setStringPermissions(perms);
         return info;
     }
 

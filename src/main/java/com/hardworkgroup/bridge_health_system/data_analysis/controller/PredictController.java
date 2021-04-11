@@ -149,7 +149,7 @@ public class PredictController {
         List<SensorCorrelationDataResult> sensorDataResultList = new ArrayList<>();
         for (int i = 0; i < predictionSplit.length; i++){
             // 时间加5分钟
-            Long tmp = sensorDataTime1.getTime()+300000;
+            Long tmp = sensorDataTime1.getTime()+3600000;
             String format = formatter.format(tmp);
             Date sensorDataTime = formatter.parse(format);
             // 获得预测数据

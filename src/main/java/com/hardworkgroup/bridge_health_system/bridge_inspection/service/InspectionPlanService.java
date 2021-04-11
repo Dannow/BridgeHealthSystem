@@ -5,6 +5,9 @@ import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionPlan;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.response.SimplePlan;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * (TPatrolPlan)表服务接口
  *
@@ -25,4 +28,10 @@ public interface InspectionPlanService {
     void delete(String InspectionPlanID);
 
     PageInfo<InspectionPlan> getPlanByBridgeID(Integer bridgeID, int pageNum, int pageSize);
+
+    List<SimplePlan> getPlanByBridgeID(Integer bridgeID);
+
+    List<SimplePlan> getPlanByUserID(Integer userID);
+
+    InspectionPlan getPlanByCheckTime(Integer userID,String bridgeName, Date checkTime);
 }

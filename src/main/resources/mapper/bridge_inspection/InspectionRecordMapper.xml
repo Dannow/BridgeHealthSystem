@@ -94,6 +94,18 @@
         where b.bridgeID=#{bridgeID}
     </select>
 
+    <!--根据userID获取所有巡检记录列表-->
+    <select id="selectAllByUserID" resultMap="recordWithSensorAndData">
+        select * from inspection_record as r
+        LEFT JOIN inspection_plan ip
+        on r.inspectionPlanID = ip.inspectionPlanID
+        LEFT JOIN user as u
+        on u.userID = ip.userID
+        LEFT JOIN bridge as b
+        on b.bridgeID = ip.bridgeID
+        where u.userID=#{userID}
+    </select>
+
     <!--更新巡检记录-->
     <update id="updateByKey" parameterType="map">
         update inspection_record

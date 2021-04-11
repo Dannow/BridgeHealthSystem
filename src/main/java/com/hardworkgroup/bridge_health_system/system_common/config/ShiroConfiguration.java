@@ -69,8 +69,10 @@ public class ShiroConfiguration {
         //4.设置过滤器集合
         Map<String,String> filterMap = new LinkedHashMap<>();
         //anon -- 匿名访问
+        filterMap.put("/permissionManagement/logout","logout");
         filterMap.put("/permissionManagement/login","anon");
         filterMap.put("/permissionManagement/loginWithUserPicture","anon");
+
         filterMap.put("/autherror","anon");
         //匿名访问服务器的文件
         filterMap.put("/img/**","anon");

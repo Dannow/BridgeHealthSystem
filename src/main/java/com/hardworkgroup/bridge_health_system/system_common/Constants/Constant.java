@@ -19,9 +19,9 @@ public class Constant {
      */
     public static final class UserLevel{
         /**saas管理员*/
-        public static final String SAASADMIN = "saasAdmin";
+        public static final String SUPER_ADMIN = "superAdmin";
         /**企业管理员*/
-        public static final String COADMIN = "coAdmin";
+        public static final String BRIDGE_ADMIN = "bridgeAdmin";
         /**用户*/
         public static final String USER = "user";
     }
