@@ -14,7 +14,9 @@ import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_manageme
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.response.BridgeSimpleResult;
+import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Role;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User;
+import com.hardworkgroup.bridge_health_system.permission_management.service.UserService;
 import com.hardworkgroup.bridge_health_system.system_common.controller.BaseController;
 import com.hardworkgroup.bridge_health_system.system_common.entity.PageResult;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
@@ -53,6 +55,9 @@ public class AlarmController extends BaseController {
 
     @Autowired
     private BridgeService bridgeService;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * 启动报警流程
@@ -169,6 +174,34 @@ public class AlarmController extends BaseController {
         PageInfo<AlarmInformationWithBridge> pageInfo = alarmDataService.findAllByAlarmConfirmStatus(alarmConfirmStatus,pageNum, pageSize);
         PageResult<AlarmInformationWithBridge> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
         return new Result(ResultCode.SUCCESS,pageResult);
+    }
+
+    /**
+     * 查询管理员未处理报警信息报警信息
+     * @return 报警信息结果
+     */
+    @RequestMapping(value = "/unprocessedAlarmInformation/{userID}" , method = RequestMethod.GET)
+    public Result findUnprocessedAlarmInformation(@PathVariable(value = "userID") String userID){
+        // 获取用户对应的桥梁
+        User user = userService.getUserByID(userID);
+        Integer bridgeID = user.getBridgeID();
+
+        //判断用户角色是否为管理员
+        Boolean isAdmin = false;
+        Set<Role> roles = user.getRoles();
+        for (Role role : roles){
+            if (role.getRoleID().equals("33")){
+                isAdmin = true;
+            }
+        }
+
+        // 如果是管理员，返回消息
+        if (isAdmin){
+            List<AlarmInformation> unprocessedAlarmInformation = alarmDataService.getUnprocessedAlarmInformation(bridgeID);
+            return new Result(ResultCode.SUCCESS,unprocessedAlarmInformation);
+        }else {
+            return new Result(ResultCode.SUCCESS,null);
+        }
     }
 
     /**

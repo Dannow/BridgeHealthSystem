@@ -25,6 +25,11 @@ public class User implements Serializable {
      */
     @Id
     private Integer userID;
+
+    /**
+     * ID
+     */
+    private Integer bridgeID;
     /**
      * 用户名称
      */

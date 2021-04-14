@@ -21,6 +21,7 @@ public class SendMessageUtils {
     //阿里云模版CODE
     private static final String templateCode="SMS_205130562";
 
+
     //发送短信
     public static void sendMsg(String mobile,String code){
         DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessSecret);

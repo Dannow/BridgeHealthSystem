@@ -6,6 +6,8 @@ import com.hardworkgroup.bridge_health_system.realTime_dataCollection.service.Ra
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RawDataSmokeServiceImpl implements RawDataSmokeService {
     @Autowired
@@ -14,5 +16,15 @@ public class RawDataSmokeServiceImpl implements RawDataSmokeService {
     // 新增数据
     public void insertRawDataSmoke(RawDataSmoke rawDataSmoke){
         rawDataSmokeDao.insertRawDataSmoke(rawDataSmoke);
+    }
+
+    // 根据传感器ID查询批量实时数据
+    public List<RawDataSmoke> selectBatchRawDataSmokeBySensorID(int sensorID, int number){
+        return rawDataSmokeDao.selectBatchRawDataSmokeBySensorID(sensorID, number);
+    }
+
+    // 根据传感器ID和时间查询实时数据
+    public List<RawDataSmoke> selectRawDataSmokeBySensorIDAndTime(int sensorID, String targetTime){
+        return rawDataSmokeDao.selectRawDataSmokeBySensorIDAndTime(sensorID,targetTime);
     }
 }

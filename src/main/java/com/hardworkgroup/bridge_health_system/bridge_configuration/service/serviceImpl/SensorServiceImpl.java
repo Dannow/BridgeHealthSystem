@@ -69,4 +69,16 @@ public class SensorServiceImpl implements SensorService {
     public Sensor getAlarmInformationBySensorID(int sensorID){
         return sensorDao.getAlarmInformationBySensorID(sensorID);
     }
+
+    // 根据传感器ID获取单位
+    public String getUnitBySensorID(String sensorID){
+        Sensor sensor = sensorDao.getSensorByID(sensorID);
+        return sensor.getUnit();
+    }
+
+    // 根据传感器类型获取传感器单位
+    public String getUnitBySensorType(String sensorType){
+        Sensor sensor = sensorDao.getUnitBySensorType(sensorType).get(0);
+        return sensor.getUnit();
+    }
 }

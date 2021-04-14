@@ -1,9 +1,12 @@
 package com.hardworkgroup.bridge_health_system;
 
+import com.hardworkgroup.bridge_health_system.alarm_management.service.serviceImpl.AlarmDataServiceImpl;
 import com.hardworkgroup.bridge_health_system.bridge_configuration.service.BridgeService;
 import com.hardworkgroup.bridge_health_system.bridge_configuration.service.SensorService;
+import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_management.entity.AlarmInformation;
 import com.hardworkgroup.bridge_health_system.data_analysis.service.SensorDataService;
 import com.hardworkgroup.bridge_health_system.permission_management.service.UserService;
+import com.hardworkgroup.bridge_health_system.realTime_dataCollection.dao.RawDataTemperatureDao;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @SpringBootTest
 class BridgeHealthSystemApplicationTests {
@@ -22,10 +27,19 @@ class BridgeHealthSystemApplicationTests {
     public SensorDataService sensorDataService;
     @Autowired
     public BridgeService bridgeService;
+    @Autowired
+    public RawDataTemperatureDao rawDataTemperatureDao;
+    @Autowired
+    public AlarmDataServiceImpl alarmDataService;
 
     @Test
     public void test() throws Exception {
-        System.out.println(sensorService.getSensorByID("1"));
+//        AlarmInformation alarmInformation = new AlarmInformation();
+//        alarmInformation.setAlarmDetail("aa");
+//        alarmDataService.save(alarmInformation);
+        System.out.println(sensorService.getUnitBySensorID("1"));
+        System.out.println(sensorService.getUnitBySensorType("温度传感器"));
+//        System.out.println(rawDataTemperatureDao.selectRawDataTemperatureBySensorIDAndTime(1,"2020-04-27"));
 //        // 获得当前时间
 //        Date nowTime = new Date();
 //

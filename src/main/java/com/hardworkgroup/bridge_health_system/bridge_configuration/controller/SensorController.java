@@ -81,4 +81,23 @@ public class SensorController {
         sensorService.delete(id);
         return new Result(ResultCode.SUCCESS);
     }
+
+    /**
+     * 根据类型获取传感器单位
+     */
+    @RequestMapping(value = "/UnitBySensorType" , method = RequestMethod.POST)
+    public Result findUnitBySensorType(@RequestBody Map<String,String > map){
+        String sensorType = map.get("sensorType");
+        String unit = sensorService.getUnitBySensorType(sensorType);
+        return new Result(ResultCode.SUCCESS, unit);
+    }
+
+    /**
+     * 根据类型获取传感器单位
+     */
+    @RequestMapping(value = "/UnitBySensorID/{sensorID}" , method = RequestMethod.GET)
+    public Result findUnitBySensorID(@PathVariable(value = "sensorID") String sensorID){
+        String unit = sensorService.getUnitBySensorID(sensorID);
+        return new Result(ResultCode.SUCCESS, unit);
+    }
 }

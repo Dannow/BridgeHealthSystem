@@ -10,4 +10,8 @@
     <select id="selectBatchRawDataTemperatureBySensorID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.realTime_dataCollection.entity.RawDataTemperature">
         select * from rawData_Temperature where sensorID = #{sensorID} order by ID desc limit #{number}
     </select>
+
+    <select id="selectRawDataTemperatureBySensorIDAndTime" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.realTime_dataCollection.entity.RawDataTemperature">
+        SELECT * FROM rawData_Temperature WHERE sensorID = #{sensorID} and acquisitionTime > #{targetTime} ORDER BY ID DESC
+    </select>
 </mapper>
