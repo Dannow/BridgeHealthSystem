@@ -75,4 +75,9 @@ public class AlarmDataServiceImpl {
         }
         return new PageInfo<>(alarmInformationWithBridges,5);
     }
+
+    // 获取管理员未处理的报警信息
+    public List<AlarmInformation> getUnprocessedAlarmInformation(Integer bridgeID){
+        return alarmInformationDao.getUnprocessedAlarmInformation(bridgeID);
+    }
 }

@@ -39,4 +39,6 @@ public interface SensorDao extends Mapper<Sensor> {
     // 根据传感器ID获取报警信息
     public Sensor getAlarmInformationBySensorID(int sensorID);
 
+    // 根据传感器类型获取传感器单位
+    public List<Sensor> getUnitBySensorType(String sensorType);
 }

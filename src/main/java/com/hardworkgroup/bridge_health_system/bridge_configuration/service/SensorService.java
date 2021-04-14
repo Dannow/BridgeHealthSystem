@@ -32,4 +32,10 @@ public interface SensorService {
 
     // 根据传感器ID获取报警信息
     public Sensor getAlarmInformationBySensorID(int sensorID);
+
+    // 根据传感器ID获取单位
+    public String getUnitBySensorID(String sensorID);
+
+    // 根据传感器类型获取传感器单位
+    public String getUnitBySensorType(String sensorType);
 }

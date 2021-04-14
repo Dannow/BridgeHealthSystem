@@ -1,4 +1,4 @@
-package com.hardworkgroup.bridge_health_system.realTime_dataCollection.netty;
+package com.hardworkgroup.bridge_health_system.realTime_dataCollection.netty.socketNetty;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -7,16 +7,16 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.poifs.property.Child;
+
 import java.net.InetSocketAddress;
 
 /*
 * Netty服务器端配置
 * */
 @Slf4j
-public class NettyServer {
+public class NettyServer implements Runnable{
 
-    public void start(InetSocketAddress socketAddress) throws Exception{
+    public void run(){
         // 创建一个主线程组
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         // 创建一个工作线程组
@@ -36,7 +36,7 @@ public class NettyServer {
                     .childOption(ChannelOption.SO_KEEPALIVE,true);
 
             // 绑定端口,开始接收进来的连接
-            ChannelFuture channelFuture = bootstrap.bind(socketAddress).sync();
+            ChannelFuture channelFuture = bootstrap.bind(8087).sync();
 
 //            log.info("服务器ip为："+socketAddress.getHostName());
 //            log.info("服务器端口号为："+socketAddress.getPort());
@@ -44,7 +44,11 @@ public class NettyServer {
             //对关闭通道进行监听
             channelFuture.channel().closeFuture().sync();
 
-        } finally {
+        } catch (Exception e){
+            // 打印错误
+            e.printStackTrace();
+
+        }finally {
             // 关闭主线程组
             bossGroup.shutdownGracefully();
             // 关闭工作线程组

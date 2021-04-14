@@ -6,4 +6,12 @@
     <insert id="insertRawDataFire" parameterType="com.hardworkgroup.bridge_health_system.common_model.domain.realTime_dataCollection.entity.RawDataFire">
         insert into rawData_Fire (sensorID, acquisitionTime, fireValue) values (#{sensor.sensorID}, #{acquisitionTime}, #{fireValue})
     </insert>
+
+    <select id="selectBatchRawDataFireBySensorID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.realTime_dataCollection.entity.RawDataFire">
+        select * from rawData_Fire where sensorID = #{sensorID} order by ID desc limit #{number}
+    </select>
+
+    <select id="selectRawDataFireBySensorIDAndTime" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.realTime_dataCollection.entity.RawDataSmoke">
+        SELECT * FROM rawData_Fire WHERE sensorID = #{sensorID} and acquisitionTime > #{targetTime} ORDER BY ID DESC
+    </select>
 </mapper>
