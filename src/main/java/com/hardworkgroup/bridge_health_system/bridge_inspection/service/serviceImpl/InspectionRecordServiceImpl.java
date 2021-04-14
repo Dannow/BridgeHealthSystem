@@ -24,6 +24,7 @@ import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspect
 import com.hardworkgroup.bridge_health_system.system_common.utils.UUIDUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sun.misc.BASE64Decoder;
@@ -56,6 +57,9 @@ public class InspectionRecordServiceImpl implements InspectionRecordService {
 
     @Resource
     private ProblemEventPictureDao problemEventPictureDao;
+
+    @Value("${prop.upload-folder}")
+    private String UPLOAD_FOLDER;
 
     @Override
     public InspectionRecord selectInspectionRecord(int inspectionID) {
@@ -222,6 +226,12 @@ public class InspectionRecordServiceImpl implements InspectionRecordService {
             return false;
         }
     }
+
+
+
+
+
+
 
     @Override
     public InspectionRecord getRecordByID(String id) {

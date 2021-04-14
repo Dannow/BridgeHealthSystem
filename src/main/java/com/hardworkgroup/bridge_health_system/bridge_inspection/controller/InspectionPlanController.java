@@ -106,6 +106,19 @@ public class InspectionPlanController extends BaseController {
     }
 
     /**
+     * 手机端根据用户Id和巡检员确认状态查询巡检计划
+     */
+    @RequiresPermissions(value = "MENU-INSPECTION-PLANS")
+    @RequestMapping(value = "/plan/checkInStatus/{checkInStatus}" , method = RequestMethod.GET  )
+    public Result findByCheckInStatus(@PathVariable(value = "checkInStatus") Integer inspectionCheckInStatus){
+        //根据bridgeID查询巡检计划
+        List<SimplePlan> simplePlans = inspectionPlanService.findAllByCheckInStatus(this.userId,inspectionCheckInStatus);
+        Map<String, Object> map = new HashMap<>();
+        map.put("rows",simplePlans);
+        return new Result(ResultCode.SUCCESS , map);
+    }
+
+    /**
      * 根据计划Id查询巡检计划
      */
     @RequiresPermissions(value = "MENU-INSPECTION-PLANS")

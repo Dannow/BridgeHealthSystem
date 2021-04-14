@@ -18,6 +18,8 @@ public class UserResult implements Serializable {
      * ID
      */
     private String userID;
+
+    private Integer bridgeID;
     /**
      * 用户名称
      */

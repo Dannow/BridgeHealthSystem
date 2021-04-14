@@ -16,6 +16,10 @@ public interface SensorService {
 
     PageInfo<Sensor> findAll(int pageNum, int pageSize);
 
+    PageInfo<Sensor> findAll(Integer bridgeID, String sensorType, int pageNum, int pageSize);
+
+    PageInfo<Sensor> findAll(Integer bridgeID, int pageNum, int pageSize);
+
     void save(Sensor sensor);
 
     Sensor getSensorByID(String sensorID);

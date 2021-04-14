@@ -1,6 +1,9 @@
 package com.hardworkgroup.bridge_health_system.permission_management.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionData;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.response.ProfileResult;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.response.UserWithDateResult;
@@ -72,6 +75,11 @@ public class UserController extends BaseController {
         }
     }
 
+    /**
+     * 手机端用户登入
+     * @param loginMap
+     * @return
+     */
     @RequestMapping(value = "/loginWithUserPicture" , method = RequestMethod.POST)
     public Result userPicture(@RequestBody Map<String,Object> loginMap){
         String phone = (String) loginMap.get("phone");
@@ -134,7 +142,9 @@ public class UserController extends BaseController {
         //获取被分配的用户id
         String userId = (String) map.get("userID");
         //获取到角色的id列表
-        List<String> roleIds = (List<String>) map.get("roleIds");
+        String s = JSON.toJSONString(map.get("roleIds"));
+        List<String> roleIds = JSONObject.parseArray(s,String.class);
+        //List<String> roleIds = (List<String>) map.get("roleIds");
         //调用service完成角色分配
         userService.assignRoles(userId , roleIds);
 

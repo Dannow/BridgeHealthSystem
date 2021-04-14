@@ -10,7 +10,6 @@ import com.hardworkgroup.bridge_health_system.common_model.domain.activiti.entit
 import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_management.entity.AlarmInformation;
 import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_management.response.AlarmCountResult;
 import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_management.response.AlarmInformationWithBridge;
-import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_management.response.AlarmCountResult;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.response.BridgeSimpleResult;
@@ -53,7 +52,7 @@ public class AlarmController extends BaseController {
     @Resource
     private SiteMessageServiceImpl siteMessageService;
 
-    @Autowired
+    @Resource
     private BridgeService bridgeService;
 
     @Autowired
@@ -215,6 +214,18 @@ public class AlarmController extends BaseController {
         PageResult<AlarmInformationWithBridge> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
         return new Result(ResultCode.SUCCESS,pageResult);
     }
+
+    /**
+     * 手机端根据桥梁ID查询所有报警信息
+     */
+    @RequestMapping(value = "/alarmInformation/bridgeID/{bridgeID}" , method = RequestMethod.GET)
+    public Result findAllByBridgeID(@PathVariable(value = "bridgeID") Integer bridgeID){
+        List<AlarmInformationWithBridge> alarmInformationWithBridges = alarmDataService.findAllByBridgeID(bridgeID);
+        Map<String, Object> map = new HashMap<>();
+        map.put("rows",alarmInformationWithBridges);
+        return new Result(ResultCode.SUCCESS , map);
+    }
+
     /**
      * 保存报警信息
      */

@@ -100,8 +100,9 @@ public class BridgeController {
     /*
     *根据桥梁获取传感器列表
     * */
-    @RequestMapping(value = "/SensorByBridgeID/{bridgeId}" , method = RequestMethod.GET)
-    public Result findSensorByBridgeID(@PathVariable(value = "bridgeId") String bridgeId){
+    @RequestMapping(value = "/SensorByBridgeID/{bridgeId}" , method = RequestMethod.POST)
+    public Result findSensorByBridgeID(@PathVariable(value = "bridgeId") String bridgeId,@RequestBody Map<String,Object> map){
+
         List<SensorInBridgeResult> sensorInBridgeResultList = new ArrayList<>();
         // 获得桥梁下传感器
         Bridge bridge = bridgeService.getSensorByBridgeID(bridgeId);

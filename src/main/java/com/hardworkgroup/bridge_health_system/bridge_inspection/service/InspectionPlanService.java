@@ -27,6 +27,8 @@ public interface InspectionPlanService {
 
     void delete(String InspectionPlanID);
 
+    List<SimplePlan> findAllByCheckInStatus(Integer userID, Integer inspectionCheckInStatus);
+
     PageInfo<InspectionPlan> getPlanByBridgeID(Integer bridgeID, int pageNum, int pageSize);
 
     List<SimplePlan> getPlanByBridgeID(Integer bridgeID);

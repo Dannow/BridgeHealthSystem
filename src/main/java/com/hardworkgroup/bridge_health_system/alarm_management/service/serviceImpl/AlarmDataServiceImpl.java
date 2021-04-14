@@ -64,6 +64,18 @@ public class AlarmDataServiceImpl {
     }
 
     /**
+     * 根据桥梁ID查询所有报警数据
+     */
+    public List<AlarmInformationWithBridge> findAllByBridgeID(Integer bridgeID) {
+        List<AlarmInformation> alarmInformation = alarmInformationDao.selectAllByBridgeID(bridgeID);
+        List<AlarmInformationWithBridge> alarmInformationWithBridges = new ArrayList<>();
+        for (AlarmInformation information : alarmInformation) {
+            alarmInformationWithBridges.add(new AlarmInformationWithBridge(information));
+        }
+        return alarmInformationWithBridges;
+    }
+
+    /**
      * 根据Id查询报警信息
      */
     public AlarmInformation getAlarmInformationByID(String alarmInformationID) {

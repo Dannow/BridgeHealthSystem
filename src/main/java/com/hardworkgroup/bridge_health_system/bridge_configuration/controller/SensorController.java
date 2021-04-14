@@ -45,6 +45,32 @@ public class SensorController {
     }
 
     /**
+     * 根据bridgeID和sensorType获取所有传感器列表
+     * @return 传感器结果
+     */
+    @RequestMapping(value = "/sensors/bridge/{bridgeID}/sensor/{sensorType}" , method = RequestMethod.POST)
+    public Result findAll(@PathVariable(value = "bridgeID") Integer bridgeID, @PathVariable(value = "sensorType") String sensorType,@RequestBody Map<String,String > map){
+        int pageNum = Integer.parseInt(map.get("pageNum"));
+        int pageSize = Integer.parseInt(map.get("pageSize"));
+        PageInfo<Sensor> pageInfo = sensorService.findAll(bridgeID,sensorType,pageNum, pageSize);
+        PageResult<Sensor> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
+        return new Result(ResultCode.SUCCESS,pageResult);
+    }
+
+    /**
+     * 根据bridgeID获取所有传感器列表
+     * @return 传感器结果
+     */
+    @RequestMapping(value = "/sensors/bridge/{bridgeID}" , method = RequestMethod.POST)
+    public Result findAll(@PathVariable(value = "bridgeID") Integer bridgeID,@RequestBody Map<String,String > map){
+        int pageNum = Integer.parseInt(map.get("pageNum"));
+        int pageSize = Integer.parseInt(map.get("pageSize"));
+        PageInfo<Sensor> pageInfo = sensorService.findAll(bridgeID,pageNum, pageSize);
+        PageResult<Sensor> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
+        return new Result(ResultCode.SUCCESS,pageResult);
+    }
+
+    /**
      * 保存传感器
      */
     @RequestMapping(value = "/sensor/import",method = RequestMethod.POST)

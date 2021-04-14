@@ -22,11 +22,13 @@ public interface SensorDao extends Mapper<Sensor> {
 
     List<Sensor> selectAllSensor();
 
+    List<Sensor> selectAllByBridgeIDAndSensorType(Integer bridgeID,String sensorType);
+
     void insertByKey(Sensor sensor);
 
     Sensor getSensorByID(String sensorID);
 
-    void updateByKey(Sensor tempSensor);
+    void updateByKey(Sensor sensor);
 
     void deleteByKey(String sensorID);
 
@@ -41,4 +43,6 @@ public interface SensorDao extends Mapper<Sensor> {
 
     // 根据传感器类型获取传感器单位
     public List<Sensor> getUnitBySensorType(String sensorType);
+
+    List<Sensor> selectAllByBridgeID(Integer bridgeID);
 }

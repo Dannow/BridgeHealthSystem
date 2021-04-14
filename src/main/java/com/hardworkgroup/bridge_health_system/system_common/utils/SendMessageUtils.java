@@ -13,13 +13,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class SendMessageUtils {
     //阿里云accessKeyId
-    private static final String accessKeyId="LTAI4GDRcHgD4EnAg676FSsz";
+    private static final String accessKeyId="LTAI5tJ9KkGox6m3EYb4gBGE";
     //阿里云accessSecret
-    private static final String accessSecret="A6hw6HE7eiOkOgaL3jg5cAVK1wwBt5";
+    private static final String accessSecret="CSDfUzT4DSVdG1A43t9jVLpFVzZoVI";
     //阿里云的签名名称
-    private static final String signName="云智智能酒店系统";
+    private static final String signName="云智桥梁健康管养系统";
     //阿里云模版CODE
-    private static final String templateCode="SMS_205130562";
+    private static final String templateCode="SMS_215072875";
 
 
     //发送短信

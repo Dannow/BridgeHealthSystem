@@ -10,8 +10,10 @@ import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspect
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.response.SimplePlan;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 
@@ -25,7 +27,7 @@ import java.util.*;
 @Slf4j
 public class InspectionPlanServiceImpl implements InspectionPlanService, IActFlowCustomService {
 
-    @Autowired
+    @Resource
     InspectionPlanDao inspectionPlanDao;
 
     @Override
@@ -33,6 +35,16 @@ public class InspectionPlanServiceImpl implements InspectionPlanService, IActFlo
         Page<InspectionPlan> page = PageHelper.startPage(pageNum,pageSize);
         List<InspectionPlan> inspectionPlans =  inspectionPlanDao.selectAllInspectionPlan();
         return new PageInfo<>(inspectionPlans,5);
+    }
+
+    @Override
+    public List<SimplePlan> findAllByCheckInStatus(Integer userID, Integer inspectionCheckInStatus) {
+        List<InspectionPlan> inspectionPlans =  inspectionPlanDao.selectAllByCheckInStatus(userID,inspectionCheckInStatus);
+        List<SimplePlan> simplePlans = new ArrayList<>();
+        for (InspectionPlan inspectionPlan : inspectionPlans) {
+            simplePlans.add(new SimplePlan(inspectionPlan));
+        }
+        return simplePlans;
     }
 
     @Override

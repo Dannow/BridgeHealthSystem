@@ -38,4 +38,6 @@ public interface InspectionPlanDao extends Mapper<InspectionPlan> {
     List<InspectionPlan> selectAllByUserID(Integer userID);
 
     InspectionPlan getPlanByBridgeNameAndCheckTime(Integer userID, String bridgeName, Date checkTime);
+
+    List<InspectionPlan> selectAllByCheckInStatus(Integer userID, Integer inspectionCheckInStatus);
 }

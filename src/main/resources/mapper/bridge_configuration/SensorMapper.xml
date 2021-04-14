@@ -20,10 +20,22 @@
         select * from sensor where sensorType = #{sensorType}
     </select>
 
+    <!--查询所有传感器-->
+    <select id="selectAllByBridgeID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor">
+        select * from sensor where bridgeID=#{bridgeID}
+    </select>
+
+    <!--根据bridgeID和sensorType查询所有传感器-->
+    <select id="selectAllByBridgeIDAndSensorType" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor">
+        select * from sensor
+        where bridgeID=#{bridgeID} AND sensorType=#{sensorType}
+    </select>
+
     <!--更新传感器-->
     <update id="updateByKey" parameterType="map">
         update sensor
         set sensorName=#{sensorName},
+        bridgeID=#{bridgeID},
         sensorLocation=#{sensorLocation},
         sensorType=#{sensorType},
         upperThreshold=#{upperThreshold},
