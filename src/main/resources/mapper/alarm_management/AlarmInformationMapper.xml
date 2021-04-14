@@ -64,6 +64,11 @@
         select * from alarm_information as a LEFT JOIN sensor as s on a.sensorID = s.sensorID LEFT JOIN bridge as b on b.bridgeID = s.bridgeID WHERE a.alarmConfirmStatus = #{alarmConfirmStatus}
     </select>
 
+    <!--获取管理员未处理的报警信息-->
+    <select id="getUnprocessedAlarmInformation" resultMap="AlarmInformationWithSensor">
+        select * from alarm_information as a LEFT JOIN sensor as s on a.sensorID = s.sensorID LEFT JOIN bridge as b on b.bridgeID = s.bridgeID WHERE a.alarmConfirmStatus = 0 and b.bridgeID = #{bridgeID}
+    </select>
+
     <!--更新报警信息-->
     <update id="updateByKey" parameterType="map">
         update alarm_information

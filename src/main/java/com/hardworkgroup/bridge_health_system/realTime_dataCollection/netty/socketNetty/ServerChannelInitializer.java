@@ -1,4 +1,4 @@
-package com.hardworkgroup.bridge_health_system.realTime_dataCollection.netty;
+package com.hardworkgroup.bridge_health_system.realTime_dataCollection.netty.socketNetty;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
