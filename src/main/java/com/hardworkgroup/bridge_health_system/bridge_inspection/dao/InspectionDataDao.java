@@ -18,7 +18,7 @@ public interface InspectionDataDao extends Mapper<InspectionData> {
 
     List<InspectionData> selectAllInspectionData();
 
-    List<InspectionData> selectAllByRecordID(Integer inspectionDataID);
+    List<InspectionData> selectAllByRecordID(Integer inspectionRecordID);
 
     void insertByKey(InspectionData inspectionData);
 

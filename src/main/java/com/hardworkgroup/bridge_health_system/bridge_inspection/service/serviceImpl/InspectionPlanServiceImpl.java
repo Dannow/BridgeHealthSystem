@@ -10,12 +10,11 @@ import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspect
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.response.SimplePlan;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.relational.core.sql.In;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.annotation.Resource;
+import java.util.*;
 
 
 /**
@@ -28,7 +27,7 @@ import java.util.Map;
 @Slf4j
 public class InspectionPlanServiceImpl implements InspectionPlanService, IActFlowCustomService {
 
-    @Autowired
+    @Resource
     InspectionPlanDao inspectionPlanDao;
 
     @Override
@@ -39,10 +38,45 @@ public class InspectionPlanServiceImpl implements InspectionPlanService, IActFlo
     }
 
     @Override
+    public List<SimplePlan> findAllByCheckInStatus(Integer userID, Integer inspectionCheckInStatus) {
+        List<InspectionPlan> inspectionPlans =  inspectionPlanDao.selectAllByCheckInStatus(userID,inspectionCheckInStatus);
+        List<SimplePlan> simplePlans = new ArrayList<>();
+        for (InspectionPlan inspectionPlan : inspectionPlans) {
+            simplePlans.add(new SimplePlan(inspectionPlan));
+        }
+        return simplePlans;
+    }
+
+    @Override
     public PageInfo<InspectionPlan> getPlanByBridgeID(Integer bridgeID, int pageNum, int pageSize) {
         Page<InspectionPlan> page = PageHelper.startPage(pageNum,pageSize);
         List<InspectionPlan> inspectionPlans =  inspectionPlanDao.selectAllByBridgeID(bridgeID);
         return new PageInfo<>(inspectionPlans,5);
+    }
+
+    @Override
+    public List<SimplePlan> getPlanByBridgeID(Integer bridgeID) {
+        List<InspectionPlan> inspectionPlans =  inspectionPlanDao.selectAllByBridgeID(bridgeID);
+        List<SimplePlan> simplePlans = new ArrayList<>();
+        for (InspectionPlan inspectionPlan : inspectionPlans) {
+            simplePlans.add(new SimplePlan(inspectionPlan));
+        }
+        return simplePlans;
+    }
+
+    @Override
+    public List<SimplePlan> getPlanByUserID(Integer userID) {
+        List<InspectionPlan> inspectionPlans =  inspectionPlanDao.selectAllByUserID(userID);
+        List<SimplePlan> simplePlans = new ArrayList<>();
+        for (InspectionPlan inspectionPlan : inspectionPlans) {
+            simplePlans.add(new SimplePlan(inspectionPlan));
+        }
+        return simplePlans;
+    }
+
+    @Override
+    public InspectionPlan getPlanByCheckTime(Integer userID, String bridgeName, Date checkTime) {
+        return inspectionPlanDao.getPlanByBridgeNameAndCheckTime(userID,bridgeName,checkTime);
     }
 
     @Override

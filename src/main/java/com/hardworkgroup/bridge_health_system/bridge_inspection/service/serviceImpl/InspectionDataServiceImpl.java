@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ import java.util.List;
 @Service
 public class InspectionDataServiceImpl implements InspectionDataService {
 
-    @Autowired
+    @Resource
     private InspectionDataDao inspectionDataDao;
 
     /**
@@ -35,8 +36,7 @@ public class InspectionDataServiceImpl implements InspectionDataService {
     public PageInfo<InspectionData> findAll(int pageNum, int pageSize) {
         Page<InspectionData> page = PageHelper.startPage(pageNum,pageSize);
         List<InspectionData> inspectionData =  inspectionDataDao.selectAllInspectionData();
-        PageInfo<InspectionData> pageInfo = new PageInfo<>(inspectionData,5);
-        return pageInfo;
+        return new PageInfo<>(inspectionData,5);
     }
 
     /**
@@ -44,11 +44,10 @@ public class InspectionDataServiceImpl implements InspectionDataService {
      * @return 巡检记录结果
      */
     @Override
-    public PageInfo<InspectionData> getInspectionDataByRecordID(Integer inspectionDataID, int pageNum, int pageSize) {
+    public PageInfo<InspectionData> findAllByRecordID(Integer recordID, int pageNum, int pageSize) {
         Page<InspectionData> page = PageHelper.startPage(pageNum,pageSize);
-        List<InspectionData> inspectionData =  inspectionDataDao.selectAllByRecordID(inspectionDataID);
-        PageInfo<InspectionData> pageInfo = new PageInfo<>(inspectionData,5);
-        return pageInfo;
+        List<InspectionData> inspectionData =  inspectionDataDao.selectAllByRecordID(recordID);
+        return new PageInfo<>(inspectionData,5);
     }
 
     /**

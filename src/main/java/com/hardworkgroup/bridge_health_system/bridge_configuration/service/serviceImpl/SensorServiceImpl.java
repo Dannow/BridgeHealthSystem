@@ -36,6 +36,20 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
+    public PageInfo<Sensor> findAll(Integer bridgeID, String sensorType, int pageNum, int pageSize) {
+        Page<Sensor> page = PageHelper.startPage(pageNum,pageSize);
+        List<Sensor> sensors =  sensorDao.selectAllByBridgeIDAndSensorType(bridgeID,sensorType);
+        return new PageInfo<>(sensors,5);
+    }
+
+    @Override
+    public PageInfo<Sensor> findAll(Integer bridgeID, int pageNum, int pageSize) {
+        Page<Sensor> page = PageHelper.startPage(pageNum,pageSize);
+        List<Sensor> sensors =  sensorDao.selectAllByBridgeID(bridgeID);
+        return new PageInfo<>(sensors,5);
+    }
+
+    @Override
     public void save(Sensor sensor) {
         sensorDao.insertByKey(sensor);
     }

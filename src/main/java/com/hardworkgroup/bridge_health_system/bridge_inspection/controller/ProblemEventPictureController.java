@@ -4,12 +4,16 @@ import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.bridge_inspection.service.ProblemEventPictureService;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.ProblemEvent;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.ProblemEventPicture;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.response.SimpleEventPicture;
 import com.hardworkgroup.bridge_health_system.system_common.entity.PageResult;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -33,6 +37,7 @@ public class ProblemEventPictureController {
      * 获取所有问题事件图片列表
      * @return 巡检计划结果
      */
+    @RequiresPermissions(value = "MENU-INSPECTION-EVENT-PICTURES")
     @RequestMapping(value = "/problemEventPictures" , method = RequestMethod.POST)
     public Result findAll(@RequestBody Map<String,String > map){
         int pageNum = Integer.parseInt((String) map.get("pageNum"));
@@ -45,6 +50,7 @@ public class ProblemEventPictureController {
     /**
      * 根据问题事件Id查询问题事件图片
      */
+    @RequiresPermissions(value = "MENU-INSPECTION-EVENT-PICTURES")
     @RequestMapping(value = "/problemEventPicture/problemEventID/{problemEventID}" , method = RequestMethod.POST)
     public Result findByRecordID(@PathVariable(value = "problemEventID") Integer problemEventID, @RequestBody Map<String,String > map){
         int pageNum = Integer.parseInt((String) map.get("pageNum"));
@@ -53,6 +59,19 @@ public class ProblemEventPictureController {
         PageInfo<ProblemEventPicture> pageInfo = problemEventPictureService.findAllByEventID(problemEventID, pageNum, pageSize);
         PageResult<ProblemEventPicture> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
         return new Result(ResultCode.SUCCESS , pageResult);
+    }
+
+    /**
+     * 手机端根据问题事件Id查询问题事件图片
+     */
+    @RequiresPermissions(value = "MENU-INSPECTION-EVENT-PICTURES")
+    @RequestMapping(value = "/problemEventPicture/problemEventID/{problemEventID}" , method = RequestMethod.GET)
+    public Result findByRecordID(@PathVariable(value = "problemEventID") Integer problemEventID){
+        //根据problemEventID查询巡检计划
+        List<SimpleEventPicture> problemEventPictures = problemEventPictureService.findAllByEventID(problemEventID);
+        Map<String, Object> map = new HashMap<>();
+        map.put("rows",problemEventPictures);
+        return new Result(ResultCode.SUCCESS , map);
     }
 
     /**
@@ -70,6 +89,7 @@ public class ProblemEventPictureController {
     /**
      * 根据Id查询问题事件图片
      */
+    @RequiresPermissions(value = "MENU-INSPECTION-EVENT-PICTURES")
     @RequestMapping(value = "/problemEventPicture/{id}" , method = RequestMethod.GET)
     public Result findById(@PathVariable(value = "id") String id){
         //添加planID
@@ -80,6 +100,7 @@ public class ProblemEventPictureController {
     /**
      * 保存问题事件图片
      */
+    @RequiresPermissions(value = "POINT-INSPECTION-EVENT-PICTURE-ADD")
     @RequestMapping(value = "/problemEventPicture/import",method = RequestMethod.POST)
     public Result save(@RequestBody ProblemEventPicture problemEventPicture) {
         problemEventPictureService.save(problemEventPicture);
@@ -89,6 +110,7 @@ public class ProblemEventPictureController {
     /**
      * 根据Id修改问题事件图片
      */
+    @RequiresPermissions(value = "POINT-INSPECTION-EVENT-PICTURE-UPDATE")
     @RequestMapping(value = "/problemEventPicture/{id}" , method = RequestMethod.PUT)
     public Result update(@PathVariable(value = "id") String id , @RequestBody ProblemEventPicture problemEventPicture){
         //调用Service更新
@@ -99,6 +121,7 @@ public class ProblemEventPictureController {
     /**
      * 根据Id删除问题事件图片
      */
+    @RequiresPermissions(value = "POINT-INSPECTION-EVENT-PICTURE-DELETE")
     @RequestMapping(value = "/problemEventPicture/{id}" , method = RequestMethod.DELETE)
     public Result delete(@PathVariable(value = "id") String id){
         problemEventPictureService.delete(id);

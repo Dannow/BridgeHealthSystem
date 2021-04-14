@@ -32,7 +32,7 @@ public class CheckIn {
 
     private Integer userID;
 
-    private Integer inspectionRecordID;
+    private Integer inspectionPlanID;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

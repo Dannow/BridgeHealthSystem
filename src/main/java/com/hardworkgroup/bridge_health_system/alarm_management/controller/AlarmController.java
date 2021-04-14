@@ -10,9 +10,9 @@ import com.hardworkgroup.bridge_health_system.common_model.domain.activiti.entit
 import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_management.entity.AlarmInformation;
 import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_management.response.AlarmCountResult;
 import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_management.response.AlarmInformationWithBridge;
-import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_management.response.AlarmCountResult;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.response.BridgeSimpleResult;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.Role;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User;
 import com.hardworkgroup.bridge_health_system.permission_management.service.UserService;
@@ -52,7 +52,7 @@ public class AlarmController extends BaseController {
     @Resource
     private SiteMessageServiceImpl siteMessageService;
 
-    @Autowired
+    @Resource
     private BridgeService bridgeService;
 
     @Autowired
@@ -67,11 +67,11 @@ public class AlarmController extends BaseController {
     @RequestMapping(value = "/startWorkflow/{workFlowName}",method = RequestMethod.GET)
     public Result startWorkflow(@PathVariable(value = "workFlowName")String workFlowName) {
         // 通过流程定义的key启动，选取最高的version启动
-        Sensor sensor = sensorServiceImpl.getSensorByID("1");
+        Sensor sensor = sensorServiceImpl.getSensorByID("10");
         Map<String,Object> variables = new HashMap<>();
         variables.put("assignee0",this.userId);
         variables.put("Sensor",sensor);
-        variables.put("alarmData",50);
+        variables.put("alarmData",100);
         log.info("【启动流程】，workFlowName ：{}", workFlowName);
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(workFlowName,variables);
 //		流程实例ID
@@ -85,16 +85,15 @@ public class AlarmController extends BaseController {
                     log.info("processDefinitionId is {}",map.get("processDefinitionId").toString());
                     log.info("taskid is {}",map.get("taskid").toString());
                     actFlowCommService.completeProcess("确认",map.get("taskid").toString(),this.userId);
-
                     AlarmInformation alarmInformation =new AlarmInformation();
-                    alarmInformation.setSensorID(1);
+                    alarmInformation.setSensorID(10);
                     alarmInformation.setAlarmType("数据超过阈值");
-                    //alarmInformation.setAlarmTime((Date) map.get("createTime"));
-                    alarmInformation.setAlarmDealStatus(1);
-                    alarmInformation.setAlarmConfirmStatus(1);
+                    alarmInformation.setAlarmTime((Date) map.get("createTime"));
+                    alarmInformation.setAlarmDealStatus(0);
+                    alarmInformation.setAlarmConfirmStatus(0);
+                    alarmInformation.setAlarmDetail(sensor.getSensorName()+"数据超过阈值");
                     alarmDataService.save(alarmInformation);
                 }
-
             }
         }
         if (processInstance.getProcessInstanceId().length() > 0) {
@@ -152,6 +151,18 @@ public class AlarmController extends BaseController {
     }
 
     /**
+     * 手机端获取所有报警信息
+     * @return 报警信息结果
+     */
+    @RequestMapping(value = "/alarmInformation" , method = RequestMethod.GET)
+    public Result findAll(){
+        List<AlarmInformationWithBridge> all = alarmDataService.findAll();
+        Map<String,Object> map =new HashMap<>();
+        map.put("rows",all);
+        return new Result(ResultCode.SUCCESS,map);
+    }
+
+    /**
      * 根据管理员确认状态查询所有报警信息
      * @return 报警信息结果
      */
@@ -203,6 +214,18 @@ public class AlarmController extends BaseController {
         PageResult<AlarmInformationWithBridge> pageResult = new PageResult<>(pageInfo.getTotal(), pageInfo.getList());
         return new Result(ResultCode.SUCCESS,pageResult);
     }
+
+    /**
+     * 手机端根据桥梁ID查询所有报警信息
+     */
+    @RequestMapping(value = "/alarmInformation/bridgeID/{bridgeID}" , method = RequestMethod.GET)
+    public Result findAllByBridgeID(@PathVariable(value = "bridgeID") Integer bridgeID){
+        List<AlarmInformationWithBridge> alarmInformationWithBridges = alarmDataService.findAllByBridgeID(bridgeID);
+        Map<String, Object> map = new HashMap<>();
+        map.put("rows",alarmInformationWithBridges);
+        return new Result(ResultCode.SUCCESS , map);
+    }
+
     /**
      * 保存报警信息
      */

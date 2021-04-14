@@ -46,6 +46,29 @@
         select * from inspection_plan as p LEFT JOIN bridge as b on b.bridgeID = p.bridgeID LEFT JOIN user as u on p.userID = u.userID where b.bridgeID=#{bridgeID}
     </select>
 
+    <!--根据userID查询所有巡检计划-->
+    <select id="selectAllByUserID" resultMap="planWithBridgeID">
+        select * from inspection_plan as p
+        LEFT JOIN bridge as b
+        on b.bridgeID = p.bridgeID
+        LEFT JOIN user as u
+        on p.userID = u.userID
+        where p.userID=#{userID}
+    </select>
+
+    <!--根据bridgeName和checkTime查询所有巡检计划-->
+    <select id="getPlanByBridgeNameAndCheckTime" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionPlan">
+        select * from inspection_plan as p
+        LEFT JOIN bridge as b
+        on b.bridgeID = p.bridgeID
+        where b.bridgeName=#{bridgeName} AND p.userID=#{userID} AND #{checkTime} BETWEEN p.inspectionStartTime AND p.inspectionEndTime
+    </select>
+
+    <!--根据inspectionCheckInStatus和userID查询所有巡检计划-->
+    <select id="selectAllByCheckInStatus" resultMap="planWithBridgeID">
+        select * from inspection_plan as p LEFT JOIN bridge as b on b.bridgeID = p.bridgeID LEFT JOIN user as u on p.userID = u.userID where p.inspectionCheckInStatus=#{inspectionCheckInStatus} AND p.userID=#{userID}
+    </select>
+
     <!--查询所有巡检计划-->
     <select id="selectAllInspectionPlan" resultMap="planWithBridgeID">
         select * from inspection_plan as p LEFT JOIN bridge as b on b.bridgeID = p.bridgeID LEFT JOIN user as u on p.userID = u.userID

@@ -42,9 +42,9 @@ public class UserRealm extends CommonRealm {
             }else{
                 Map map = new HashMap();
                 //如果是企业管理员,就查询企业管理员可见的
-                if (Constant.UserLevel.COADMIN.equals(user.getUserLevel())){
+                if (Constant.UserLevel.BRIDGE_ADMIN.equals(user.getUserLevel())){
                     map.put("userStatus" , "1");
-                }else if (Constant.UserLevel.SAASADMIN.equals(user.getUserLevel())){
+                }else if (Constant.UserLevel.SUPER_ADMIN.equals(user.getUserLevel())){
                     //如果是SaaS管理员，只显示企业不显示的
                     /**
                      * 即只显示企业管理和模块管理

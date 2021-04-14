@@ -6,6 +6,7 @@
 
     <resultMap id="userAndRole" type="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User">
         <id property="userID" column="userID"/>
+        <result property="bridgeID" column="bridgeID"/>
         <result property="userPhone" column="userPhone"/>
         <result property="userName" column="userName"/>
         <result property="userPassword" column="userPassword"/>
@@ -31,6 +32,7 @@
 
     <resultMap id="userRoleAndPermission" type="com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User">
         <id property="userID" column="userID"/>
+        <result property="bridgeID" column="bridgeID"/>
         <result property="userPhone" column="userPhone"/>
         <result property="userName" column="userName"/>
         <result property="userPassword" column="userPassword"/>
@@ -69,7 +71,7 @@
     </select>-->
     <!--更新用户-->
     <update id="updateByKey" parameterType="map">
-        update user set userName=#{userName},userPhone=#{userPhone},userEmail=#{userEmail},userStatus=#{userStatus}, userLevel=#{userLevel},userPicture=#{userPicture} where userID = #{userID}
+        update user set userName=#{userName},userPhone=#{userPhone},userPassword=#{userPassword},userEmail=#{userEmail},userStatus=#{userStatus}, userLevel=#{userLevel},userPicture=#{userPicture} where userID = #{userID}
     </update>
     <!--ID删除用户-->
     <delete id="deleteByKey" parameterType="map">

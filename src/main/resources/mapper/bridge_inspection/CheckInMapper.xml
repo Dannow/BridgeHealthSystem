@@ -7,7 +7,6 @@
     <resultMap id="checkInWithInspectionRecordAndUser" type="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.CheckIn">
         <id property="checkID" column="checkID"/>
         <result property="userID" column="userID"/>
-        <result property="inspectionRecordID" column="inspectionRecordID"/>
         <result property="checkTime" column="checkTime"/>
         <result property="checkLocation" column="checkLocation"/>
         <result property="checkPicture" column="checkPicture"/>

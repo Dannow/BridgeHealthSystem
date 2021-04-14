@@ -6,6 +6,8 @@ import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspect
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.ProblemEvent;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.response.SimpleRecord;
 
+import java.util.List;
+
 /**
  * (TPatrolRecord)表服务接口
  *
@@ -29,4 +31,10 @@ public interface InspectionRecordService {
     PageInfo<InspectionRecord> findAllByPlanID(Integer planID, int pageNum, int pageSize);
 
     PageInfo<InspectionRecord> findAllByBridgeID(Integer bridgeID, int pageNum, int pageSize);
+
+    List<SimpleRecord> findAllByBridgeID(Integer bridgeID);
+
+    List<SimpleRecord> findAllByUserID(Integer userId);
+
+    void insert(InspectionRecord inspectionRecord);
 }

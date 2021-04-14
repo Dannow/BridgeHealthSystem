@@ -39,6 +39,18 @@ public class AlarmDataServiceImpl {
     }
 
     /**
+     * 查询所有报警数据
+     */
+    public List<AlarmInformationWithBridge> findAll() {
+        List<AlarmInformation> alarmInformation =  alarmInformationDao.selectAllAlarmInformation();
+        List<AlarmInformationWithBridge> alarmInformationWithBridges = new ArrayList<>();
+        for (AlarmInformation information : alarmInformation) {
+            alarmInformationWithBridges.add(new AlarmInformationWithBridge(information));
+        }
+        return alarmInformationWithBridges;
+    }
+
+    /**
      * 根据桥梁ID查询所有报警数据
      */
     public PageInfo<AlarmInformationWithBridge> findAllByBridgeID(Integer bridgeID, int pageNum, int pageSize) {
@@ -49,6 +61,18 @@ public class AlarmDataServiceImpl {
             alarmInformationWithBridges.add(new AlarmInformationWithBridge(information));
         }
         return new PageInfo<>(alarmInformationWithBridges,5);
+    }
+
+    /**
+     * 根据桥梁ID查询所有报警数据
+     */
+    public List<AlarmInformationWithBridge> findAllByBridgeID(Integer bridgeID) {
+        List<AlarmInformation> alarmInformation = alarmInformationDao.selectAllByBridgeID(bridgeID);
+        List<AlarmInformationWithBridge> alarmInformationWithBridges = new ArrayList<>();
+        for (AlarmInformation information : alarmInformation) {
+            alarmInformationWithBridges.add(new AlarmInformationWithBridge(information));
+        }
+        return alarmInformationWithBridges;
     }
 
     /**

@@ -8,11 +8,13 @@ import com.hardworkgroup.bridge_health_system.bridge_inspection.dao.ProblemEvent
 import com.hardworkgroup.bridge_health_system.bridge_inspection.service.ProblemEventPictureService;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.ProblemEvent;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.ProblemEventPicture;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.response.SimpleEventPicture;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,6 +50,20 @@ public class ProblemEventPictureServiceImpl implements ProblemEventPictureServic
         Page<ProblemEventPicture> page = PageHelper.startPage(pageNum,pageSize);
         List<ProblemEventPicture> problemEvents =  problemEventPictureDao.selectAllByEventID(problemEventID);
         return new PageInfo<>(problemEvents,5);
+    }
+
+    /**
+     * 手机端根据problemEventID获取所有巡检记录列表
+     * @return 巡检记录结果
+     */
+    @Override
+    public List<SimpleEventPicture> findAllByEventID(Integer problemEventID) {
+        List<ProblemEventPicture> problemEventPictures = problemEventPictureDao.selectAllByEventID(problemEventID);
+        List<SimpleEventPicture> simpleEventPictures =  new ArrayList<>();
+        for (ProblemEventPicture problemEventPicture : problemEventPictures) {
+            simpleEventPictures.add(new SimpleEventPicture(problemEventPicture));
+        }
+        return simpleEventPictures;
     }
 
     /**
