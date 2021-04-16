@@ -15,6 +15,6 @@ public class UserWithDateResult {
     private Long current;
     public UserWithDateResult(String sessionId){
         this.sessionId = sessionId;
-        this.current = System.currentTimeMillis()+180000;
+        this.current = System.currentTimeMillis()+1800000;
     }
 }
