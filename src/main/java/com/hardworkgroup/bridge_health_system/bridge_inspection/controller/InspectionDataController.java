@@ -29,7 +29,7 @@ import java.util.Map;
  * (InspectionDataController)表控制层
  *
  * @author hui
- * @since 2022-12-31 18:08:33
+ * @since 2020-12-31 18:08:33
  */
 @Slf4j
 //解决跨域
@@ -87,7 +87,7 @@ public class InspectionDataController {
     @Transactional
     @RequiresPermissions(value = "POINT-INSPECTION-DATUM-ADD")
     @RequestMapping(value = "/data/import", method = RequestMethod.POST)
-    public Result addInspectionData(@RequestBody InspectionData inspectionData){
+    public Result save(@RequestBody InspectionData inspectionData){
         inspectionDataService.save(inspectionData);
         return new Result(ResultCode.SUCCESS);
     }
