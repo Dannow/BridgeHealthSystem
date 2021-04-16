@@ -1,5 +1,7 @@
 package com.hardworkgroup.bridge_health_system.realTime_dataCollection.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.hardworkgroup.bridge_health_system.alarm_management.service.serviceImpl.AlarmDataServiceImpl;
 import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_management.entity.AlarmInformation;
 import com.hardworkgroup.bridge_health_system.realTime_dataCollection.netty.websocketNetty.NettyConfig;
@@ -31,8 +33,9 @@ public class PushServiceImpl implements PushService {
 
         // 如果有对应的channel（既可以用户在线），则直接发送给他
         if (channel != null){
+            JSONObject jsonData = (JSONObject) JSON.toJSON(msg);
             // 将信息以json格式发到userID对应的channel中
-            channel.writeAndFlush(new TextWebSocketFrame(JsonUtil.objectToJson(msg)));
+            channel.writeAndFlush(jsonData);
             alarmDataService.save(alarmInformation);
         // 若用户不在线，则保留在数据库中
         }else {

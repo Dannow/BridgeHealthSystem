@@ -45,4 +45,7 @@ public interface SensorDao extends Mapper<Sensor> {
     public List<Sensor> getUnitBySensorType(String sensorType);
 
     List<Sensor> selectAllByBridgeID(Integer bridgeID);
+
+    // 根据桥梁ID获取短期或长期传感器
+    public List<Sensor> getLongOrShortSensorByBridgeID(@Param("bridgeID") String bridgeID, @Param("isShort") Integer isShort);
 }
