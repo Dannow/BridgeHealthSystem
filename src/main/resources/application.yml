@@ -87,7 +87,3 @@ pagehelper:
   #解决分页多次配置问题
   offsetAsPageNum: true
   rowBoundsWithCount: true
-
-mapper:
-  identity: mysql
-  style: normal

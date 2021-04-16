@@ -75,7 +75,7 @@ public class InspectionRecordController extends BaseController {
      */
     @RequiresPermissions(value = "MENU-INSPECTION-RECORDS")
     @RequestMapping(value = "/record/planID/{planID}", method = RequestMethod.POST)
-    public Result findByPlanID(@PathVariable(value = "planID") Integer planID,@RequestBody Map<String, String> map) {
+    public Result findByRecordID(@PathVariable(value = "planID") Integer planID,@RequestBody Map<String, String> map) {
         int pageNum = Integer.parseInt((String) map.get("pageNum"));
         int pageSize = Integer.parseInt((String) map.get("pageSize"));
         PageInfo<InspectionRecord> pageInfo = inspectionRecordService.findAllByPlanID(planID,pageNum, pageSize);
@@ -138,7 +138,7 @@ public class InspectionRecordController extends BaseController {
      */
     @RequiresPermissions(value = "POINT-INSPECTION-RECORD-ADD")
     @RequestMapping(value = "/bridgeName/{bridgeName}/record/add", method = RequestMethod.POST)
-    public Result save(@PathVariable(value = "bridgeName") String bridgeName, @RequestBody Map<String,Object> map) throws Exception {
+    public Result addInspectionRecord(@PathVariable(value = "bridgeName") String bridgeName, @RequestBody Map<String,Object> map) throws Exception {
         InspectionRecord inspectionRecord = BeanMapUtils.mapToBean(map,InspectionRecord.class);
         InspectionPlan inspectionPlan = inspectionPlanService.getPlanByCheckTime(this.userId, bridgeName, inspectionRecord.getInspectionTime());
         inspectionRecord.setInspectionPlanID(inspectionPlan.getInspectionPlanID());
@@ -152,7 +152,7 @@ public class InspectionRecordController extends BaseController {
      */
     @RequiresPermissions(value = "POINT-INSPECTION-RECORD-ADD")
     @RequestMapping(value = "/record/import", method = RequestMethod.POST)
-    public Result save(@RequestBody InspectionRecord inspectionRecord){
+    public Result addInspectionRecord(@RequestBody InspectionRecord inspectionRecord){
         inspectionRecordService.save(inspectionRecord);
         return new Result(ResultCode.SUCCESS);
     }

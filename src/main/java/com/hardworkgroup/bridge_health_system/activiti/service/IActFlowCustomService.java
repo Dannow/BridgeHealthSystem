@@ -13,21 +13,21 @@ public interface IActFlowCustomService {
 	 * @param id
 	 * @return
 	 */
-	Map<String, Object> setvariables(Integer id,Integer userID);
+	public Map<String, Object> setvariables(Integer id,Integer userID);
 	
 	
 	/**
 	 * 整个流程开始时需要执行的任务
 	 * @param id
 	 */
-	void startRunTask(Integer id);
+	public void startRunTask(Integer id);
 	
 	
 	/**
 	 * 整个流程结束需要执行的任务
 	 * @param id
 	 */
-	void endRunTask(Integer id);
+	public void endRunTask(Integer id);
  
  
 }

@@ -85,7 +85,7 @@ public class CheckInController extends BaseController {
     @RequiresPermissions(value = "POINT-INSPECTION-CHECKIN-ADD")
     @RequestMapping(value = "/bridgeName/{bridgeName}/checkin/add",method = RequestMethod.POST)
     @Transactional
-    public Result save(@PathVariable(value = "bridgeName") String  bridgeName, @RequestBody CheckIn checkIn) {
+    public Result add(@PathVariable(value = "bridgeName") String  bridgeName, @RequestBody CheckIn checkIn) {
         InspectionPlan inspectionPlan = inspectionPlanService.getPlanByCheckTime(this.userId,bridgeName,checkIn.getCheckTime());
         if(inspectionPlan!=null){
             checkIn.setInspectionPlanID(inspectionPlan.getInspectionPlanID());
