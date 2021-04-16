@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -125,5 +126,15 @@ public class SensorController {
     public Result findUnitBySensorID(@PathVariable(value = "sensorID") String sensorID){
         String unit = sensorService.getUnitBySensorID(sensorID);
         return new Result(ResultCode.SUCCESS, unit);
+    }
+
+    /**
+     * 根据桥梁ID获取短期或长期传感器
+     */
+    @RequestMapping(value = "/LongOrShortSensorByBridgeID/{isShort}" , method = RequestMethod.POST)
+    public Result findLongOrShortSensorByBridgeID(@PathVariable(value = "isShort") int isShort,@RequestBody Map<String,String > map){
+        String bridgeID = map.get("bridgeID");
+        List<Sensor> sensors= sensorService.getLongOrShortSensorByBridgeID(bridgeID, isShort);
+        return new Result(ResultCode.SUCCESS, sensors);
     }
 }
