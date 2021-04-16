@@ -103,9 +103,4 @@
     <select id="getAlarmInformationBySensorID" resultMap="SensorAlarmInformation">
         select * from sensor as s left  join alarm_information as a on s.sensorID = a.sensorID where s.sensorID = #{sensorID}
     </select>
-    
-    <!--根据桥梁ID获取短期或长期传感器-->
-    <select id="getLongOrShortSensorByBridgeID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor">
-        select * from sensor where bridgeID = #{bridgeID} and isShort = #{isShort}
-    </select>
 </mapper>

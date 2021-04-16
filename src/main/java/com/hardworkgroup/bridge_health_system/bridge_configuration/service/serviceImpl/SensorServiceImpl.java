@@ -95,10 +95,4 @@ public class SensorServiceImpl implements SensorService {
         Sensor sensor = sensorDao.getUnitBySensorType(sensorType).get(0);
         return sensor.getUnit();
     }
-
-    // 根据桥梁ID获取短期或长期传感器
-    public List<Sensor> getLongOrShortSensorByBridgeID(String bridgeID, Integer isShort){
-        return sensorDao.getLongOrShortSensorByBridgeID(bridgeID, isShort);
-    }
-
 }

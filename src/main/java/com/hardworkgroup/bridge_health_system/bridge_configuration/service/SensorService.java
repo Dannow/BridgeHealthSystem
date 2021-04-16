@@ -2,7 +2,6 @@ package com.hardworkgroup.bridge_health_system.bridge_configuration.service;
 
 import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -43,7 +42,4 @@ public interface SensorService {
 
     // 根据传感器类型获取传感器单位
     public String getUnitBySensorType(String sensorType);
-
-    // 根据桥梁ID获取短期或长期传感器
-    public List<Sensor> getLongOrShortSensorByBridgeID(String bridgeID, Integer isShort);
 }

@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 //解决跨域
 @CrossOrigin
@@ -36,8 +35,8 @@ public class RealTimeDataController {
     @Autowired
     private SensorService sensorService;
 
-    @RequestMapping(value = "/realTimeDataBySensorID" , method = RequestMethod.GET)
-    public Result getRealTimeDataBySensorID(String sensorID){
+    @RequestMapping(value = "/realTimeDataBySensorID/{sensorID}" , method = RequestMethod.GET)
+    public Result getRealTimeDataBySensorID(@PathVariable(value = "sensorID")String sensorID){
         // 获得传感器类型
         Sensor sensor = sensorService.getSensorByID(sensorID);
         String sensorType = sensor.getSensorType();
@@ -45,8 +44,7 @@ public class RealTimeDataController {
         Date acquisitionTime = null;
         Object realTimeValue = null;
         // 通过类型获取对应的实时数据
-        if (sensorType.equals("温度传感器") || sensorID.equals("11") || sensorID.equals("5")){
-            sensorID = "1";
+        if (sensorType.equals("温度传感器")){
             RawDataTemperature rawDataTemperature = rawDataTemperatureService.selectBatchRawDataTemperatureBySensorID(Integer.parseInt(sensorID), 1).get(0);
             acquisitionTime = rawDataTemperature.getAcquisitionTime();
             realTimeValue = rawDataTemperature.getTemperatureValue();
@@ -67,7 +65,7 @@ public class RealTimeDataController {
         List<RealTimeDataResult> realTimeDataResults=new ArrayList<>();
 
         // 获得温度传感器数据(因为一共有5个传感器)
-        for (int i = 0; i < 2; i++){
+        for (int i = 0; i < 3; i++){
             Sensor temperatureSensor = sensorService.getSensorByID("1");
             RawDataTemperature rawDataTemperature = rawDataTemperatureService.selectBatchRawDataTemperatureBySensorID(1, 1).get(0);
             realTimeDataResults.add(new RealTimeDataResult(temperatureSensor, rawDataTemperature.getAcquisitionTime(), rawDataTemperature.getTemperatureValue()));
@@ -83,9 +81,6 @@ public class RealTimeDataController {
         RawDataSmoke rawDataSmoke = rawDataSmokeService.selectBatchRawDataSmokeBySensorID(18, 1).get(0);
         realTimeDataResults.add(new RealTimeDataResult(smokeSensor, rawDataSmoke.getAcquisitionTime(), rawDataSmoke.getSmokeValue()));
 
-        Sensor temperatureSensor = sensorService.getSensorByID("1");
-        RawDataTemperature rawDataTemperature = rawDataTemperatureService.selectBatchRawDataTemperatureBySensorID(1, 1).get(0);
-        realTimeDataResults.add(new RealTimeDataResult(temperatureSensor, rawDataTemperature.getAcquisitionTime(), rawDataTemperature.getTemperatureValue()));
 
         return new Result(ResultCode.SUCCESS, realTimeDataResults);
     }

@@ -72,8 +72,7 @@ public class ShiroConfiguration {
         filterMap.put("/permissionManagement/logout","logout");
         filterMap.put("/permissionManagement/login","anon");
         filterMap.put("/permissionManagement/loginWithUserPicture","anon");
-        filterMap.put("/realTimeDataCollection/multipleRealTimeData","anon");
-        filterMap.put("/realTimeDataCollection/realTimeDataBySensorID","anon");
+
         filterMap.put("/autherror","anon");
         //匿名访问服务器的文件
         filterMap.put("/img/**","anon");
