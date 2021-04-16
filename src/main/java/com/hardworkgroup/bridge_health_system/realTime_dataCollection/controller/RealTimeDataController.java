@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 //解决跨域
 @CrossOrigin
@@ -41,13 +40,6 @@ public class RealTimeDataController {
         // 获得传感器类型
         Sensor sensor = sensorService.getSensorByID(sensorID);
         String sensorType = sensor.getSensorType();
-
-        // 模拟的数据（假的 为了配合三维展示）
-//        if (sensorID.equals("11") || sensorID.equals("5")){
-//            sensorID = "1";
-//            sensor = sensorService.getSensorByID(sensorID);
-//            sensorType = "温度传感器";
-//        }
 
         Date acquisitionTime = null;
         Object realTimeValue = null;
