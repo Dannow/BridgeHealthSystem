@@ -19,10 +19,14 @@
             <result property="roleName" column="roleName"/>
             <result property="roleDescription" column="roleDescription"/>
         </association>
+        <association property="bridge" javaType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge">
+            <id property="bridgeID" column="bridgeID"/>
+            <result property="bridgeName" column="bridgeName"/>
+        </association>
     </resultMap>
     <!--根据id查询用户-->
     <select id="getUserByID" resultMap="userAndRole">
-        select * from user as u LEFT JOIN user_role as ur on u.userID = ur.userID LEFT JOIN role as r on r.roleID = ur.roleID where u.userID = #{userID}
+        select * from user as u LEFT JOIN user_role as ur on u.userID = ur.userID LEFT JOIN role as r on r.roleID = ur.roleID LEFT JOIN bridge as b on b.bridgeID = u.bridgeID where u.userID = #{userID}
     </select>
 
     <!--查询所有用户-->

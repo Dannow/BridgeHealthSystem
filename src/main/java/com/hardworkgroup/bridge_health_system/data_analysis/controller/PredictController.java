@@ -4,7 +4,11 @@ import com.hardworkgroup.bridge_health_system.bridge_configuration.service.Senso
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor;
 import com.hardworkgroup.bridge_health_system.common_model.domain.data_analysis.entity.OriginalData;
 import com.hardworkgroup.bridge_health_system.common_model.domain.data_analysis.response.SensorCorrelationDataResult;
+import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User;
 import com.hardworkgroup.bridge_health_system.data_analysis.util.ConnectionPython;
+import com.hardworkgroup.bridge_health_system.permission_management.service.UserService;
+import com.hardworkgroup.bridge_health_system.realTime_dataCollection.netty.socketNetty.NettyServer;
+import com.hardworkgroup.bridge_health_system.realTime_dataCollection.netty.socketNetty.NettyServerHandler;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
 import com.hardworkgroup.bridge_health_system.system_common.utils.ReadExcelUtil;
@@ -26,6 +30,10 @@ import java.util.*;
 public class PredictController {
     @Autowired
     private SensorService sensorService;
+    @Autowired
+    private NettyServerHandler nettyServerHandler;
+    @Autowired
+    private UserService userService;
 
     /*
     获得短期预测数据
@@ -88,6 +96,14 @@ public class PredictController {
             Date sensorDataTime = formatter.parse(format);
             // 获得预测数据
             float sensorData = Float.parseFloat(predictionSplit[i]);
+
+            // 获取接收消息的管理员
+            User admin = userService.getUserByID("9");
+            // 设置为预警类型
+            int isEarlyWarning = 1;
+            // 预警
+            nettyServerHandler.isAlarm(sensor, admin, sensorData,isEarlyWarning);
+
             // 保存入list中
             sensorDataResultList.add(new SensorCorrelationDataResult(sensorDataTime, sensorData));
 
@@ -154,6 +170,14 @@ public class PredictController {
             Date sensorDataTime = formatter.parse(format);
             // 获得预测数据
             float sensorData = Float.parseFloat(predictionSplit[i]);
+
+            // 获取接收消息的管理员
+            User admin = userService.getUserByID("9");
+            // 设置为预警类型
+            int isEarlyWarning = 1;
+            // 预警
+//            nettyServerHandler.isAlarm(sensor, admin, sensorData,isEarlyWarning);
+
             // 保存入list中
             sensorDataResultList.add(new SensorCorrelationDataResult(sensorDataTime, sensorData));
 
