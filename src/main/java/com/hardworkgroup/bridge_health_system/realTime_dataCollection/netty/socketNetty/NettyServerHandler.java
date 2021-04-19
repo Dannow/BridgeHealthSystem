@@ -8,6 +8,8 @@ import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configu
 import com.hardworkgroup.bridge_health_system.common_model.domain.realTime_dataCollection.entity.RawDataFire;
 import com.hardworkgroup.bridge_health_system.common_model.domain.realTime_dataCollection.entity.RawDataSmoke;
 import com.hardworkgroup.bridge_health_system.common_model.domain.realTime_dataCollection.entity.RawDataTemperature;
+import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User;
+import com.hardworkgroup.bridge_health_system.permission_management.service.UserService;
 import com.hardworkgroup.bridge_health_system.realTime_dataCollection.service.PushService;
 import com.hardworkgroup.bridge_health_system.realTime_dataCollection.service.RawDataFireService;
 import com.hardworkgroup.bridge_health_system.realTime_dataCollection.service.RawDataSmokeService;
@@ -43,7 +45,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     @Autowired
     private PushService pushService;
     @Autowired
-    private AlarmDataServiceImpl alarmDataService;
+    private UserService userService;
 
     private static NettyServerHandler nettyServerHandler;
 
@@ -57,6 +59,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         nettyServerHandler.rawDataFireService = this.rawDataFireService;
         nettyServerHandler.sensorService = this.sensorService;
         nettyServerHandler.pushService = this.pushService;
+        nettyServerHandler.userService = this.userService;
     }
 
     /**
@@ -91,22 +94,27 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         // 获取火焰传感器数据
         int fireData = (int) sensorSocketData.get("fire");
 
+        //管理员ID
+        User admin = nettyServerHandler.userService.getUserByID("9");
+        // 设置为报警类型
+        int isEarlyWarning = 0;
+
         // 温度数据加到数据库
         Sensor temperatureSensor = nettyServerHandler.sensorService.getSensorByID("1");
         // 判断报警
-        isAlarm(temperatureSensor, "9", (int)temperatureData);
+        isAlarm(temperatureSensor, admin, temperatureData, isEarlyWarning);
         nettyServerHandler.rawDataTemperatureService.insertTemperatureData(new RawDataTemperature(sensorDataTime, temperatureData, temperatureSensor));
 
         // 烟雾传感器数据加到数据库
         Sensor smokeSensor = nettyServerHandler.sensorService.getSensorByID("18");
         // 判断报警
-        isAlarm(temperatureSensor, "9", smokeData);
+        isAlarm(temperatureSensor, admin, smokeData, isEarlyWarning);
         nettyServerHandler.rawDataSmokeService.insertRawDataSmoke(new RawDataSmoke(sensorDataTime, smokeData, smokeSensor));
 
         // 火焰传感器数据加到数据库
         Sensor fireSensor = nettyServerHandler.sensorService.getSensorByID("19");
         // 判断报警
-        isAlarm(temperatureSensor, "9", fireData);
+        isAlarm(temperatureSensor, admin, fireData, isEarlyWarning);
         nettyServerHandler.rawDataFireService.insertRawDataFire(new RawDataFire(sensorDataTime, fireData, fireSensor));
 
         log.info("sensorDataTime: "+sensorDataTime+" temperatureData: "+temperatureData+" smokeData: "+smokeData+" fireData: "+fireData);
@@ -142,7 +150,8 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     /**
      * 判断是否报警
      */
-    public void isAlarm(Sensor sensor, String userID, int realTimeData){
+    public void isAlarm(Sensor sensor, User admin, Object trueRealTimeData, int isEarlyWarning){
+        Integer realTimeData = (Integer) trueRealTimeData;
         
         // 保存报警信息
         AlarmInformation alarmInformation = new AlarmInformation();
@@ -151,25 +160,42 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         alarmInformation.setAlarmConfirmStatus(0);
         Date alarmTime = new Date();
         alarmInformation.setAlarmTime(alarmTime);
+        String alarmDetail = null;
 
         // 判断是否超过上限
         if (realTimeData >= sensor.getUpperThreshold()){
-            alarmInformation.setAlarmType("数据超过阀值");
-            String alarmDetail = sensor.getSensorName() + "当前数值为: " + realTimeData + " 超过阀值";
+            // 判断是预警还是报警
+            if (isEarlyWarning == 0){
+                alarmInformation.setAlarmType("数据超过阀值");
+                alarmDetail = sensor.getSensorName() + "当前数值为: " + trueRealTimeData + " 超过阀值";
+            }
+            else {
+                alarmInformation.setAlarmType("预测--数据超过阀值");
+                alarmDetail = sensor.getSensorName() + "预测数值为: " + trueRealTimeData + " 超过阀值";
+            }
             alarmInformation.setAlarmDetail(alarmDetail);
 
             // 消息推送
-            nettyServerHandler.pushService.pushMsgToOne(userID,alarmInformation);
+            nettyServerHandler.pushService.pushMsgToOne(admin,alarmInformation);
+
+            return;
         // 判断是否低于阀值
         }else if (realTimeData < sensor.getLowerThreshold()){
-            alarmInformation.setAlarmType("数据低于阀值");
-            String alarmDetail = sensor.getSensorName() + "当前数值为: " + realTimeData + " 低于阀值";
+            // 判断是预警还是报警
+            if (isEarlyWarning == 0){
+                alarmInformation.setAlarmType("数据低于阀值");
+                alarmDetail = sensor.getSensorName() + "当前数值为: " + trueRealTimeData + " 低于阀值";
+            }else {
+                alarmInformation.setAlarmType("预测--数据低于阀值");
+                alarmDetail = sensor.getSensorName() + "预测数值为: " + trueRealTimeData + " 低于阀值";
+            }
             alarmInformation.setAlarmDetail(alarmDetail);
 
             // 消息推送
-            nettyServerHandler.pushService.pushMsgToOne(userID,alarmInformation);
-        }
+            nettyServerHandler.pushService.pushMsgToOne(admin,alarmInformation);
 
+            return;
+        }
 
     }
 }

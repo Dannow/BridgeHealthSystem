@@ -37,8 +37,7 @@ class BridgeHealthSystemApplicationTests {
 //        AlarmInformation alarmInformation = new AlarmInformation();
 //        alarmInformation.setAlarmDetail("aa");
 //        alarmDataService.save(alarmInformation);
-        System.out.println(sensorService.getUnitBySensorID("1"));
-        System.out.println(sensorService.getUnitBySensorType("温度传感器"));
+        System.out.println(userService.getUserByID("1").getBridge().getBridgeName());
 //        System.out.println(rawDataTemperatureDao.selectRawDataTemperatureBySensorIDAndTime(1,"2020-04-27"));
 //        // 获得当前时间
 //        Date nowTime = new Date();
