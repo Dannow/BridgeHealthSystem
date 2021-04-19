@@ -96,10 +96,10 @@ public class InspectionPlanController extends BaseController {
      * 手机端根据用户Id查询巡检计划
      */
     @RequiresPermissions(value = "MENU-INSPECTION-PLANS")
-    @RequestMapping(value = "/plan/user/{userID}" , method = RequestMethod.GET)
-    public Result findByUserId(@PathVariable(value = "userID") Integer userID){
+    @RequestMapping(value = "/plans" , method = RequestMethod.GET)
+    public Result findByUserId(){
         //根据userID查询巡检计划
-        List<SimplePlan> simplePlans = inspectionPlanService.getPlanByUserID(userID);
+        List<SimplePlan> simplePlans = inspectionPlanService.getPlanByUserID(this.userId);
         Map<String, Object> map = new HashMap<>();
         map.put("rows",simplePlans);
         return new Result(ResultCode.SUCCESS , map);

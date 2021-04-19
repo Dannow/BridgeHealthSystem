@@ -37,8 +37,8 @@
     </resultMap>
 
     <!--根据id查询巡检计划-->
-    <select id="getPlanByID" resultType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionPlan">
-        select * from inspection_plan where inspectionPlanID = #{inspectionPlanID}
+    <select id="getPlanByID" resultMap="planWithBridgeID">
+        select * from inspection_plan as p LEFT JOIN bridge as b on b.bridgeID = p.bridgeID LEFT JOIN user as u on p.userID = u.userID where inspectionPlanID = #{inspectionPlanID}
     </select>
 
     <!--根据bridgeID查询所有巡检计划-->

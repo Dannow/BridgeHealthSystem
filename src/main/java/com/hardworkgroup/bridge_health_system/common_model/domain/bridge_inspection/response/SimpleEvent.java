@@ -41,7 +41,7 @@ public class SimpleEvent {
 
     private String userName;
 
-    private List<ProblemEventPicture> problemEventPictures = new ArrayList<>();
+    private List<SimpleEventPicture> simpleEventPictures = new ArrayList<>();
 
     public SimpleEvent(ProblemEvent problemEvent){
         this.problemEventID = problemEvent.getProblemEventID();
@@ -57,6 +57,8 @@ public class SimpleEvent {
         this.bridgeName = problemEvent.getSensor().getBridge().getBridgeName();
         this.userID = problemEvent.getUserID();
         this.userName = problemEvent.getUser().getUserName();
-        this.problemEventPictures = problemEvent.getProblemEventPictures();
+        for (ProblemEventPicture problemEventPicture : problemEvent.getProblemEventPictures()) {
+            this.simpleEventPictures.add(new SimpleEventPicture(problemEventPicture));
+        }
     }
 }

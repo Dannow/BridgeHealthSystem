@@ -7,6 +7,10 @@ import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configu
 import com.hardworkgroup.bridge_health_system.system_common.entity.PageResult;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +25,7 @@ import java.util.Map;
  */
 //解决跨域
 @CrossOrigin
+@Api(tags = "传感器健康接口")
 @RestController
 @Slf4j
 @RequestMapping("/bridgeConfiguration")
@@ -34,7 +39,7 @@ public class SensorHealthController {
      * @return 桥梁结果
      */
     @RequestMapping(value = "/sensorHealths/bridgeID/{bridgeID}" , method = RequestMethod.POST)
-    public Result findAllByBridgeID(@PathVariable(value = "bridgeID") Integer bridgeID, @RequestBody Map<String,String > map){
+    public Result findAllByBridgeID(@PathVariable(value = "bridgeID")Integer bridgeID, @RequestBody Map<String,String > map){
         int pageNum = Integer.parseInt((String) map.get("pageNum"));
         int pageSize = Integer.parseInt((String) map.get("pageSize"));
         PageInfo<SensorHealth> pageInfo = sensorHealthServiceImpl.findAllByBridgeID(bridgeID,pageNum, pageSize);

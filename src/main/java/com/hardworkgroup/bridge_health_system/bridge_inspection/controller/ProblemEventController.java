@@ -14,10 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * (ProblemEventController)表控制层
@@ -60,11 +57,25 @@ public class ProblemEventController {
     }
 
     /**
+     * 获取所有问题事件列表
+     * @return 巡检计划结果
+     */
+    @Transactional
+    @RequiresPermissions(value = "MENU-INSPECTION-EVENTS")
+    @RequestMapping(value = "/problemEvents" , method = RequestMethod.GET)
+    public Result findAll(){
+        List<SimpleEvent> simpleEvents = problemEventService.findAll();
+        Map<String, Object> map = new HashMap<>();
+        map.put("rows",simpleEvents);
+        return new Result(ResultCode.SUCCESS , map);
+    }
+
+    /**
      * 根据记录Id查询问题事件
      */
     @Transactional
     @RequiresPermissions(value = "MENU-INSPECTION-EVENTS")
-    @RequestMapping(value = "/problemEvent/record/{recordID}" , method = RequestMethod.POST)
+    @RequestMapping(value = "/problemEvent/recordID/{recordID}" , method = RequestMethod.POST)
     public Result findByRecordID(@PathVariable(value = "recordID") Integer recordID, @RequestBody Map<String,String > map){
         int pageNum = Integer.parseInt((String) map.get("pageNum"));
         int pageSize = Integer.parseInt((String) map.get("pageSize"));
@@ -98,6 +109,19 @@ public class ProblemEventController {
         }
         PageResult<SimpleEvent> pageResult = new PageResult<>(pageInfo.getTotal(), simpleEvents);
         return new Result(ResultCode.SUCCESS , pageResult);
+    }
+
+    /**
+     * 手机端根据桥梁Id查询问题事件
+     */
+    @Transactional
+    @RequiresPermissions(value = "MENU-INSPECTION-EVENTS")
+    @RequestMapping(value = "/problemEvent/bridgeID/{bridgeID}" , method = RequestMethod.GET)
+    public Result findByBridgeId(@PathVariable(value = "bridgeID") Integer bridgeID){
+        List<SimpleEvent> simpleEvents = problemEventService.findAllByBridgeID(bridgeID);
+        Map<String, Object> map = new HashMap<>();
+        map.put("rows",simpleEvents);
+        return new Result(ResultCode.SUCCESS , map);
     }
 
     /**

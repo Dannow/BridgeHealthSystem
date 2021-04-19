@@ -21,6 +21,7 @@ import com.hardworkgroup.bridge_health_system.system_common.entity.PageResult;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
 import com.hardworkgroup.bridge_health_system.system_common.utils.BeanMapUtils;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.runtime.ProcessInstance;
@@ -32,6 +33,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.*;
 
+@Api(value = "报警controller",tags = "报警接口")
 @RestController
 @Slf4j
 @CrossOrigin

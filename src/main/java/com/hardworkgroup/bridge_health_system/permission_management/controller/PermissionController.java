@@ -33,7 +33,7 @@ public class PermissionController extends BaseController {
      * 添加权限
      * @return
      */
-    @RequestMapping(value = "/permission" , method = RequestMethod.POST)
+    @RequestMapping(value = "/permission/import" , method = RequestMethod.POST)
     public Result save(@RequestBody Map<String,Object> map) throws Exception {
         permissionService.save(map);
         return new Result(ResultCode.SUCCESS);
@@ -54,7 +54,7 @@ public class PermissionController extends BaseController {
      * 查询列表权限
      * @return
      */
-    @RequestMapping(value = "/permission" , method = RequestMethod.GET)
+    @RequestMapping(value = "/permissions" , method = RequestMethod.POST)
     public Result findAll(@RequestParam() Map<String,Object> map){
         List<Permission> list = permissionService.findAll();
         return new Result(ResultCode.SUCCESS , list);
