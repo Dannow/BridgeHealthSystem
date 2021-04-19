@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hardworkgroup.bridge_health_system.bridge_inspection.dao.CheckInDao">
 
-    <resultMap id="checkInWithInspectionRecordAndUser" type="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.CheckIn">
+    <resultMap id="checkInWithInspectionPlanAndUser" type="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.CheckIn">
         <id property="checkID" column="checkID"/>
         <result property="userID" column="userID"/>
         <result property="checkTime" column="checkTime"/>
@@ -21,41 +21,42 @@
             <result property="userLevel" column="userLevel"/>
             <result property="userPicture" column="userPicture"/>
         </association>
-        <association property="inspectionRecord"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionRecord">
-            <id property="inspectionRecordID" column="inspectionRecordID"/>
-            <result property="inspectionPlanID" column="inspectionPlanID"/>
-            <result property="inspectionTime" column="inspectionTime"/>
-            <result property="inspectionRecordTitle" column="inspectionRecordTitle"/>
-            <result property="inspectionContentDescription" column="inspectionContentDescription"/>
+        <association property="inspectionPlan"  javaType="com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionPlan">
+            <id property="inspectionPlanID" column="inspectionPlanID"/>
+            <result property="inspectionStartTime" column="inspectionStartTime"/>
+            <result property="inspectionEndTime" column="inspectionEndTime"/>
+            <result property="inspectionCompletionStatus" column="inspectionCompletionStatus"/>
+            <result property="inspectionCheckInStatus" column="inspectionCheckInStatus"/>
+            <result property="inspectionPlanTitle" column="inspectionPlanTitle"/>
         </association>
     </resultMap>
 
     <!--根据id查询巡检打卡-->
-    <select id="getCheckInByID" resultMap="checkInWithInspectionRecordAndUser">
+    <select id="getCheckInByID" resultMap="checkInWithInspectionPlanAndUser">
         select * from checkIn as c
         LEFT JOIN user as u
         on c.userID =u.userID
-        LEFT JOIN inspection_record as r
-        on r.inspectionRecordID=c.inspectionRecordID
+        LEFT JOIN inspection_plan as ip
+        on ip.inspectionPlanID=c.inspectionPlanID
         where c.checkID = #{checkID}
     </select>
 
     <!--查询所有巡检打卡-->
-    <select id="selectAllCheckIn" resultMap="checkInWithInspectionRecordAndUser">
+    <select id="selectAllCheckIn" resultMap="checkInWithInspectionPlanAndUser">
         select * from checkIn as c
         LEFT JOIN user as u
         on c.userID =u.userID
-        LEFT JOIN inspection_record as r
-        on r.inspectionRecordID=c.inspectionRecordID
+        LEFT JOIN inspection_plan as ip
+        on ip.inspectionPlanID=c.inspectionPlanID
     </select>
 
     <!--根据userID获取所有巡检打卡列表-->
-    <select id="selectAllByUserID" resultMap="checkInWithInspectionRecordAndUser">
+    <select id="selectAllByUserID" resultMap="checkInWithInspectionPlanAndUser">
         select * from checkIn as c
         LEFT JOIN user as u
         on c.userID =u.userID
-        LEFT JOIN inspection_record as r
-        on r.inspectionRecordID=c.inspectionRecordID
+        LEFT JOIN inspection_plan as ip
+        on ip.inspectionPlanID=c.inspectionPlanID
         where c.userID=#{userID}
     </select>
 
@@ -63,7 +64,7 @@
     <update id="updateByKey" parameterType="map">
         update checkIn
         set userID=#{userID},
-        inspectionRecordID=#{inspectionRecordID},
+        inspectionPlanID=#{inspectionPlanID},
         checkTime=#{checkTime},
         checkLocation=#{checkLocation},
         checkPicture=#{checkPicture},
@@ -78,7 +79,7 @@
 
     <!--ID添加巡检打卡-->
     <insert id="insertByKey" useGeneratedKeys="true" keyProperty="inspectionRecordID">
-        insert into checkIn (userID,inspectionRecordID,checkTime,checkLocation,checkPicture,checkStatus)
-        value (#{userID},#{inspectionRecordID},#{checkTime},#{checkLocation},#{checkPicture},#{checkStatus})
+        insert into checkIn (userID,inspectionPlanID,checkTime,checkLocation,checkPicture,checkStatus)
+        value (#{userID},#{inspectionPlanID},#{checkTime},#{checkLocation},#{checkPicture},#{checkStatus})
     </insert>
 </mapper>

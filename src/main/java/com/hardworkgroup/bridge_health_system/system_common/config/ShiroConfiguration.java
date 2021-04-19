@@ -75,11 +75,16 @@ public class ShiroConfiguration {
         filterMap.put("/realTimeDataCollection/multipleRealTimeData","anon");
         filterMap.put("/realTimeDataCollection/realTimeDataBySensorID","anon");
         filterMap.put("/autherror","anon");
+        //释放Swagger
+        filterMap.put("/swagger-ui.html", "anon");
+        filterMap.put("/swagger-resources/**", "anon");
+        filterMap.put("/v2/**", "anon");
+        filterMap.put("/webjars/**", "anon");
         //匿名访问服务器的文件
         filterMap.put("/img/**","anon");
         //注册
         //authc -- 认证之后访问（登录）
-        filterMap.put("/**","authc");
+        //filterMap.put("/**","authc");
         //perms -- 具有某中权限 (使用注解配置授权)
         filterFactory.setFilterChainDefinitionMap(filterMap);
 

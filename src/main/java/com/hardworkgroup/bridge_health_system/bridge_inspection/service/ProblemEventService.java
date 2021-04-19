@@ -6,6 +6,8 @@ import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspect
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.ProblemEvent;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.response.SimpleEvent;
 
+import java.util.List;
+
 /**
  * (TPatrolRecord)表服务接口
  *
@@ -17,6 +19,10 @@ public interface ProblemEventService {
     void save(ProblemEvent problemEvent);
 
     PageInfo<ProblemEvent> findAll(int pageNum, int pageSize);
+
+    List<SimpleEvent> findAll();
+
+    List<SimpleEvent> findAllByBridgeID(Integer bridgeID);
 
     PageInfo<ProblemEvent> getProblemEventByRecordID(Integer recordID, int pageNum, int pageSize);
 

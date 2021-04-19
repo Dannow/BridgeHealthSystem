@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,12 +26,12 @@ import java.util.List;
 @Service
 public class ProblemEventServiceImpl implements ProblemEventService {
 
-    @Autowired
+    @Resource
     private ProblemEventDao problemEventDao;
 
     /**
-     * 获取所有巡检记录列表
-     * @return 巡检记录结果
+     * 获取所有问题事件列表
+     * @return 问题事件结果
      */
     @Override
     public PageInfo<ProblemEvent> findAll(int pageNum, int pageSize) {
@@ -40,8 +41,22 @@ public class ProblemEventServiceImpl implements ProblemEventService {
     }
 
     /**
-     * 根据bridgeID获取所有巡检记录列表
-     * @return 巡检记录结果
+     * 获取所有问题事件列表
+     * @return 问题事件结果
+     */
+    @Override
+    public List<SimpleEvent> findAll() {
+        List<ProblemEvent> problemEvents =  problemEventDao.selectAllProblemEvent();
+        List<SimpleEvent> simpleEvents = new ArrayList<>();
+        for (ProblemEvent problemEvent : problemEvents) {
+            simpleEvents.add(new SimpleEvent(problemEvent));
+        }
+        return simpleEvents;
+    }
+
+    /**
+     * 根据bridgeID获取所有问题事件列表
+     * @return 问题事件结果
      */
     @Override
     public PageInfo<ProblemEvent> findAllByBridgeID(Integer bridgeID, int pageNum, int pageSize) {
@@ -51,8 +66,22 @@ public class ProblemEventServiceImpl implements ProblemEventService {
     }
 
     /**
-     * 根据planID获取所有巡检记录列表
-     * @return 巡检记录结果
+     * 根据bridgeID获取所有问题事件列表
+     * @return 问题事件结果
+     */
+    @Override
+    public List<SimpleEvent> findAllByBridgeID(Integer bridgeID) {
+        List<ProblemEvent> problemEvents =  problemEventDao.selectAllByBridgeID(bridgeID);
+        List<SimpleEvent> simpleEvents = new ArrayList<>();
+        for (ProblemEvent problemEvent : problemEvents) {
+            simpleEvents.add(new SimpleEvent(problemEvent));
+        }
+        return simpleEvents;
+    }
+
+    /**
+     * 根据planID获取所有问题事件列表
+     * @return 问题事件结果
      */
     @Override
     public PageInfo<ProblemEvent> getProblemEventByRecordID(Integer inspectionRecordID, int pageNum, int pageSize) {
@@ -62,7 +91,7 @@ public class ProblemEventServiceImpl implements ProblemEventService {
     }
 
     /**
-     * 保存用户
+     * 保存问题事件
      */
     @Override
     public void save(ProblemEvent problemEvent) {
@@ -71,7 +100,7 @@ public class ProblemEventServiceImpl implements ProblemEventService {
     }
 
     /**
-     * 根据ID查找用户
+     * 根据ID查找问题事件
      */
     @Override
     public ProblemEvent getProblemEventByID(String id) {
@@ -79,7 +108,7 @@ public class ProblemEventServiceImpl implements ProblemEventService {
     }
 
     /**
-     * 删除用户
+     * 删除问题事件
      */
     @Override
     public void delete(String problemEventID) {
@@ -87,19 +116,10 @@ public class ProblemEventServiceImpl implements ProblemEventService {
     }
 
     /**
-     * 修改用户
+     * 修改问题事件
      */
     @Override
     public void update(String id, ProblemEvent problemEvent) {
-        /*ProblemEvent tempProblemEvent = problemEventDao.getProblemEventByID(id);
-        tempProblemEvent.setInspectionRecordID(problemEvent.getInspectionRecordID());
-        tempProblemEvent.setSensorID(problemEvent.getSensorID());
-        tempProblemEvent.setUserID(problemEvent.getUserID());
-        tempProblemEvent.setProblemCreationTime(problemEvent.getProblemCreationTime());
-        tempProblemEvent.setMaintenanceStatus(problemEvent.getMaintenanceStatus());
-        tempProblemEvent.setConfirmStatus(problemEvent.getConfirmStatus());
-        tempProblemEvent.setProblemTitle(problemEvent.getProblemTitle());
-        tempProblemEvent.setProblemDescription(problemEvent.getProblemDescription());*/
         problemEventDao.updateByKey(problemEvent);
     }
 }

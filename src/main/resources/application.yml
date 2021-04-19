@@ -91,3 +91,6 @@ pagehelper:
 mapper:
   identity: mysql
   style: normal
+
+swagger:
+  enable: true
