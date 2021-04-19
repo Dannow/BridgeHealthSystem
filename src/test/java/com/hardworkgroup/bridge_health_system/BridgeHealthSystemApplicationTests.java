@@ -7,6 +7,7 @@ import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_manageme
 import com.hardworkgroup.bridge_health_system.data_analysis.service.SensorDataService;
 import com.hardworkgroup.bridge_health_system.permission_management.service.UserService;
 import com.hardworkgroup.bridge_health_system.realTime_dataCollection.dao.RawDataTemperatureDao;
+import com.hardworkgroup.bridge_health_system.system_common.utils.SendMessageUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,10 +35,11 @@ class BridgeHealthSystemApplicationTests {
 
     @Test
     public void test() throws Exception {
+        SendMessageUtils.sendMsg("17365816495","sad","asd");
 //        AlarmInformation alarmInformation = new AlarmInformation();
 //        alarmInformation.setAlarmDetail("aa");
 //        alarmDataService.save(alarmInformation);
-        System.out.println(userService.getUserByID("1").getBridge().getBridgeName());
+//        System.out.println(userService.getUserByID("1").getBridge().getBridgeName());
 //        System.out.println(rawDataTemperatureDao.selectRawDataTemperatureBySensorIDAndTime(1,"2020-04-27"));
 //        // 获得当前时间
 //        Date nowTime = new Date();

@@ -13,11 +13,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class SendMessageUtils {
     //阿里云accessKeyId
-    private static final String accessKeyId="LTAI5tJ9KkGox6m3EYb4gBGE";
+    private static final String accessKeyId="LTAI4GEvvi9MjMFy9oHTzwQo";
     //阿里云accessSecret
-    private static final String accessSecret="CSDfUzT4DSVdG1A43t9jVLpFVzZoVI";
+    private static final String accessSecret="jB2p07yoLQ2ZJ8GP9cTVEivINWAWhR";
     //阿里云的签名名称
     private static final String signName="云智智能酒店系统";
+
     //阿里云模版CODE
     private static final String templateCode="SMS_215255424";
 
@@ -37,7 +38,7 @@ public class SendMessageUtils {
         request.putQueryParameter("PhoneNumbers", mobile);
         request.putQueryParameter("SignName", signName);
         request.putQueryParameter("TemplateCode", templateCode);
-        request.putQueryParameter("TemplateParam","{\"bridgeName\":"+bridgeName+","+"\"userName\":"+userName+"}");
+        request.putQueryParameter("TemplateParam","{\"bridgeName\":\""+bridgeName+"\",\"userName\":\""+userName+"\"}");
         try {
             CommonResponse response = client.getCommonResponse(request);
             System.out.println(response.getData());
