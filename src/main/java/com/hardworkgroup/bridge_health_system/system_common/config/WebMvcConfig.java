@@ -20,7 +20,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .allowedOrigins("*")
                 .allowedMethods("POST", "GET", "PUT", "OPTIONS", "DELETE")
                 .maxAge(3600)
-                .allowedHeaders()
+                .allowedHeaders("*")
                 .allowCredentials(true);
     }
     //url访问文件位置，仅限本地转移

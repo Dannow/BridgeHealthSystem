@@ -1,6 +1,13 @@
 #端口号配置
 server:
-  port: 9999
+  # 8081是https的端口,9999是http端口
+  port: 8081
+  http:
+    port: 9999
+  ssl:
+    key-store: classpath:5502309_www.yunzhi.fit.pfx
+    key-store-password: 4gc3bYq8
+    key-store-type: PKCS12
 
 #设置图片存储位置
 prop:

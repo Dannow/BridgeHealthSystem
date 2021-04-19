@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +37,9 @@ public class RealTimeDataController {
     @Autowired
     private SensorService sensorService;
 
+    /*
+    根据ID获取实时数据
+     */
     @RequestMapping(value = "/realTimeDataBySensorID" , method = RequestMethod.GET)
     public Result getRealTimeDataBySensorID(String sensorID){
         // 获得传感器类型
@@ -61,6 +66,9 @@ public class RealTimeDataController {
         return new Result(ResultCode.SUCCESS , new RealTimeDataResult(sensor,acquisitionTime,realTimeValue));
     }
 
+    /*
+    获取多个实时数据
+     */
     @RequestMapping(value = "/multipleRealTimeData" , method = RequestMethod.GET)
     public Result getMultipleRealTimeData(){
         List<RealTimeDataResult> realTimeDataResults=new ArrayList<>();
@@ -86,7 +94,7 @@ public class RealTimeDataController {
         RawDataTemperature rawDataTemperature = rawDataTemperatureService.selectBatchRawDataTemperatureBySensorID(1, 1).get(0);
         realTimeDataResults.add(new RealTimeDataResult(temperatureSensor, rawDataTemperature.getAcquisitionTime(), rawDataTemperature.getTemperatureValue()));
 
-        return new Result(ResultCode.SUCCESS, realTimeDataResults);
+        return  new Result(ResultCode.SUCCESS, realTimeDataResults);
     }
 
 }

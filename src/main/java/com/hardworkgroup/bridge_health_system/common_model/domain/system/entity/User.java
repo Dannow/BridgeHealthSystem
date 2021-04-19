@@ -1,6 +1,7 @@
 package com.hardworkgroup.bridge_health_system.common_model.domain.system.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,60 +50,6 @@ public class User implements Serializable {
      * 启用状态 0为禁用 1为启用
      */
     private Integer userStatus;
-    /**
-     * 创建时间
-     *//*
-    private Date createTime;
-
-    private String companyId;
-
-    private String companyName;
-
-    *//**
-     * 部门ID
-     *//*
-    //@ExcelAttribute(sort = 6)
-    private String departmentId;
-
-    *//**
-     * 入职时间
-     *//*
-    //@ExcelAttribute(sort = 5)
-    private Date timeOfEntry;
-
-    *//**
-     * 聘用形式
-     *//*
-    //@ExcelAttribute(sort = 4)
-    private Integer formOfEmployment;
-
-    *//**
-     * 工号
-     *//*
-    //@ExcelAttribute(sort = 3)
-    private String workNumber;
-
-    *//**
-     * 管理形式
-     *//*
-    private String formOfManagement;
-
-    *//**
-     * 工作城市
-     *//*
-    private String workingCity;
-
-    *//**
-     * 转正时间
-     *//*
-    private Date correctionTime;
-
-    *//**
-     * 在职状态 1.在职  2.离职
-     *//*
-    private Integer inServiceStatus;
-
-    private String departmentName;*/
 
     /**
      * level
@@ -116,6 +63,8 @@ public class User implements Serializable {
     private String userPicture;
 
     private Set<Role> roles =new HashSet<Role>();
+
+    private Bridge bridge;
 
 
 }
