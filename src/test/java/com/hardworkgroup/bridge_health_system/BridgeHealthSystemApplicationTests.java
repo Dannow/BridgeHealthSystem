@@ -7,6 +7,7 @@ import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_manageme
 import com.hardworkgroup.bridge_health_system.data_analysis.service.SensorDataService;
 import com.hardworkgroup.bridge_health_system.permission_management.service.UserService;
 import com.hardworkgroup.bridge_health_system.realTime_dataCollection.dao.RawDataTemperatureDao;
+import com.hardworkgroup.bridge_health_system.system_common.utils.ConverterUtils;
 import com.hardworkgroup.bridge_health_system.system_common.utils.SendMessageUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,10 @@ class BridgeHealthSystemApplicationTests {
 
     @Test
     public void test() throws Exception {
-        SendMessageUtils.sendMsg("17365816495","sad","asd");
+        Integer trueRealTimeData = new Integer(1);
+        int realTimeData = ConverterUtils.getAsInteger(trueRealTimeData);
+        System.out.println(realTimeData);
+//        System.out.println(Integer.parseInt("21.562"));
 //        AlarmInformation alarmInformation = new AlarmInformation();
 //        alarmInformation.setAlarmDetail("aa");
 //        alarmDataService.save(alarmInformation);

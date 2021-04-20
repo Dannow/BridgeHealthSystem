@@ -29,7 +29,7 @@ public class PushServiceImpl implements PushService {
         // 获得存放用户与channel的对应信息的Map
         ConcurrentHashMap<String, Channel> userChannelMap = NettyConfig.getUserChannelMap();
         // 根据userID获得对应的channel
-        Channel channel = userChannelMap.get(user.getUserID());
+        Channel channel = userChannelMap.get(user.getUserID().toString());
         // 获取数据
         AlarmInformation alarmInformation =(AlarmInformation)msg;
 
@@ -38,9 +38,10 @@ public class PushServiceImpl implements PushService {
 
         // 如果有对应的channel（既可以用户在线），则直接发送给他
         if (channel != null){
-            JSONObject jsonData = (JSONObject) JSON.toJSON(msg);
+            String jsonStr = JSON.toJSONString(alarmInformation);
             // 将信息以json格式发到userID对应的channel中
-            channel.writeAndFlush(jsonData);
+            channel.writeAndFlush(new TextWebSocketFrame(jsonStr));
+            //报警信息保存到数据库
             alarmDataService.save(alarmInformation);
         // 若用户不在线，则保留在数据库中
         }else {

@@ -15,6 +15,7 @@ import com.hardworkgroup.bridge_health_system.realTime_dataCollection.service.Ra
 import com.hardworkgroup.bridge_health_system.realTime_dataCollection.service.RawDataSmokeService;
 import com.hardworkgroup.bridge_health_system.realTime_dataCollection.service.RawDataTemperatureService;
 import com.hardworkgroup.bridge_health_system.realTime_dataCollection.service.impl.PushServiceImpl;
+import com.hardworkgroup.bridge_health_system.system_common.utils.ConverterUtils;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
@@ -108,13 +109,13 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         // 烟雾传感器数据加到数据库
         Sensor smokeSensor = nettyServerHandler.sensorService.getSensorByID("18");
         // 判断报警
-        isAlarm(temperatureSensor, admin, smokeData, isEarlyWarning);
+        isAlarm(smokeSensor, admin, smokeData, isEarlyWarning);
         nettyServerHandler.rawDataSmokeService.insertRawDataSmoke(new RawDataSmoke(sensorDataTime, smokeData, smokeSensor));
 
         // 火焰传感器数据加到数据库
         Sensor fireSensor = nettyServerHandler.sensorService.getSensorByID("19");
         // 判断报警
-        isAlarm(temperatureSensor, admin, fireData, isEarlyWarning);
+        isAlarm(fireSensor, admin, fireData, isEarlyWarning);
         nettyServerHandler.rawDataFireService.insertRawDataFire(new RawDataFire(sensorDataTime, fireData, fireSensor));
 
         log.info("sensorDataTime: "+sensorDataTime+" temperatureData: "+temperatureData+" smokeData: "+smokeData+" fireData: "+fireData);
@@ -151,8 +152,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
      * 判断是否报警
      */
     public void isAlarm(Sensor sensor, User admin, Object trueRealTimeData, int isEarlyWarning){
-        Integer realTimeData = (Integer) trueRealTimeData;
-        
+        int realTimeData = ConverterUtils.getAsInteger(trueRealTimeData);
         // 保存报警信息
         AlarmInformation alarmInformation = new AlarmInformation();
         alarmInformation.setSensorID(sensor.getSensorID());
@@ -161,7 +161,6 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         Date alarmTime = new Date();
         alarmInformation.setAlarmTime(alarmTime);
         String alarmDetail = null;
-
         // 判断是否超过上限
         if (realTimeData >= sensor.getUpperThreshold()){
             // 判断是预警还是报警
@@ -178,7 +177,6 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
             // 消息推送
             nettyServerHandler.pushService.pushMsgToOne(admin,alarmInformation);
 
-            return;
         // 判断是否低于阀值
         }else if (realTimeData < sensor.getLowerThreshold()){
             // 判断是预警还是报警
@@ -194,7 +192,6 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
             // 消息推送
             nettyServerHandler.pushService.pushMsgToOne(admin,alarmInformation);
 
-            return;
         }
 
     }
