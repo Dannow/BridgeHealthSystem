@@ -12,6 +12,7 @@ import com.hardworkgroup.bridge_health_system.realTime_dataCollection.netty.sock
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
 import com.hardworkgroup.bridge_health_system.system_common.utils.ReadExcelUtil;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -26,6 +27,7 @@ import java.util.*;
 @CrossOrigin
 @RestController
 @Slf4j
+@Api(tags = "传感器健康预测接口")
 @RequestMapping("/dataAnalysis")
 public class PredictController {
     @Autowired

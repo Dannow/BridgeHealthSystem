@@ -6,6 +6,7 @@ import com.hardworkgroup.bridge_health_system.system_common.controller.BaseContr
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
 import com.hardworkgroup.bridge_health_system.system_common.exception.CommonException;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ import java.util.Map;
 @CrossOrigin
 @Slf4j
 @RestController
+@Api(tags = "权限管理接口")
 @RequestMapping("/permissionManagement")
 public class PermissionController extends BaseController {
 

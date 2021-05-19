@@ -7,12 +7,14 @@ import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_manageme
 import com.hardworkgroup.bridge_health_system.data_analysis.service.SensorDataService;
 import com.hardworkgroup.bridge_health_system.permission_management.service.UserService;
 import com.hardworkgroup.bridge_health_system.realTime_dataCollection.dao.RawDataTemperatureDao;
+import com.hardworkgroup.bridge_health_system.realTime_dataCollection.service.impl.PushServiceImpl;
 import com.hardworkgroup.bridge_health_system.system_common.utils.ConverterUtils;
 import com.hardworkgroup.bridge_health_system.system_common.utils.SendMessageUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,12 +35,12 @@ class BridgeHealthSystemApplicationTests {
     public RawDataTemperatureDao rawDataTemperatureDao;
     @Autowired
     public AlarmDataServiceImpl alarmDataService;
+    @Resource
+    PushServiceImpl pushService;
 
     @Test
     public void test() throws Exception {
-        Integer trueRealTimeData = new Integer(1);
-        int realTimeData = ConverterUtils.getAsInteger(trueRealTimeData);
-        System.out.println(realTimeData);
+            pushService.sendEmail();
 //        System.out.println(Integer.parseInt("21.562"));
 //        AlarmInformation alarmInformation = new AlarmInformation();
 //        alarmInformation.setAlarmDetail("aa");

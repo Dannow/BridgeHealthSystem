@@ -3,6 +3,7 @@ package com.hardworkgroup.bridge_health_system.data_analysis.controller;
 import com.hardworkgroup.bridge_health_system.data_analysis.util.ConnectionPython;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import java.io.IOException;
 @CrossOrigin
 @RestController
 @Slf4j
+@Api(tags = "桥梁健康判断接口")
 @RequestMapping("/dataAnalysis")
 public class HealthValuePredictController {
 

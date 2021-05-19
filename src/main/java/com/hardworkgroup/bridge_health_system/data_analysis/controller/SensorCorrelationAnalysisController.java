@@ -13,6 +13,7 @@ import com.hardworkgroup.bridge_health_system.realTime_dataCollection.service.Ra
 import com.hardworkgroup.bridge_health_system.realTime_dataCollection.service.RawDataTemperatureService;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,7 @@ import java.util.*;
 @CrossOrigin
 @RestController
 @Slf4j
+@Api(tags = "传感器数据分析接口")
 @RequestMapping("/dataAnalysis")
 public class SensorCorrelationAnalysisController {
     @Autowired

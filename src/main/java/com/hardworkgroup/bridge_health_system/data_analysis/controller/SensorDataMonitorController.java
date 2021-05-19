@@ -9,6 +9,7 @@ import com.hardworkgroup.bridge_health_system.common_model.domain.data_analysis.
 import com.hardworkgroup.bridge_health_system.data_analysis.service.SensorDataService;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ import java.util.*;
 @CrossOrigin
 @RestController
 @Slf4j
+@Api(tags = "传感器原始数据获取接口")
 @RequestMapping("/dataAnalysis")
 public class SensorDataMonitorController {
     @Autowired
