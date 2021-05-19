@@ -14,6 +14,7 @@ import com.hardworkgroup.bridge_health_system.system_common.entity.PageResult;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
 import com.hardworkgroup.bridge_health_system.system_common.utils.BeanMapUtils;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -31,6 +32,7 @@ import java.util.*;
 //解决跨域
 @CrossOrigin
 @RestController
+@Api(tags = "用户管理接口")
 @RequestMapping("/permissionManagement")
 public class UserController extends BaseController {
 

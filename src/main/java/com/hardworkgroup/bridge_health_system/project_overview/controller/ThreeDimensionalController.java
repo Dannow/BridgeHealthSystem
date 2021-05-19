@@ -4,6 +4,7 @@ import com.hardworkgroup.bridge_health_system.bridge_configuration.service.Senso
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor;
 import com.hardworkgroup.bridge_health_system.common_model.domain.project_overview.response.SingleSensorDataResult;
 import com.hardworkgroup.bridge_health_system.data_analysis.service.SensorDataService;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 @RestController
 @Slf4j
+@Api(tags = "三维模型数据显示接口")
 @RequestMapping("/projectOverview")
 public class ThreeDimensionalController {
     @Autowired

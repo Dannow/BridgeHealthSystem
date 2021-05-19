@@ -14,6 +14,7 @@ import com.hardworkgroup.bridge_health_system.system_common.entity.PageResult;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
 import com.hardworkgroup.bridge_health_system.system_common.utils.BeanMapUtils;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +36,7 @@ import java.util.Map;
 //解决跨域
 @CrossOrigin
 @RestController
+@Api(tags = "人工巡检数据接口")
 @RequestMapping("/bridgeInspection/inspection")
 public class InspectionDataController {
 

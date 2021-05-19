@@ -11,6 +11,7 @@ import com.hardworkgroup.bridge_health_system.system_common.controller.BaseContr
 import com.hardworkgroup.bridge_health_system.system_common.entity.PageResult;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,7 @@ import java.util.Set;
 //解决跨域
 @CrossOrigin
 @RestController
+@Api(tags = "角色管理接口")
 @RequestMapping(value = "/permissionManagement")
 public class RoleController extends BaseController {
 

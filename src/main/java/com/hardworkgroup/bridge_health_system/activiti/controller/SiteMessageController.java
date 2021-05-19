@@ -4,6 +4,7 @@ package com.hardworkgroup.bridge_health_system.activiti.controller;
 import com.hardworkgroup.bridge_health_system.activiti.service.serviceImpl.SiteMessageServiceImpl;
 import com.hardworkgroup.bridge_health_system.common_model.domain.activiti.entity.SiteMessage;
 import com.hardworkgroup.bridge_health_system.system_common.controller.BaseController;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,7 @@ import java.util.List;
 
 @CrossOrigin
 @RestController
+@Api(tags = "站内消息接口")
 public class SiteMessageController extends BaseController {
 
     @Autowired

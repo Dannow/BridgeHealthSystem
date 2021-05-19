@@ -11,6 +11,7 @@ import com.hardworkgroup.bridge_health_system.realTime_dataCollection.service.Ra
 import com.hardworkgroup.bridge_health_system.realTime_dataCollection.service.RawDataTemperatureService;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,7 @@ import java.util.List;
 @CrossOrigin
 @RestController
 @Slf4j
+@Api(tags = "接收传感器实时数据接口")
 @RequestMapping("/realTimeDataCollection")
 public class RealTimeDataController {
     @Autowired

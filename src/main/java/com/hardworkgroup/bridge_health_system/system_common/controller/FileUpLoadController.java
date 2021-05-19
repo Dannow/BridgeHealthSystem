@@ -4,6 +4,7 @@ import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
 import com.hardworkgroup.bridge_health_system.system_common.utils.FileNameUtils;
 import com.hardworkgroup.bridge_health_system.system_common.utils.FileUtils;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +14,7 @@ import java.util.Objects;
 
 @RestController
 @CrossOrigin
+@Api(tags = "文件上传接口接口")
 public class FileUpLoadController {
     @Value("${prop.upload-folder}")
     private String UPLOAD_FOLDER;

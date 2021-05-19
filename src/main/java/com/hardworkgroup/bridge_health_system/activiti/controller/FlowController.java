@@ -6,6 +6,7 @@ import com.hardworkgroup.bridge_health_system.common_model.domain.activiti.entit
 import com.hardworkgroup.bridge_health_system.system_common.controller.BaseController;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ import java.util.Map;
 //解决跨域
 @CrossOrigin
 @RestController
+@Api(tags = "工作流控制接口")
 public class FlowController extends BaseController {
 
     @Autowired

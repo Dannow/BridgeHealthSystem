@@ -3,6 +3,7 @@ package com.hardworkgroup.bridge_health_system.system_common.controller;
 
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RestController
 @CrossOrigin
+@Api(tags = "错误页面显示接口")
 public class ErrorController {
 
     //公共错误跳转

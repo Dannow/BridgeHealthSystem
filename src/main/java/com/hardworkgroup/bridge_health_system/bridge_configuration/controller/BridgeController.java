@@ -10,6 +10,7 @@ import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configu
 import com.hardworkgroup.bridge_health_system.system_common.entity.PageResult;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,7 @@ import java.util.*;
 @CrossOrigin
 @RestController
 @Slf4j
+@Api(value = "桥梁controller",tags = "桥梁接口")
 @RequestMapping("/bridgeConfiguration")
 public class BridgeController {
     /**

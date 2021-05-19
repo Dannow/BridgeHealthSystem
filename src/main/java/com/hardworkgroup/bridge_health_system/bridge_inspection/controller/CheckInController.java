@@ -9,6 +9,7 @@ import com.hardworkgroup.bridge_health_system.system_common.controller.BaseContr
 import com.hardworkgroup.bridge_health_system.system_common.entity.PageResult;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,7 @@ import java.util.Map;
 @CrossOrigin
 @Slf4j
 @RestController
+@Api(tags = "巡检打卡口")
 @RequestMapping("/bridgeInspection/inspection")
 public class CheckInController extends BaseController {
     /**
