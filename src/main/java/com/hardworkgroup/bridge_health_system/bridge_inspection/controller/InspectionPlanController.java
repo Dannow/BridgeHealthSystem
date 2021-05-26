@@ -3,15 +3,22 @@ package com.hardworkgroup.bridge_health_system.bridge_inspection.controller;
 import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.activiti.service.serviceImpl.ActFlowCommServiceImpl;
 import com.hardworkgroup.bridge_health_system.bridge_inspection.service.serviceImpl.InspectionPlanServiceImpl;
+import com.hardworkgroup.bridge_health_system.common_model.domain.activiti.entity.SiteMessage;
+import com.hardworkgroup.bridge_health_system.common_model.domain.alarm_management.entity.AlarmInformation;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Bridge;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_configuration.entity.Sensor;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.InspectionPlan;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.response.SimplePlan;
+import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User;
 import com.hardworkgroup.bridge_health_system.system_common.controller.BaseController;
 import com.hardworkgroup.bridge_health_system.system_common.entity.PageResult;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
+import com.hardworkgroup.bridge_health_system.system_common.utils.BeanMapUtils;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -135,7 +142,7 @@ public class InspectionPlanController extends BaseController {
     /**
      * 保存巡检计划
      */
-    @RequiresPermissions(value = "POINT-INSPECTION-PLAN-ADD")
+    /*@RequiresPermissions(value = "POINT-INSPECTION-PLAN-ADD")
     @RequestMapping(value = "/plan/import",method = RequestMethod.POST)
     @Transactional
     public Result save(@RequestBody InspectionPlan inspectionPlan) {
@@ -165,6 +172,41 @@ public class InspectionPlanController extends BaseController {
             }
         }
         return new  Result(ResultCode.SUCCESS);
+    }*/
+
+    /**
+     * 保存巡检计划
+     */
+    @RequiresPermissions(value = "POINT-INSPECTION-PLAN-ADD")
+    @RequestMapping(value = "/plan/import",method = RequestMethod.POST)
+    @Transactional
+    public Result save(@RequestBody InspectionPlan inspectionPlan) {
+        Integer code = inspectionPlanService.save(inspectionPlan);
+        if(code ==1){
+            Integer inspectionPlanID = inspectionPlan.getInspectionPlanID();
+            String formKey = "inspectionPlan1";
+            //使用流程变量设置字符串（格式 ： InspectionPlan:Id 的形式）
+            //使用正在执行对象表中的一个字段BUSINESS_KEY(Activiti提供的一个字段)，让启动的流程（流程实例）关联业务
+            String bussinessKey = formKey+":" + inspectionPlanID;
+            //启动流程实例
+            ProcessInstance processInstance = actFlowCommService.startPlanProcess(formKey, inspectionPlan, bussinessKey, this.userId);
+            //		流程实例ID
+            String processDefinitionId = processInstance.getProcessDefinitionId();
+            log.info("processDefinitionId is {}",processDefinitionId);
+            //查看个人所有任务
+            List<Map<String, Object>> taskList = actFlowCommService.myTaskList(this.userId);
+            if(!CollectionUtils.isEmpty(taskList)){
+                for (Map<String, Object> map : taskList) {
+                    if(map.get("assignee").toString().equals(this.userId.toString()) &&
+                            map.get("processDefinitionId").toString().equals(processDefinitionId)){
+                        log.info("processDefinitionId is {}",map.get("processDefinitionId").toString());
+                        log.info("taskid is {}",map.get("taskid").toString());
+                        actFlowCommService.completeProcess("确认",map.get("taskid").toString(),this.userId);
+                    }
+                }
+            }
+        }
+        return new Result(ResultCode.SUCCESS);
     }
 
     /**
