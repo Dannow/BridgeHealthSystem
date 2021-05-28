@@ -5,9 +5,11 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import com.hardworkgroup.bridge_health_system.bridge_inspection.dao.ProblemEventDao;
+import com.hardworkgroup.bridge_health_system.bridge_inspection.dao.ProblemEventPictureDao;
 import com.hardworkgroup.bridge_health_system.bridge_inspection.service.ProblemEventService;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.ProblemEvent;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.response.SimpleEvent;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.response.SimpleEventPicture;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,9 @@ public class ProblemEventServiceImpl implements ProblemEventService {
     @Resource
     private ProblemEventDao problemEventDao;
 
+    @Resource
+    private ProblemEventPictureDao problemEventPictureDao;
+
     /**
      * 获取所有问题事件列表
      * @return 问题事件结果
@@ -41,7 +46,7 @@ public class ProblemEventServiceImpl implements ProblemEventService {
     }
 
     /**
-     * 获取所有问题事件列表
+     * 手机端获取所有问题事件列表
      * @return 问题事件结果
      */
     @Override
@@ -49,6 +54,7 @@ public class ProblemEventServiceImpl implements ProblemEventService {
         List<ProblemEvent> problemEvents =  problemEventDao.selectAllProblemEvent();
         List<SimpleEvent> simpleEvents = new ArrayList<>();
         for (ProblemEvent problemEvent : problemEvents) {
+            problemEvent.setProblemEventPictures(problemEventPictureDao.selectAllByEventID(problemEvent.getProblemEventID()));
             simpleEvents.add(new SimpleEvent(problemEvent));
         }
         return simpleEvents;

@@ -55,7 +55,7 @@ public class PushServiceImpl implements PushService {
         AlarmInformation alarmInformation =(AlarmInformation)msg;
 
         // 发短信提醒
-        //SendMessageUtils.sendMsg(user.getUserPhone(),user.getBridge().getBridgeName(),user.getUserName());
+        SendMessageUtils.sendMsg(user.getUserPhone(),user.getBridge().getBridgeName(),user.getUserName(),"alarm");
         //发送邮件
         sendEmail();
         // 如果有对应的channel（既可以用户在线），则直接发送给他
