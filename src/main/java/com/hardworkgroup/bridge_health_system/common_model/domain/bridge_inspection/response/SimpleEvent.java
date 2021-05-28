@@ -41,7 +41,9 @@ public class SimpleEvent {
 
     private String userName;
 
-    private List<SimpleEventPicture> simpleEventPictures = new ArrayList<>();
+    //private List<SimpleEventPicture> simpleEventPictures = new ArrayList<>();
+
+    private List<String> simpleEventPictures = new ArrayList<>();
 
     public SimpleEvent(ProblemEvent problemEvent){
         this.problemEventID = problemEvent.getProblemEventID();
@@ -57,8 +59,11 @@ public class SimpleEvent {
         this.bridgeName = problemEvent.getSensor().getBridge().getBridgeName();
         this.userID = problemEvent.getUserID();
         this.userName = problemEvent.getUser().getUserName();
-        for (ProblemEventPicture problemEventPicture : problemEvent.getProblemEventPictures()) {
+        /*for (ProblemEventPicture problemEventPicture : problemEvent.getProblemEventPictures()) {
             this.simpleEventPictures.add(new SimpleEventPicture(problemEventPicture));
+        }*/
+        for (ProblemEventPicture problemEventPicture : problemEvent.getProblemEventPictures()) {
+            this.simpleEventPictures.add("http://121.199.75.149:9999/img/"+problemEventPicture.getProblemPicture());
         }
     }
 }

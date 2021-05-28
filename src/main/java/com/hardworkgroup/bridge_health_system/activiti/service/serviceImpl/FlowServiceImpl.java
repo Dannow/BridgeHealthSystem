@@ -6,6 +6,7 @@ import com.hardworkgroup.bridge_health_system.common_model.domain.activiti.entit
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.entity.User;
 import com.hardworkgroup.bridge_health_system.common_model.domain.system.response.ProfileResult;
 import com.hardworkgroup.bridge_health_system.permission_management.service.serviceImpl.UserServiceImpl;
+import com.hardworkgroup.bridge_health_system.system_common.utils.SendMessageUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.delegate.DelegateTask;
 import org.apache.shiro.SecurityUtils;
@@ -83,7 +84,9 @@ public class FlowServiceImpl implements FlowService {
         log.info("delegateTask=={}",delegateTask);
 //        负责人
         String assignee = delegateTask.getAssignee();
+        User user = userService.getUserByID(assignee);
         log.info("assignee=={}",assignee);
+        log.info("assignee=={}",user.getUserName());
 //        获取当前登录用户
         Subject subject = SecurityUtils.getSubject();
         PrincipalCollection principals = subject.getPrincipals();
@@ -94,6 +97,8 @@ public class FlowServiceImpl implements FlowService {
         if(!assignee.equals(userId.toString())){
             int type =1;
             siteMessageService.sendMsg(Integer.parseInt(assignee),taskId,type);
+            SendMessageUtils.sendMsg(user.getUserPhone(),user.getBridge().getBridgeName(),user.getUserName(),delegateTask.getName());
+            log.info("短信发送成功,getEventName=={}",delegateTask.getName());
         }
 
     }

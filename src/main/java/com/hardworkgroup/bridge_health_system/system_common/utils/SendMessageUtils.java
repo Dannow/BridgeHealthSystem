@@ -17,14 +17,28 @@ public class SendMessageUtils {
     //阿里云accessSecret
     private static final String accessSecret="jB2p07yoLQ2ZJ8GP9cTVEivINWAWhR";
     //阿里云的签名名称
-    private static final String signName="云智智能酒店系统";
+    private static final String signName="云智桥梁健康监测系统";
 
     //阿里云模版CODE
-    private static final String templateCode="SMS_215255424";
+//    private static final String templateCode="SMS_217436840";
 
 
     //发送短信
-    public static void sendMsg(String mobile,String bridgeName, String userName){
+    public static void sendMsg(String mobile,String bridgeName, String userName, String sendType){
+        // 选择短信模板
+        String templateCode = null;
+        switch (sendType){
+            case "completePlan":
+                templateCode = "SMS_217416806";
+                break;
+            case "auditPlan":
+                templateCode = "SMS_217436841";
+                break;
+            case "alarm":
+                templateCode = "SMS_217436840";
+                break;
+        }
+
         DefaultProfile profile = DefaultProfile.getProfile("cn-hangzhou", accessKeyId, accessSecret);
         IAcsClient client = new DefaultAcsClient(profile);
 

@@ -2,10 +2,12 @@ package com.hardworkgroup.bridge_health_system.bridge_inspection.controller;
 
 import com.github.pagehelper.PageInfo;
 import com.hardworkgroup.bridge_health_system.bridge_inspection.dao.ProblemEventPictureDao;
+import com.hardworkgroup.bridge_health_system.bridge_inspection.service.serviceImpl.ProblemEventPictureServiceImpl;
 import com.hardworkgroup.bridge_health_system.bridge_inspection.service.serviceImpl.ProblemEventServiceImpl;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.ProblemEvent;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.entity.ProblemEventPicture;
 import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.response.SimpleEvent;
+import com.hardworkgroup.bridge_health_system.common_model.domain.bridge_inspection.response.SimpleEventPicture;
 import com.hardworkgroup.bridge_health_system.system_common.entity.PageResult;
 import com.hardworkgroup.bridge_health_system.system_common.entity.Result;
 import com.hardworkgroup.bridge_health_system.system_common.entity.ResultCode;
@@ -37,6 +39,7 @@ public class ProblemEventController {
 
     @Resource
     ProblemEventPictureDao problemEventPictureDao;
+
     /**
      * 获取所有问题事件列表
      * @return 巡检计划结果
@@ -59,7 +62,7 @@ public class ProblemEventController {
     }
 
     /**
-     * 获取所有问题事件列表
+     * 手机端获取所有问题事件列表
      * @return 巡检计划结果
      */
     @Transactional

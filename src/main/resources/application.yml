@@ -12,6 +12,7 @@ server:
 #设置图片存储位置
 prop:
   upload-folder: /home/dong/doucments/BridgeHealthSystem/bridge_health_system_picture/img/
+  upload-folder-excel: /home/dong/doucments/BridgeHealthSystem/bridge_health_system_ExcelData/excel/
   #upload-folder: D:/fwwb/xxzl/test/
 spring:
   servlet:
